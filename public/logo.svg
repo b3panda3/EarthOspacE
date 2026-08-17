@@ -1,0 +1,48 @@
+<svg viewBox="0 0 1180 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap');
+      .word { font-family: 'Space Grotesk','Futura','Century Gothic',sans-serif; font-weight: 700; }
+      .tag  { font-family: 'IBM Plex Mono','Courier New',monospace; font-weight: 500; }
+    </style>
+    <radialGradient id="earthGrad2" cx="35%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#6FF0E0"/>
+      <stop offset="55%" stop-color="#3FD6C6"/>
+      <stop offset="100%" stop-color="#166B66"/>
+    </radialGradient>
+    <radialGradient id="bgGrad2" cx="30%" cy="35%" r="90%">
+      <stop offset="0%" stop-color="#131C31"/>
+      <stop offset="100%" stop-color="#080C16"/>
+    </radialGradient>
+  </defs>
+
+  <rect x="0" y="0" width="1180" height="300" fill="url(#bgGrad2)"/>
+
+  <!-- icon mark, left -->
+  <g>
+    <ellipse cx="150" cy="140" rx="118" ry="42" fill="none" stroke="#F2A93B" stroke-width="3.4"
+             transform="rotate(-18 150 140)" opacity="0.92"/>
+    <circle cx="150" cy="140" r="78" fill="url(#earthGrad2)"/>
+    <path d="M118,102 q18,-11 34,0 q11,9 -3,20 q-17,11 -31,0 q-11,-9 -1,-20Z" fill="#0F4B4A" opacity="0.55"/>
+    <path d="M164,164 q23,-6 32,11 q5,14 -12,18 q-19,5 -26,-9 q-5,-11 5,-20Z" fill="#0F4B4A" opacity="0.5"/>
+    <path d="M108,182 q11,-7 20,2 q5,9 -6,14 q-11,5 -16,-4 q-3,-8 2,-13Z" fill="#0F4B4A" opacity="0.45"/>
+    <circle cx="262.7" cy="103" r="7.5" fill="#F7C878"/>
+    <circle cx="262.7" cy="103" r="13.5" fill="none" stroke="#F7C878" stroke-width="1.6" opacity="0.55"/>
+  </g>
+
+  <!-- wordmark: Earth + globe glyph + spacE -->
+  <g class="word" fill="#EDEFF4">
+    <text x="345" y="163" font-size="84" letter-spacing="1">Earth</text>
+    <text x="672" y="163" font-size="84" letter-spacing="1">spacE</text>
+  </g>
+  <g>
+    <circle cx="637" cy="128" r="34" fill="url(#earthGrad2)"/>
+    <ellipse cx="637" cy="128" rx="50" ry="18" fill="none" stroke="#F2A93B" stroke-width="2.4"
+             transform="rotate(-18 637 128)" opacity="0.9"/>
+  </g>
+
+  <!-- tagline -->
+  <text x="347" y="212" class="tag" font-size="18" letter-spacing="3" fill="#8391AC">
+    AI MISSION INTELLIGENCE &#183; EARTH &amp; NEAR-EARTH SPACE
+  </text>
+</svg>
