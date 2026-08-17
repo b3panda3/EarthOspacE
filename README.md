@@ -157,7 +157,7 @@ All AI features are powered by **IBM Granite** on **watsonx.ai**:
 ## Hackathon Submission
 
 - **Challenge**: IBM AI Builders Challenge — Advance Space Exploration with AI
-- **Team**: b3panda3
+- **Team**: EarthOspacE
 - **Repository**: [github.com/b3panda3/EarthOspacE](https://github.com/b3panda3/EarthOspacE)
 - **Deadline**: August 31, 2026
 
