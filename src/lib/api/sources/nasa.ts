@@ -18,9 +18,9 @@ import type {
 } from "@/lib/types";
 
 const NASA_KEY = () =>
-  process.env.NEXT_PUBLIC_NASA_API_KEY &&
-  !process.env.NEXT_PUBLIC_NASA_API_KEY.startsWith("your_")
-    ? process.env.NEXT_PUBLIC_NASA_API_KEY
+  process.env.NASA_API_KEY &&
+  !process.env.NASA_API_KEY.startsWith("your_")
+    ? process.env.NASA_API_KEY
     : "DEMO_KEY";
 
 /* ── NEO Demo fallback ───────────────────────────────────────────────────── */

@@ -100,7 +100,7 @@ interface NewsApiResponse {
 }
 
 async function fetchNewsApi(): Promise<RawFeedItem[]> {
-  const key = process.env.NEXT_PUBLIC_NEWS_API_KEY;
+  const key = process.env.NEWS_API_KEY;
   if (!key || key.startsWith("your_")) return [];
 
   try {

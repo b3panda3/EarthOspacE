@@ -55,7 +55,10 @@ Generate the JSON profile now.
       .replace(/\s*```$/i, "")
       .trim();
 
-    aiProfile = JSON.parse(rawJson) as AiUserProfile;
+    aiProfile = {
+      ...JSON.parse(rawJson) as AiUserProfile,
+      gender: answers.gender,
+    };
   } catch (err) {
     console.error("[profile/route] AI generation failed:", err);
     /* Fallback: build a deterministic profile from the answers */
@@ -72,6 +75,7 @@ Generate the JSON profile now.
 
     aiProfile = {
       role: answers.primaryRole,
+      gender: answers.gender,
       missionType: answers.missionType,
       interests: interestWeights,
       updateFrequency: answers.updateFrequency,

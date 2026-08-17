@@ -30,7 +30,7 @@ export interface CityWeather {
 /* ── GET /api/weather ────────────────────────────────────────────────────── */
 
 export async function GET(_req: NextRequest) {
-  const apiKey = process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY;
+  const apiKey = process.env.OPENWEATHER_API_KEY;
 
   if (!apiKey || apiKey.startsWith("your_")) {
     /* Return plausible demo data when key is not configured */

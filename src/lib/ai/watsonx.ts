@@ -84,9 +84,9 @@ function resolveConfig(override?: WatsonxConfig): {
   projectId: string;
 } {
   return {
-    apiKey:    override?.apiKey    ?? process.env.NEXT_PUBLIC_WATSONX_API_KEY    ?? "",
-    url:       override?.url       ?? process.env.NEXT_PUBLIC_WATSONX_URL        ?? "https://us-south.ml.cloud.ibm.com",
-    projectId: override?.projectId ?? process.env.NEXT_PUBLIC_WATSONX_PROJECT_ID ?? "",
+    apiKey:    override?.apiKey    ?? process.env.WATSONX_API_KEY    ?? "",
+    url:       override?.url       ?? process.env.WATSONX_URL        ?? "https://eu-de.ml.cloud.ibm.com",
+    projectId: override?.projectId ?? process.env.WATSONX_PROJECT_ID ?? "",
   };
 }
 

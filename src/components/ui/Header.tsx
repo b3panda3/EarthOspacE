@@ -143,7 +143,7 @@ export default function Header({ onMenuToggle }: HeaderProps) {
               aria-hidden="true"
               className="absolute top-1 right-1 h-2 w-2 rounded-full bg-[#e6c974]"
             />
-          )
+          )}
         </button>
 
         {/* Notification dropdown */}
