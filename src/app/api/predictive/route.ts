@@ -110,7 +110,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
       debrisBands:      DEBRIS_BANDS,
       conjunctionEvents: buildConjunctionEvents(),
       commOutlook: { hfRadio: "Clear", satellite: "Nominal", gps: "Normal", summary: "All communication bands expected to be clear for the next 24 hours." },
-      currentConditions: { kpIndex: 2.3, solarWindSpeedKms: 412, solarWindDensity: 5.1, activeFlares: 0, radiationBeltStatus: "quiet", neoHazardousCount: 1 },
+      currentConditions: { kpIndex: 2.3, solarWindSpeedKms: 412, solarWindDensity: 5.2, activeFlares: 0, radiationBeltStatus: "quiet", neoHazardousCount: 1 },
       fetchedAt: new Date().toISOString(),
       demo: true,
     });
@@ -123,9 +123,9 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     const latestKp   = telemetry.kpPoints[telemetry.kpPoints.length - 1];
 
     const current: CurrentConditions = {
-      kpIndex:             latestKp?.kp              ?? 2.3,
-      solarWindSpeedKms:   latestWind?.speedKms       ?? 420,
-      solarWindDensity:    latestWind?.densityN        ?? 5.2,
+      kpIndex:             Number(latestKp?.kp) || 2.3,
+      solarWindSpeedKms:   Number(latestWind?.speedKms) || 420,
+      solarWindDensity:    Number(latestWind?.densityN) || 5.2,
       activeFlares:        telemetry.telemetry.filter((t) => t.type === "solar_flare").length,
       radiationBeltStatus: (latestKp?.kp ?? 0) >= 5 ? "storm" : (latestKp?.kp ?? 0) >= 3 ? "active" : "quiet",
       neoHazardousCount:   telemetry.neos.filter((n) => n.isPotentiallyHazardous).length,
@@ -135,8 +135,8 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
       .slice(-7)
       .map((pt, i) => ({
         timestamp:         pt.timestamp,
-        kpIndex:           pt.kp,
-        solarWindSpeedKms: telemetry.solarWind[i]?.speedKms ?? current.solarWindSpeedKms,
+        kpIndex:           Number(pt.kp) || 0,
+        solarWindSpeedKms: Number(telemetry.solarWind[i]?.speedKms) || current.solarWindSpeedKms,
       }));
 
     const [forecast, quickAssessment] = await Promise.all([

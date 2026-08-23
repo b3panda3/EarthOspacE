@@ -8,7 +8,7 @@ import type { MapEventCategory } from "@/lib/types";
 export const CATEGORY_COLORS: Record<MapEventCategory, string> = {
   incident:    "#ef4444", // red-500
   weather:     "#38bdf8", // sky-400
-  space:       "#8369ce", // purple accent
+  space:       "#a78bfa", // purple accent
   observatory: "#34d399", // emerald-400
   comet:       "#f97316", // orange-500
 };
@@ -90,6 +90,15 @@ export function injectMarkerStyles(): void {
       0%   { transform: scale(1);   opacity: 0.6; }
       50%  { transform: scale(1.5); opacity: 0.2; }
       100% { transform: scale(2);   opacity: 0;   }
+    }
+    /* Fix _leaflet_pos undefined errors */
+    .leaflet-marker-icon,
+    .leaflet-marker-shadow,
+    .leaflet-overlay-pane svg,
+    .leaflet-overlay-pane path,
+    .leaflet-tile-pane .leaflet-tile {
+      position: absolute;
+      left: 0; top: 0;
     }
   `;
   document.head.appendChild(style);

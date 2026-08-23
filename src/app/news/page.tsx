@@ -177,12 +177,12 @@ export default function NewsPage() {
           transition={{ duration: 0.3 }}
           className="flex items-center gap-3"
         >
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#e6c974]/10 border border-[#e6c974]/30">
-            <Newspaper size={20} className="text-[#e6c974]" aria-hidden="true" />
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#38bdf8]/10 border border-[#38bdf8]/30">
+            <Newspaper size={20} className="text-[#38bdf8]" aria-hidden="true" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-[#e8e7e5]">News Explorer</h1>
-            <p className="text-xs text-[#605943]">
+            <h1 className="text-xl font-bold text-[#e0f2fe]">News Explorer</h1>
+            <p className="text-xs text-[#1e3a5f]">
               Live space & Earth news · AI-enhanced · auto-refreshes every 30 s
             </p>
           </div>
@@ -215,15 +215,15 @@ export default function NewsPage() {
         {/* ── Loading ───────────────────────────────────────────────────── */}
         {isLoading && (
           <div className="flex items-center justify-center py-20">
-            <Loader2 size={24} className="animate-spin text-[#605943]" aria-label="Loading news" />
+            <Loader2 size={24} className="animate-spin text-[#1e3a5f]" aria-label="Loading news" />
           </div>
         )}
 
         {/* ── Empty state ───────────────────────────────────────────────── */}
         {!isLoading && filteredItems.length === 0 && (
           <div className="flex flex-col items-center justify-center py-20 gap-3 text-center">
-            <Newspaper size={28} className="text-[#3a3830]" aria-hidden="true" />
-            <p className="text-sm text-[#605943]">
+            <Newspaper size={28} className="text-[#1e3a5f]" aria-hidden="true" />
+            <p className="text-sm text-[#1e3a5f]">
               {search
                 ? `No articles match "${search}"`
                 : category === "saved"
@@ -265,15 +265,15 @@ export default function NewsPage() {
         {/* ── Load-more state ───────────────────────────────────────────── */}
         {isFetchingNextPage && (
           <div className="flex items-center justify-center gap-2 py-6">
-            <Loader2 size={16} className="animate-spin text-[#605943]" aria-hidden="true" />
-            <span className="text-xs text-[#605943]">Loading more articles…</span>
+            <Loader2 size={16} className="animate-spin text-[#1e3a5f]" aria-hidden="true" />
+            <span className="text-xs text-[#1e3a5f]">Loading more articles…</span>
           </div>
         )}
 
         {!hasNextPage && !isLoading && paginatedItems.length > 0 && (
           <div className="flex items-center justify-center gap-2 py-6">
-            <CheckCircle2 size={14} className="text-[#605943]" aria-hidden="true" />
-            <span className="text-xs text-[#605943]">
+            <CheckCircle2 size={14} className="text-[#1e3a5f]" aria-hidden="true" />
+            <span className="text-xs text-[#1e3a5f]">
               All {data?.pages[0]?.total ?? paginatedItems.length} articles loaded
             </span>
           </div>

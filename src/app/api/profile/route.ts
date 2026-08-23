@@ -55,10 +55,7 @@ Generate the JSON profile now.
       .replace(/\s*```$/i, "")
       .trim();
 
-    aiProfile = {
-      ...JSON.parse(rawJson) as AiUserProfile,
-      gender: answers.gender,
-    };
+    aiProfile = JSON.parse(rawJson) as AiUserProfile;
   } catch (err) {
     console.error("[profile/route] AI generation failed:", err);
     /* Fallback: build a deterministic profile from the answers */
@@ -75,7 +72,6 @@ Generate the JSON profile now.
 
     aiProfile = {
       role: answers.primaryRole,
-      gender: answers.gender,
       missionType: answers.missionType,
       interests: interestWeights,
       updateFrequency: answers.updateFrequency,
@@ -93,8 +89,16 @@ Generate the JSON profile now.
     return NextResponse.json({ profile: aiProfile, stored: false });
   }
 
+  // Map camelCase JS fields to snake_case DB columns
   const record = {
-    ...aiProfile,
+    id: crypto.randomUUID(),
+    role: aiProfile.role,
+    mission_type: aiProfile.missionType,
+    interests: aiProfile.interests,
+    update_frequency: aiProfile.updateFrequency,
+    display_preference: aiProfile.displayPreference,
+    voice_enabled: aiProfile.voiceEnabled,
+    personality_summary: aiProfile.personalitySummary,
     raw_answers: answers,
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),

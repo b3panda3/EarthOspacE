@@ -49,7 +49,7 @@ async function fetchPredictive(): Promise<PredictiveResponse> {
 const RISK_COLOR: Record<RiskLevel, string> = {
   critical: "#f87171",
   high:     "#fb923c",
-  moderate: "#e6c974",
+  moderate: "#38bdf8",
   low:      "#4ade80",
 };
 
@@ -57,7 +57,7 @@ const CONF_ICON: Record<string, string> = { high: "●●●", medium: "●●�
 
 const ALERT_COLOR: Record<SpaceWeatherForecast["alertLevel"], string> = {
   green:  "#4ade80",
-  yellow: "#e6c974",
+  yellow: "#38bdf8",
   orange: "#fb923c",
   red:    "#f87171",
 };
@@ -77,11 +77,11 @@ function ForecastWidget({
   const alertC  = ALERT_COLOR[forecast.alertLevel];
 
   return (
-    <div className="rounded-xl border border-[#605943] bg-[#24231f] p-4 flex flex-col gap-3">
+    <div className="rounded-xl border border-[#1e3a5f] bg-[#050a14] p-4 flex flex-col gap-3">
       <div className="flex items-start justify-between">
         <div>
-          <h3 className="text-sm font-semibold text-[#e8e7e5]">Space Weather Forecast</h3>
-          <p className="text-xs text-[#96938d] mt-0.5">IBM Granite · 3-day outlook</p>
+          <h3 className="text-sm font-semibold text-[#e0f2fe]">Space Weather Forecast</h3>
+          <p className="text-xs text-[#7dd3fc] mt-0.5">IBM Granite · 3-day outlook</p>
         </div>
         <span
           className="px-2 py-0.5 text-xs rounded-full font-semibold uppercase tracking-wide"
@@ -92,7 +92,7 @@ function ForecastWidget({
       </div>
 
       {/* Outlook */}
-      <p className="text-xs text-[#96938d] leading-relaxed border-l-2 pl-2"
+      <p className="text-xs text-[#7dd3fc] leading-relaxed border-l-2 pl-2"
          style={{ borderColor: alertC }}>
         {forecast.overallOutlook}
       </p>
@@ -101,10 +101,10 @@ function ForecastWidget({
       <div className="overflow-x-auto">
         <table className="w-full text-xs">
           <thead>
-            <tr className="border-b border-[#3a3830]">
-              <th className="text-left text-[#96938d] font-normal py-1 pr-2 min-w-[110px]">Metric</th>
+            <tr className="border-b border-[#1e3a5f]">
+              <th className="text-left text-[#7dd3fc] font-normal py-1 pr-2 min-w-[110px]">Metric</th>
               {days.map((d) => (
-                <th key={d} className="text-center text-[#96938d] font-normal py-1 px-2 min-w-[90px]">
+                <th key={d} className="text-center text-[#7dd3fc] font-normal py-1 px-2 min-w-[90px]">
                   Day +{d}
                 </th>
               ))}
@@ -117,18 +117,18 @@ function ForecastWidget({
               );
               const first = row.find(Boolean);
               return (
-                <tr key={metric} className="border-b border-[#3a3830] last:border-0">
+                <tr key={metric} className="border-b border-[#1e3a5f] last:border-0">
                   <td className="py-2 pr-2">
-                    <p className="text-[#e8e7e5] font-medium">{first?.label ?? metric}</p>
-                    <p className="text-[10px] text-[#605943]">{first?.unit ?? ""}</p>
+                    <p className="text-[#e0f2fe] font-medium">{first?.label ?? metric}</p>
+                    <p className="text-[10px] text-[#1e3a5f]">{first?.unit ?? ""}</p>
                   </td>
                   {row.map((m, i) => {
-                    if (!m) return <td key={i} className="py-2 px-2 text-center text-[#605943]">—</td>;
+                    if (!m) return <td key={i} className="py-2 px-2 text-center text-[#1e3a5f]">—</td>;
                     const confColor =
-                      m.confidence === "high" ? "#4ade80" : m.confidence === "medium" ? "#e6c974" : "#f87171";
+                      m.confidence === "high" ? "#4ade80" : m.confidence === "medium" ? "#38bdf8" : "#f87171";
                     return (
                       <td key={i} className="py-2 px-2 text-center">
-                        <p className="text-[#e8e7e5] font-mono font-semibold">
+                        <p className="text-[#e0f2fe] font-mono font-semibold">
                           {m.predictedMin.toFixed(1)}–{m.predictedMax.toFixed(1)}
                         </p>
                         <span className="text-[10px]" style={{ color: confColor }}>
@@ -147,16 +147,16 @@ function ForecastWidget({
       {/* Reasoning popover — best-reasoning from day 1 */}
       {forecast.metrics.filter((m) => m.day === 1).map((m) => (
         <details key={m.metric} className="group text-xs">
-          <summary className="cursor-pointer text-[#605943] hover:text-[#96938d] transition-colors">
+          <summary className="cursor-pointer text-[#1e3a5f] hover:text-[#7dd3fc] transition-colors">
             {m.label} reasoning…
           </summary>
-          <p className="mt-1 text-[#96938d] leading-relaxed pl-2 border-l border-[#3a3830]">
+          <p className="mt-1 text-[#7dd3fc] leading-relaxed pl-2 border-l border-[#1e3a5f]">
             {m.reasoning}
           </p>
         </details>
       ))}
 
-      <p className="text-[10px] text-[#605943]">
+      <p className="text-[10px] text-[#1e3a5f]">
         Generated {new Date(forecast.generatedAt).toLocaleTimeString()} · Powered by IBM Granite
       </p>
     </div>
@@ -187,7 +187,7 @@ function DebrisWidget({ bands, loading }: { bands?: DebrisBand[]; loading: boole
     const altToX = (km: number) => ((Math.log10(km) - logMin) / (logMax - logMin)) * (w - 60) + 30;
 
     // Background
-    ctx.fillStyle = "#1a1815";
+    ctx.fillStyle = "#0a0e17";
     ctx.fillRect(0, 0, w, h);
 
     // Earth circle
@@ -199,7 +199,7 @@ function DebrisWidget({ bands, loading }: { bands?: DebrisBand[]; loading: boole
     earthGrad.addColorStop(1, "#166534");
     ctx.fillStyle = earthGrad;
     ctx.fill();
-    ctx.fillStyle = "#96938d";
+    ctx.fillStyle = "#7dd3fc";
     ctx.font = "9px sans-serif";
     ctx.fillText("Earth", altToX(300) - 12, cy + 22);
 
@@ -250,7 +250,7 @@ function DebrisWidget({ bands, loading }: { bands?: DebrisBand[]; loading: boole
     });
 
     // Axis label
-    ctx.fillStyle = "#605943";
+    ctx.fillStyle = "#1e3a5f";
     ctx.font = "9px sans-serif";
     ctx.fillText("Altitude (log scale, 300 – 42,000 km)", 30, h - 8);
   }, [bands]);
@@ -258,16 +258,16 @@ function DebrisWidget({ bands, loading }: { bands?: DebrisBand[]; loading: boole
   if (loading) return <SkeletonCard rows={4} title="Debris Tracking" />;
 
   return (
-    <div className="rounded-xl border border-[#605943] bg-[#24231f] p-4 flex flex-col gap-3">
+    <div className="rounded-xl border border-[#1e3a5f] bg-[#050a14] p-4 flex flex-col gap-3">
       <div>
-        <h3 className="text-sm font-semibold text-[#e8e7e5]">Space Debris Tracking</h3>
-        <p className="text-xs text-[#96938d] mt-0.5">Density concentration by orbital altitude</p>
+        <h3 className="text-sm font-semibold text-[#e0f2fe]">Space Debris Tracking</h3>
+        <p className="text-xs text-[#7dd3fc] mt-0.5">Density concentration by orbital altitude</p>
       </div>
 
       {/* Canvas */}
       <canvas
         ref={canvasRef}
-        className="w-full rounded-lg bg-[#1a1815]"
+        className="w-full rounded-lg bg-[#0a0e17]"
         style={{ height: 180 }}
       />
 
@@ -280,19 +280,19 @@ function DebrisWidget({ bands, loading }: { bands?: DebrisBand[]; loading: boole
               style={{ backgroundColor: RISK_COLOR[b.riskLevel] }}
             />
             <div className="min-w-0">
-              <span className="text-[#e8e7e5] text-xs font-mono">
+              <span className="text-[#e0f2fe] text-xs font-mono">
                 {b.altitudeKm >= 1000
                   ? `${(b.altitudeKm / 1000).toFixed(1)}k km`
                   : `${b.altitudeKm} km`}
               </span>
-              <span className="text-[#96938d] text-xs ml-1.5">
+              <span className="text-[#7dd3fc] text-xs ml-1.5">
                 ·{" "}{b.objectCount.toLocaleString()} objects
               </span>
-              <p className="text-[10px] text-[#605943] leading-tight mt-0.5">{b.description}</p>
+              <p className="text-[10px] text-[#1e3a5f] leading-tight mt-0.5">{b.description}</p>
             </div>
             {/* Density bar */}
             <div className="ml-auto flex-shrink-0 flex items-center gap-1">
-              <div className="w-16 h-1.5 rounded-full bg-[#3a3830]">
+              <div className="w-16 h-1.5 rounded-full bg-[#1e3a5f]">
                 <div
                   className="h-full rounded-full"
                   style={{
@@ -301,7 +301,7 @@ function DebrisWidget({ bands, loading }: { bands?: DebrisBand[]; loading: boole
                   }}
                 />
               </div>
-              <span className="text-[10px] text-[#96938d] w-3 tabular-nums">{b.densityScore}</span>
+              <span className="text-[10px] text-[#7dd3fc] w-3 tabular-nums">{b.densityScore}</span>
             </div>
           </div>
         ))}
@@ -317,10 +317,10 @@ function CollisionWidget({ events, loading }: { events?: ConjunctionEvent[]; loa
   const sorted = [...(events ?? [])].sort((a, b) => b.probabilityPct - a.probabilityPct).slice(0, 5);
 
   return (
-    <div className="rounded-xl border border-[#605943] bg-[#24231f] p-4 flex flex-col gap-3">
+    <div className="rounded-xl border border-[#1e3a5f] bg-[#050a14] p-4 flex flex-col gap-3">
       <div>
-        <h3 className="text-sm font-semibold text-[#e8e7e5]">Collision Risk Monitor</h3>
-        <p className="text-xs text-[#96938d] mt-0.5">Top 5 conjunction events</p>
+        <h3 className="text-sm font-semibold text-[#e0f2fe]">Collision Risk Monitor</h3>
+        <p className="text-xs text-[#7dd3fc] mt-0.5">Top 5 conjunction events</p>
       </div>
 
       <div className="space-y-2">
@@ -340,8 +340,8 @@ function CollisionWidget({ events, loading }: { events?: ConjunctionEvent[]; loa
             >
               <div className="flex items-start justify-between gap-2 mb-1">
                 <div className="min-w-0">
-                  <p className="text-xs font-semibold text-[#e8e7e5] truncate">{ev.primaryObject}</p>
-                  <p className="text-[10px] text-[#96938d]">vs. {ev.secondaryObject}</p>
+                  <p className="text-xs font-semibold text-[#e0f2fe] truncate">{ev.primaryObject}</p>
+                  <p className="text-[10px] text-[#7dd3fc]">vs. {ev.secondaryObject}</p>
                 </div>
                 <div className="text-right flex-shrink-0">
                   <span
@@ -350,13 +350,13 @@ function CollisionWidget({ events, loading }: { events?: ConjunctionEvent[]; loa
                   >
                     {ev.probabilityPct.toFixed(2)}%
                   </span>
-                  <p className="text-[10px] text-[#96938d]">{ev.missDistanceKm.toFixed(2)} km</p>
+                  <p className="text-[10px] text-[#7dd3fc]">{ev.missDistanceKm.toFixed(2)} km</p>
                 </div>
               </div>
               <div className="flex items-center justify-between mb-1.5">
-                <span className="text-[10px] text-[#96938d]">
+                <span className="text-[10px] text-[#7dd3fc]">
                   TCA in{" "}
-                  <span className="text-[#e6c974]">{hoursAway}h</span>
+                  <span className="text-[#38bdf8]">{hoursAway}h</span>
                   {" "}({tca.toLocaleString([], { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })})
                 </span>
                 <span
@@ -366,7 +366,7 @@ function CollisionWidget({ events, loading }: { events?: ConjunctionEvent[]; loa
                   {ev.riskLevel}
                 </span>
               </div>
-              <p className="text-[10px] text-[#96938d] leading-relaxed">{ev.riskNarrative}</p>
+              <p className="text-[10px] text-[#7dd3fc] leading-relaxed">{ev.riskNarrative}</p>
             </div>
           );
         })}
@@ -394,13 +394,13 @@ function CommOutlookWidget({
   const statusColor = (s: string) =>
     s === "Clear" || s === "Nominal" || s === "Normal" ? "#4ade80"
     : s.toLowerCase().includes("disrupt") ? "#f87171"
-    : "#e6c974";
+    : "#38bdf8";
 
   return (
-    <div className="rounded-xl border border-[#605943] bg-[#24231f] p-4 flex flex-col gap-3">
+    <div className="rounded-xl border border-[#1e3a5f] bg-[#050a14] p-4 flex flex-col gap-3">
       <div>
-        <h3 className="text-sm font-semibold text-[#e8e7e5]">Communication Outlook</h3>
-        <p className="text-xs text-[#96938d] mt-0.5">Ionospheric &amp; link conditions</p>
+        <h3 className="text-sm font-semibold text-[#e0f2fe]">Communication Outlook</h3>
+        <p className="text-xs text-[#7dd3fc] mt-0.5">Ionospheric &amp; link conditions</p>
       </div>
 
       {/* Channel status */}
@@ -408,8 +408,8 @@ function CommOutlookWidget({
         {channels.map((ch) => {
           const sc = statusColor(ch.status);
           return (
-            <div key={ch.label} className="rounded-lg bg-[#29271f] p-2.5 text-center">
-              <p className="text-[10px] text-[#96938d] mb-1">{ch.label}</p>
+            <div key={ch.label} className="rounded-lg bg-[#111f36] p-2.5 text-center">
+              <p className="text-[10px] text-[#7dd3fc] mb-1">{ch.label}</p>
               <span
                 className="inline-block h-2 w-2 rounded-full mb-1"
                 style={{ backgroundColor: sc }}
@@ -424,13 +424,13 @@ function CommOutlookWidget({
 
       {/* Summary */}
       {outlook?.summary && (
-        <p className="text-xs text-[#96938d] leading-relaxed border-l-2 border-[#605943] pl-2">
+        <p className="text-xs text-[#7dd3fc] leading-relaxed border-l-2 border-[#1e3a5f] pl-2">
           {outlook.summary}
         </p>
       )}
 
       {/* Granite note */}
-      <p className="text-[10px] text-[#605943]">
+      <p className="text-[10px] text-[#1e3a5f]">
         Derived from Kp index forecast · updated every 30 min
       </p>
     </div>
@@ -440,11 +440,11 @@ function CommOutlookWidget({
 /** Skeleton loader card */
 function SkeletonCard({ rows, title }: { rows: number; title: string }) {
   return (
-    <div className="rounded-xl border border-[#3a3830] bg-[#24231f] p-4 animate-pulse">
-      <div className="h-4 w-36 rounded bg-[#3a3830] mb-3" />
-      <div className="text-xs text-[#605943] mb-3">{title}</div>
+    <div className="rounded-xl border border-[#1e3a5f] bg-[#050a14] p-4 animate-pulse">
+      <div className="h-4 w-36 rounded bg-[#1e3a5f] mb-3" />
+      <div className="text-xs text-[#1e3a5f] mb-3">{title}</div>
       {Array.from({ length: rows }).map((_, i) => (
-        <div key={i} className="h-8 rounded bg-[#3a3830] mb-2" />
+        <div key={i} className="h-8 rounded bg-[#1e3a5f] mb-2" />
       ))}
     </div>
   );
@@ -460,24 +460,24 @@ export default function PredictiveDashboardPage() {
     staleTime:       29 * 60 * 1000,
   });
 
-  const alertC = data ? ALERT_COLOR[data.forecast?.alertLevel ?? "green"] : "#96938d";
+  const alertC = data ? ALERT_COLOR[data.forecast?.alertLevel ?? "green"] : "#7dd3fc";
 
   return (
-    <div className="min-h-screen bg-[#100f0e] px-4 py-6 md:px-8">
+    <div className="min-h-screen bg-[#000000] px-4 py-6 md:px-8">
       {/* Header */}
       <div className="mb-6 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-[#e8e7e5] tracking-tight">
+          <h1 className="text-2xl font-bold text-[#e0f2fe] tracking-tight">
             Predictive Monitoring
           </h1>
-          <p className="text-sm text-[#96938d] mt-1">
+          <p className="text-sm text-[#7dd3fc] mt-1">
             3-day IBM Granite space weather forecast · debris &amp; collision risk · comms outlook
           </p>
         </div>
         <button
           onClick={() => refetch()}
           disabled={isFetching}
-          className="flex items-center gap-1.5 self-start px-3 py-1.5 rounded-lg text-xs font-medium border border-[#605943] text-[#96938d] hover:text-[#e8e7e5] hover:border-[#e6c974] transition-colors disabled:opacity-50"
+          className="flex items-center gap-1.5 self-start px-3 py-1.5 rounded-lg text-xs font-medium border border-[#1e3a5f] text-[#7dd3fc] hover:text-[#e0f2fe] hover:border-[#38bdf8] transition-colors disabled:opacity-50"
         >
           <svg className={`w-3 h-3 ${isFetching ? "animate-spin" : ""}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
             <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" strokeLinecap="round" strokeLinejoin="round"/>
@@ -496,7 +496,7 @@ export default function PredictiveDashboardPage() {
           <p className="text-sm" style={{ color: alertC }}>
             <strong>Alert level: {data.forecast?.alertLevel?.toUpperCase()}</strong>
             {" · "}
-            <span className="text-[#96938d]">{data.quickAssessment?.summary}</span>
+            <span className="text-[#7dd3fc]">{data.quickAssessment?.summary}</span>
           </p>
         </div>
       )}
@@ -516,7 +516,7 @@ export default function PredictiveDashboardPage() {
       </div>
 
       {/* Footer */}
-      <div className="mt-8 border-t border-[#3a3830] pt-4 flex flex-wrap gap-4 text-[10px] text-[#605943]">
+      <div className="mt-8 border-t border-[#1e3a5f] pt-4 flex flex-wrap gap-4 text-[10px] text-[#1e3a5f]">
         <span>Forecast: IBM Granite LLM · NOAA SWPC data</span>
         <span>Debris: ESA Space Debris Office catalog</span>
         <span>Conjunctions: Demo data (Space-Track auth required for live)</span>

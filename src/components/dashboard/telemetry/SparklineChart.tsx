@@ -8,7 +8,7 @@
  *
  * Props:
  *   data        — array of { value: number }
- *   color       — stroke colour (default: gold #e6c974)
+ *   color       — stroke colour (default: gold #38bdf8)
  *   width/height— defaults 120 × 40
  *   trend       — "up" | "down" | "flat" → drives arrow + colour override
  */
@@ -34,7 +34,7 @@ interface SparklineProps {
 const TREND_COLORS = {
   up:   "#4ade80", // green
   down: "#f87171", // red
-  flat: "#e6c974", // gold
+  flat: "#38bdf8", // gold
 };
 
 export default function SparklineChart({
@@ -55,11 +55,11 @@ export default function SparklineChart({
         {showTooltip && (
           <Tooltip
             contentStyle={{
-              background: "#24231f",
-              border: "1px solid #605943",
+              background: "#050a14",
+              border: "1px solid #1e3a5f",
               borderRadius: 6,
               fontSize: 11,
-              color: "#e8e7e5",
+              color: "#e0f2fe",
             }}
             formatter={(v) => [`${(v as number).toFixed(1)} ${unit}`, ""]}
             labelFormatter={() => ""}
@@ -90,7 +90,7 @@ export function TrendBadge({
   const arrow   = trend === "up" ? "↑" : trend === "down" ? "↓" : "→";
   const colorCls =
     trend === "up"   ? "text-green-400" :
-    trend === "down" ? "text-red-400"   : "text-[#e6c974]";
+    trend === "down" ? "text-red-400"   : "text-[#38bdf8]";
 
   return (
     <span className={`inline-flex items-center gap-0.5 text-xs font-mono ${colorCls}`}>

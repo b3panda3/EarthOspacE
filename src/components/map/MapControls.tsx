@@ -17,11 +17,11 @@ export default function MapControls({ tileLayer, onToggle }: MapControlsProps) {
       onClick={onToggle}
       aria-label={`Switch to ${isDark ? "satellite" : "dark"} map`}
       title={`Switch to ${isDark ? "satellite" : "dark map"}`}
-      className="flex items-center gap-2 rounded-lg border px-3 py-2 text-xs font-medium transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e6c974]"
+      className="flex items-center gap-2 rounded-lg border px-3 py-2 text-xs font-medium transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#38bdf8]"
       style={{
-        background: "rgba(36,35,31,0.96)",
-        borderColor: isDark ? "#605943" : "#e6c974",
-        color: isDark ? "#96938d" : "#e6c974",
+        background: "rgba(8,16,32,0.96)",
+        borderColor: isDark ? "#1e3a5f" : "#38bdf8",
+        color: isDark ? "#7dd3fc" : "#38bdf8",
       }}
     >
       {isDark ? (

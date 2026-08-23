@@ -73,7 +73,7 @@ function MessageBubble({
       className={`flex flex-col gap-0.5 ${isUser ? "items-end" : "items-start"}`}
     >
       {/* Sender label */}
-      <span className={`text-[10px] font-medium px-1 ${isUser ? "text-[#96938d]" : "text-[#e6c974]"}`}>
+      <span className={`text-[10px] font-medium px-1 ${isUser ? "text-[#7dd3fc]" : "text-[#38bdf8]"}`}>
         {isUser ? "You" : "ASTRO"}
       </span>
 
@@ -82,10 +82,10 @@ function MessageBubble({
         <div
           className={`rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed ${
             isUser
-              ? "bg-[#29271f] border border-[#605943] text-[#e8e7e5] rounded-br-sm"
-              : "bg-[#1e1d18] border-l-2 text-[#e8e7e5] rounded-bl-sm"
+              ? "bg-[#111f36] border border-[#1e3a5f] text-[#e0f2fe] rounded-br-sm"
+              : "bg-[#1e1d18] border-l-2 text-[#e0f2fe] rounded-bl-sm"
           }`}
-          style={!isUser ? { borderLeftColor: "#e6c974", borderTop: "1px solid #3a3830", borderRight: "1px solid #3a3830", borderBottom: "1px solid #3a3830" } : {}}
+          style={!isUser ? { borderLeftColor: "#38bdf8", borderTop: "1px solid #1e3a5f", borderRight: "1px solid #1e3a5f", borderBottom: "1px solid #1e3a5f" } : {}}
         >
           {isTyping ? (
             /* Typing indicator */
@@ -93,7 +93,7 @@ function MessageBubble({
               {[0, 1, 2].map((i) => (
                 <span
                   key={i}
-                  className="h-1.5 w-1.5 rounded-full bg-[#e6c974] animate-bounce"
+                  className="h-1.5 w-1.5 rounded-full bg-[#38bdf8] animate-bounce"
                   style={{ animationDelay: `${i * 0.15}s` }}
                 />
               ))}
@@ -103,10 +103,10 @@ function MessageBubble({
             <div className="space-y-3">
               {msg.sections.map((sec, i) => (
                 <div key={i}>
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-[#e6c974] mb-1">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-[#38bdf8] mb-1">
                     {sec.title}
                   </p>
-                  <p className="text-xs text-[#e8e7e5] leading-relaxed">{sec.content}</p>
+                  <p className="text-xs text-[#e0f2fe] leading-relaxed">{sec.content}</p>
                 </div>
               ))}
             </div>
@@ -124,7 +124,7 @@ function MessageBubble({
                 : msg.content,
               muted
             )}
-            className="mb-0.5 p-1 rounded-full text-[#605943] hover:text-[#e6c974] hover:bg-[#29271f] transition-colors flex-shrink-0"
+            className="mb-0.5 p-1 rounded-full text-[#1e3a5f] hover:text-[#38bdf8] hover:bg-[#111f36] transition-colors flex-shrink-0"
             aria-label="Speak this message"
             title={muted ? "Muted" : "Speak"}
           >
@@ -145,7 +145,7 @@ function MessageBubble({
 
       {/* Timestamp */}
       {!isTyping && (
-        <span className="text-[9px] text-[#605943] px-1">
+        <span className="text-[9px] text-[#1e3a5f] px-1">
           {new Date(msg.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
         </span>
       )}
@@ -166,6 +166,19 @@ export default function ChatInterface({
   const [muted, setMuted]   = useState(false);
   const bottomRef           = useRef<HTMLDivElement>(null);
   const typingTimer         = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const [autoSpeak] = useState(true);
+
+  useEffect(() => {
+    if (messages.length === 0) return;
+    const last = messages[messages.length - 1];
+    if (last.role === "astro" && !last.isTyping && autoSpeak) {
+      const text = last.sections
+        ? last.sections.map((s) => s.title + ". " + s.content).join(" ")
+        : last.content;
+      speak(text, muted);
+    }
+  }, [messages, muted, autoSpeak]);
 
   // Auto-scroll to bottom on new messages
   useEffect(() => {
@@ -195,18 +208,18 @@ export default function ChatInterface({
   }, [handleSend]);
 
   return (
-    <div className="flex flex-col h-full bg-[#100f0e] rounded-2xl border border-[#605943] overflow-hidden">
+    <div className="flex flex-col h-full bg-[#000000] rounded-2xl border border-[#1e3a5f] overflow-hidden">
 
       {/* ── Header ──────────────────────────────────────────────────────── */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-[#3a3830] bg-[#24231f]">
+      <div className="flex items-center justify-between px-4 py-3 border-b border-[#1e3a5f] bg-[#050a14]">
         <div className="flex items-center gap-2">
           <div className="relative">
             <span className="h-2.5 w-2.5 rounded-full bg-[#4ade80] block" />
             <span className="absolute inset-0 rounded-full bg-[#4ade80] animate-ping opacity-60" />
           </div>
           <div>
-            <p className="text-sm font-bold text-[#e8e7e5]">ASTRO</p>
-            <p className="text-[10px] text-[#605943]">AI Companion · ISS Module</p>
+            <p className="text-sm font-bold text-[#e0f2fe]">ASTRO</p>
+            <p className="text-[10px] text-[#1e3a5f]">AI Companion · ISS Module</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -216,7 +229,7 @@ export default function ChatInterface({
             className={`flex items-center gap-1 px-2 py-1 rounded-lg text-xs border transition-colors ${
               muted
                 ? "border-[#f87171] text-[#f87171] bg-[#f8717110]"
-                : "border-[#3a3830] text-[#96938d] hover:text-[#e8e7e5]"
+                : "border-[#1e3a5f] text-[#7dd3fc] hover:text-[#e0f2fe]"
             }`}
             aria-pressed={muted}
           >
@@ -237,7 +250,7 @@ export default function ChatInterface({
           <button
             onClick={onBriefing}
             disabled={isLoading}
-            className="px-2.5 py-1 rounded-lg text-xs border border-[#e6c974] text-[#e6c974] bg-[#e6c97412] hover:bg-[#e6c97420] transition-colors disabled:opacity-50"
+            className="px-2.5 py-1 rounded-lg text-xs border border-[#38bdf8] text-[#38bdf8] bg-[#38bdf812] hover:bg-[#38bdf820] transition-colors disabled:opacity-50"
           >
             📋 Briefing
           </button>
@@ -248,10 +261,10 @@ export default function ChatInterface({
       <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4 scroll-smooth">
         {messages.length === 0 && (
           <div className="flex flex-col items-center justify-center h-full gap-3 py-12 text-center">
-            <div className="w-12 h-12 rounded-full bg-[#e6c97420] border border-[#e6c974] flex items-center justify-center text-2xl">
+            <div className="w-12 h-12 rounded-full bg-[#38bdf820] border border-[#38bdf8] flex items-center justify-center text-2xl">
               🤖
             </div>
-            <p className="text-sm text-[#96938d] max-w-xs">
+            <p className="text-sm text-[#7dd3fc] max-w-xs">
               Hello! I&apos;m ASTRO, your AI companion. Ask me about space conditions, request a briefing, or just chat.
             </p>
           </div>
@@ -265,7 +278,7 @@ export default function ChatInterface({
       </div>
 
       {/* ── Input area ───────────────────────────────────────────────────── */}
-      <div className="border-t border-[#3a3830] bg-[#1a1816] px-3 py-3">
+      <div className="border-t border-[#1e3a5f] bg-[#1a1816] px-3 py-3">
         <div className="flex items-center gap-2">
           <input
             value={input}
@@ -273,13 +286,13 @@ export default function ChatInterface({
             onKeyDown={handleKey}
             placeholder="Message ASTRO…"
             disabled={isLoading}
-            className="flex-1 bg-[#24231f] border border-[#3a3830] rounded-xl px-3.5 py-2 text-sm text-[#e8e7e5] placeholder-[#605943] focus:outline-none focus:border-[#e6c974] transition-colors disabled:opacity-50"
+            className="flex-1 bg-[#050a14] border border-[#1e3a5f] rounded-xl px-3.5 py-2 text-sm text-[#e0f2fe] placeholder-[#1e3a5f] focus:outline-none focus:border-[#38bdf8] transition-colors disabled:opacity-50"
             aria-label="Message input"
           />
           <button
             onClick={handleSend}
             disabled={!input.trim() || isLoading}
-            className="flex-shrink-0 w-9 h-9 rounded-xl bg-[#e6c974] text-[#100f0e] flex items-center justify-center hover:bg-[#c3ac6a] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            className="flex-shrink-0 w-9 h-9 rounded-xl bg-[#38bdf8] text-[#000000] flex items-center justify-center hover:bg-[#0ea5e9] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
             aria-label="Send message"
           >
             {isLoading ? (
@@ -294,7 +307,7 @@ export default function ChatInterface({
             )}
           </button>
         </div>
-        <p className="text-[10px] text-[#605943] mt-1.5 text-center">
+        <p className="text-[10px] text-[#1e3a5f] mt-1.5 text-center">
           Press Enter to send · Powered by IBM Granite
         </p>
       </div>

@@ -65,7 +65,7 @@ export default function NewsFilters({
           <Search
             size={14}
             aria-hidden="true"
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-[#605943] pointer-events-none"
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-[#1e3a5f] pointer-events-none"
           />
           <input
             id="news-search"
@@ -73,13 +73,13 @@ export default function NewsFilters({
             value={search}
             onChange={(e) => onSearchChange(e.target.value)}
             placeholder="Search titles and summaries…"
-            className="h-9 w-full rounded-lg pl-9 pr-8 text-sm bg-[#24231f] border border-[#3a3830] text-[#e8e7e5] placeholder-[#605943] focus:outline-none focus:ring-2 focus:ring-[#e6c974]/60 focus:border-[#e6c974]/60 transition-colors"
+            className="h-9 w-full rounded-lg pl-9 pr-8 text-sm bg-[#050a14] border border-[#1e3a5f] text-[#e0f2fe] placeholder-[#1e3a5f] focus:outline-none focus:ring-2 focus:ring-[#38bdf8]/60 focus:border-[#38bdf8]/60 transition-colors"
           />
           {search && (
             <button
               onClick={() => onSearchChange("")}
               aria-label="Clear search"
-              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#605943] hover:text-[#e8e7e5]"
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#1e3a5f] hover:text-[#e0f2fe]"
             >
               <X size={13} aria-hidden="true" />
             </button>
@@ -93,7 +93,7 @@ export default function NewsFilters({
             id="news-sort"
             value={sortOrder}
             onChange={(e) => onSortChange(e.target.value as SortOrder)}
-            className="h-9 appearance-none rounded-lg pl-3 pr-8 text-sm bg-[#24231f] border border-[#3a3830] text-[#96938d] focus:outline-none focus:ring-2 focus:ring-[#e6c974]/60 cursor-pointer"
+            className="h-9 appearance-none rounded-lg pl-3 pr-8 text-sm bg-[#050a14] border border-[#1e3a5f] text-[#7dd3fc] focus:outline-none focus:ring-2 focus:ring-[#38bdf8]/60 cursor-pointer"
           >
             {SORT_OPTIONS.map((o) => (
               <option key={o.id} value={o.id}>{o.label}</option>
@@ -102,7 +102,7 @@ export default function NewsFilters({
           <ChevronDown
             size={13}
             aria-hidden="true"
-            className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#605943] pointer-events-none"
+            className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#1e3a5f] pointer-events-none"
           />
         </div>
 
@@ -110,13 +110,13 @@ export default function NewsFilters({
         <div
           role="group"
           aria-label="View mode"
-          className="flex items-center rounded-lg border border-[#3a3830] overflow-hidden bg-[#24231f]"
+          className="flex items-center rounded-lg border border-[#1e3a5f] overflow-hidden bg-[#050a14]"
         >
           <button
             aria-pressed={viewMode === "grid"}
             onClick={() => onViewModeChange("grid")}
             aria-label="Grid view"
-            className={`p-2 transition-colors ${viewMode === "grid" ? "bg-[#e6c974]/15 text-[#e6c974]" : "text-[#605943] hover:text-[#96938d]"}`}
+            className={`p-2 transition-colors ${viewMode === "grid" ? "bg-[#38bdf8]/15 text-[#38bdf8]" : "text-[#1e3a5f] hover:text-[#7dd3fc]"}`}
           >
             <LayoutGrid size={15} aria-hidden="true" />
           </button>
@@ -124,7 +124,7 @@ export default function NewsFilters({
             aria-pressed={viewMode === "list"}
             onClick={() => onViewModeChange("list")}
             aria-label="List view"
-            className={`p-2 transition-colors ${viewMode === "list" ? "bg-[#e6c974]/15 text-[#e6c974]" : "text-[#605943] hover:text-[#96938d]"}`}
+            className={`p-2 transition-colors ${viewMode === "list" ? "bg-[#38bdf8]/15 text-[#38bdf8]" : "text-[#1e3a5f] hover:text-[#7dd3fc]"}`}
           >
             <List size={15} aria-hidden="true" />
           </button>
@@ -132,7 +132,7 @@ export default function NewsFilters({
 
         {/* Result count */}
         {resultCount >= 0 && (
-          <span className="text-xs text-[#605943] shrink-0 hidden sm:block">
+          <span className="text-xs text-[#1e3a5f] shrink-0 hidden sm:block">
             {resultCount} article{resultCount !== 1 ? "s" : ""}
           </span>
         )}
@@ -151,10 +151,10 @@ export default function NewsFilters({
               onClick={() => onCategoryChange(id)}
               className={[
                 "relative flex shrink-0 items-center rounded-lg px-3 py-1.5 text-sm font-medium transition-colors duration-150",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e6c974]",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#38bdf8]",
                 isActive
-                  ? "bg-[#e6c974]/10 text-[#e6c974] border border-[#e6c974]/30"
-                  : "text-[#605943] hover:text-[#96938d] border border-transparent",
+                  ? "bg-[#38bdf8]/10 text-[#38bdf8] border border-[#38bdf8]/30"
+                  : "text-[#1e3a5f] hover:text-[#7dd3fc] border border-transparent",
               ].join(" ")}
             >
               {displayLabel}

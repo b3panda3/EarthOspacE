@@ -32,7 +32,7 @@ function generateStars(count: number): Star[] {
       size: 1 + Math.floor(r3 * 3), // 1-3 px
       animationDelay: `${(r4 * 8).toFixed(2)}s`,
       animationDuration: `${(3 + r5 * 5).toFixed(2)}s`,
-      opacity: 0.3 + r1 * 0.7,
+      opacity: Math.round((0.3 + r1 * 0.7) * 10000) / 10000,
     };
   });
 }
@@ -73,7 +73,7 @@ export default function StarField() {
                 height: `${star.size}px`,
                 borderRadius: "50%",
                 backgroundColor: "#ffffff",
-                "--star-op": star.opacity,
+                "--star-op": String(star.opacity.toFixed(4)),
                 opacity: star.opacity,
                 animation: `twinkle ${star.animationDuration} ${star.animationDelay} ease-in-out infinite, drift ${(parseFloat(star.animationDuration) * 2).toFixed(2)}s ${star.animationDelay} ease-in-out infinite`,
               } as React.CSSProperties

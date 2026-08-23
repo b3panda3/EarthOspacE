@@ -67,8 +67,8 @@ export default function MapSidebar({ events, onFlyTo }: MapSidebarProps) {
       <button
         onClick={() => setCollapsed(false)}
         aria-label="Expand map sidebar"
-        className="absolute top-4 left-4 z-[1000] flex items-center gap-2 rounded-xl border border-[#605943] px-3 py-2 text-sm font-medium text-[#e8e7e5] transition-colors hover:border-[#e6c974] hover:text-[#e6c974] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e6c974]"
-        style={{ background: "rgba(36,35,31,0.96)" }}
+        className="absolute top-4 left-4 z-[1000] flex items-center gap-2 rounded-xl border border-[#1e3a5f] px-3 py-2 text-sm font-medium text-[#e0f2fe] transition-colors hover:border-[#38bdf8] hover:text-[#38bdf8] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#38bdf8]"
+        style={{ background: "rgba(8,16,32,0.96)" }}
       >
         <Filter size={14} aria-hidden="true" />
         <ChevronRight size={14} aria-hidden="true" />
@@ -80,17 +80,17 @@ export default function MapSidebar({ events, onFlyTo }: MapSidebarProps) {
     <aside
       aria-label="Map event list"
       className="absolute top-0 left-0 z-[1000] flex flex-col h-full w-72 overflow-hidden"
-      style={{ background: "rgba(36,35,31,0.96)", borderRight: "1px solid #605943" }}
+      style={{ background: "rgba(8,16,32,0.96)", borderRight: "1px solid #1e3a5f" }}
     >
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-[#3a3830] shrink-0">
-        <span className="text-sm font-bold text-[#e8e7e5]">Map Events</span>
+      <div className="flex items-center justify-between px-4 py-3 border-b border-[#1e3a5f] shrink-0">
+        <span className="text-sm font-bold text-[#e0f2fe]">Map Events</span>
         <div className="flex items-center gap-2">
-          <span className="text-xs text-[#605943]">{events.length} total</span>
+          <span className="text-xs text-[#7dd3fc]">{events.length} total</span>
           <button
             onClick={() => setCollapsed(true)}
             aria-label="Collapse map sidebar"
-            className="rounded p-1 text-[#605943] hover:text-[#e8e7e5] transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#e6c974]"
+            className="rounded p-1 text-[#1e3a5f] hover:text-[#e0f2fe] transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#38bdf8]"
           >
             <ChevronLeft size={15} aria-hidden="true" />
           </button>
@@ -98,14 +98,14 @@ export default function MapSidebar({ events, onFlyTo }: MapSidebarProps) {
       </div>
 
       {/* Category filter pills */}
-      <div className="flex flex-wrap gap-1.5 px-3 py-2.5 border-b border-[#3a3830] shrink-0">
+      <div className="flex flex-wrap gap-1.5 px-3 py-2.5 border-b border-[#1e3a5f] shrink-0">
         <button
           aria-pressed={activeFilter === "all"}
           onClick={() => setActiveFilter("all")}
           className={`rounded-full px-2.5 py-1 text-xs font-medium transition-colors ${
             activeFilter === "all"
-              ? "bg-[#e6c974]/15 text-[#e6c974] border border-[#e6c974]/40"
-              : "text-[#605943] hover:text-[#96938d]"
+              ? "bg-[#38bdf8]/15 text-[#38bdf8] border border-[#38bdf8]/40"
+              : "text-[#1e3a5f] hover:text-[#7dd3fc]"
           }`}
         >
           All ({events.length})
@@ -122,7 +122,7 @@ export default function MapSidebar({ events, onFlyTo }: MapSidebarProps) {
               className={`rounded-full px-2.5 py-1 text-xs font-medium transition-colors ${
                 activeFilter === cat
                   ? "border"
-                  : "text-[#605943] hover:text-[#96938d]"
+                  : "text-[#1e3a5f] hover:text-[#7dd3fc]"
               }`}
               style={
                 activeFilter === cat
@@ -156,14 +156,14 @@ export default function MapSidebar({ events, onFlyTo }: MapSidebarProps) {
               {/* Category sub-header */}
               <div
                 className="flex items-center gap-2 px-4 py-2 sticky top-0"
-                style={{ background: "rgba(36,35,31,0.98)", borderBottom: "1px solid #3a3830" }}
+                style={{ background: "rgba(8,16,32,0.98)", borderBottom: "1px solid #1e3a5f" }}
               >
                 <Icon
                   size={13}
                   aria-hidden="true"
                   style={{ color: CATEGORY_COLORS[cat] }}
                 />
-                <span className="text-xs font-semibold text-[#96938d]">
+                <span className="text-xs font-semibold text-[#7dd3fc]">
                   {meta.label}
                 </span>
               </div>
@@ -174,7 +174,7 @@ export default function MapSidebar({ events, onFlyTo }: MapSidebarProps) {
                     <button
                       onClick={() => handleFlyTo(ev)}
                       aria-label={`Fly to ${ev.title}`}
-                      className="w-full text-left flex items-start gap-2.5 px-4 py-2.5 border-b border-[#29271f] transition-colors hover:bg-[#29271f] focus-visible:outline-none focus-visible:bg-[#29271f]"
+                      className="w-full text-left flex items-start gap-2.5 px-4 py-2.5 border-b border-[#111f36] transition-colors hover:bg-[#111f36] focus-visible:outline-none focus-visible:bg-[#111f36]"
                     >
                       {/* Severity dot */}
                       <span
@@ -185,15 +185,15 @@ export default function MapSidebar({ events, onFlyTo }: MapSidebarProps) {
                               ? "#ef4444"
                               : ev.severity === "medium"
                               ? "#f97316"
-                              : "#605943",
+                              : "#1e3a5f",
                         }}
                         aria-hidden="true"
                       />
                       <div className="min-w-0">
-                        <p className="text-xs font-medium text-[#e8e7e5] leading-snug truncate">
+                        <p className="text-xs font-medium text-[#e0f2fe] leading-snug truncate">
                           {ev.title}
                         </p>
-                        <p className="text-[10px] text-[#605943] truncate mt-0.5">
+                        <p className="text-[10px] text-[#1e3a5f] truncate mt-0.5">
                           {ev.lat.toFixed(2)}°, {ev.lng.toFixed(2)}°
                         </p>
                       </div>

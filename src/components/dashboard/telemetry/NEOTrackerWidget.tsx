@@ -35,8 +35,8 @@ function hazardLevel(neo: NeoObject): "safe" | "watch" | "hazardous" {
 }
 
 const HAZARD_STYLES = {
-  safe:      { badge: "#4ade80", bg: "transparent",          text: "#e8e7e5" },
-  watch:     { badge: "#e6c974", bg: "rgba(230,201,116,0.05)", text: "#e6c974" },
+  safe:      { badge: "#4ade80", bg: "transparent",          text: "#e0f2fe" },
+  watch:     { badge: "#38bdf8", bg: "rgba(230,201,116,0.05)", text: "#38bdf8" },
   hazardous: { badge: "#f87171", bg: "rgba(248,113,113,0.08)", text: "#f87171" },
 };
 
@@ -52,10 +52,10 @@ export default function NEOTrackerWidget({
 }: NEOTrackerWidgetProps) {
   if (isLoading) {
     return (
-      <div className="rounded-xl border border-[#3a3830] bg-[#24231f] p-4 animate-pulse space-y-3">
-        <div className="h-4 w-44 rounded bg-[#3a3830]" />
+      <div className="rounded-xl border border-[#1e3a5f] bg-[#050a14] p-4 animate-pulse space-y-3">
+        <div className="h-4 w-44 rounded bg-[#1e3a5f]" />
         {Array.from({ length: 4 }).map((_, i) => (
-          <div key={i} className="h-10 rounded bg-[#3a3830]" />
+          <div key={i} className="h-10 rounded bg-[#1e3a5f]" />
         ))}
       </div>
     );
@@ -65,18 +65,18 @@ export default function NEOTrackerWidget({
   const hazardous = sorted.filter((n) => n.isPotentiallyHazardous);
 
   return (
-    <div className="rounded-xl border border-[#605943] bg-[#24231f] p-4">
+    <div className="rounded-xl border border-[#1e3a5f] bg-[#050a14] p-4">
       {/* Header */}
       <div className="flex items-start justify-between mb-3">
         <div>
-          <h3 className="text-sm font-semibold text-[#e8e7e5]">
+          <h3 className="text-sm font-semibold text-[#e0f2fe]">
             Near-Earth Objects
           </h3>
-          <p className="text-xs text-[#96938d] mt-0.5">NASA NeoWs — next 7 days</p>
+          <p className="text-xs text-[#7dd3fc] mt-0.5">NASA NeoWs — next 7 days</p>
         </div>
         <div className="text-right">
-          <p className="text-lg font-mono font-bold text-[#e6c974]">{sorted.length}</p>
-          <p className="text-[10px] text-[#96938d]">objects</p>
+          <p className="text-lg font-mono font-bold text-[#38bdf8]">{sorted.length}</p>
+          <p className="text-[10px] text-[#7dd3fc]">objects</p>
         </div>
       </div>
 
@@ -92,7 +92,7 @@ export default function NEOTrackerWidget({
       )}
 
       {sorted.length === 0 && (
-        <p className="text-xs text-[#96938d] py-4 text-center">No NEO data available</p>
+        <p className="text-xs text-[#7dd3fc] py-4 text-center">No NEO data available</p>
       )}
 
       {/* Approach table */}
@@ -111,7 +111,7 @@ export default function NEOTrackerWidget({
                   ? "rgba(248,113,113,0.3)"
                   : level === "watch"
                   ? "rgba(230,201,116,0.2)"
-                  : "#3a3830",
+                  : "#1e3a5f",
               }}
             >
               <div className="flex items-start justify-between gap-2">
@@ -123,7 +123,7 @@ export default function NEOTrackerWidget({
                   >
                     {neo.name.replace(/[()]/g, "")}
                   </p>
-                  <p className="text-[10px] text-[#96938d]">
+                  <p className="text-[10px] text-[#7dd3fc]">
                     {new Date(neo.closeApproachDate).toLocaleDateString([], {
                       month: "short",
                       day: "numeric",
@@ -134,10 +134,10 @@ export default function NEOTrackerWidget({
 
                 {/* Distance + velocity */}
                 <div className="text-right flex-shrink-0">
-                  <p className="text-xs font-mono text-[#e8e7e5]">
+                  <p className="text-xs font-mono text-[#e0f2fe]">
                     {formatDist(neo.distanceKm)}
                   </p>
-                  <p className="text-[10px] text-[#96938d]">
+                  <p className="text-[10px] text-[#7dd3fc]">
                     {formatVelocity(neo.velocityKmh)}
                   </p>
                 </div>
@@ -155,12 +155,12 @@ export default function NEOTrackerWidget({
       </div>
 
       {sorted.length > 8 && (
-        <p className="mt-2 text-[10px] text-[#605943] text-right">
+        <p className="mt-2 text-[10px] text-[#1e3a5f] text-right">
           +{sorted.length - 8} more objects
         </p>
       )}
 
-      <p className="mt-3 text-[10px] text-[#605943]">
+      <p className="mt-3 text-[10px] text-[#1e3a5f]">
         Magnitudes H &lt; 22. Source: NASA NeoWs API.
       </p>
     </div>

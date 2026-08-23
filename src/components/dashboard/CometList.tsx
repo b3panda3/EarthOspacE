@@ -33,28 +33,28 @@ export default function CometList() {
 
       {isLoading && (
         <div className="flex items-center justify-center py-6">
-          <Loader2 size={18} className="text-[#605943] animate-spin" aria-label="Loading comets" />
+          <Loader2 size={18} className="text-[#1e3a5f] animate-spin" aria-label="Loading comets" />
         </div>
       )}
 
       {!isLoading && comets.length === 0 && (
-        <p className="text-xs text-[#605943] py-3">No data available.</p>
+        <p className="text-xs text-[#1e3a5f] py-3">No data available.</p>
       )}
 
-      <ul role="list" className="divide-y divide-[#3a3830]">
+      <ul role="list" className="divide-y divide-[#1e3a5f]">
         {comets.slice(0, 5).map((comet) => {
           const days = daysUntil(comet.closeApproachDate);
           return (
             <li key={comet.id} className="py-2.5">
               <div className="flex items-center justify-between gap-2">
-                <p className="text-sm font-medium text-[#e8e7e5] truncate">
+                <p className="text-sm font-medium text-[#e0f2fe] truncate">
                   {comet.name}
                 </p>
                 <Badge variant={days <= 2 ? "red" : days <= 5 ? "gold" : "muted"}>
                   {days === 0 ? "Today" : `${days}d`}
                 </Badge>
               </div>
-              <div className="mt-0.5 flex items-center gap-3 text-[10px] text-[#605943]">
+              <div className="mt-0.5 flex items-center gap-3 text-[10px] text-[#1e3a5f]">
                 <span>{comet.closeApproachDate}</span>
                 <span>{comet.distanceAU} AU</span>
                 <span>{comet.velocityKmh} km/h</span>

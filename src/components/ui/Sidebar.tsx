@@ -87,10 +87,10 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                 aria-current={active ? "page" : undefined}
                 className={[
                   "group relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-all duration-150 outline-none",
-                  "focus-visible:ring-2 focus-visible:ring-[#e6c974] focus-visible:ring-offset-2 focus-visible:ring-offset-[#24231f]",
+                  "focus-visible:ring-2 focus-visible:ring-[#38bdf8] focus-visible:ring-offset-2 focus-visible:ring-offset-[#050a14]",
                   active
-                    ? "bg-[#e6c974]/10 text-[#e6c974]"
-                    : "text-[#96938d] hover:bg-[#29271f] hover:text-[#e8e7e5]",
+                    ? "bg-[#38bdf8]/10 text-[#38bdf8]"
+                    : "text-[#7dd3fc] hover:bg-[#111f36] hover:text-[#e0f2fe]",
                 ]
                   .filter(Boolean)
                   .join(" ")}
@@ -99,7 +99,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                 {active && (
                   <span
                     aria-hidden="true"
-                    className="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-0.5 rounded-r bg-[#e6c974]"
+                    className="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-0.5 rounded-r bg-[#38bdf8]"
                   />
                 )}
 
@@ -108,8 +108,8 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                   size={18}
                   className={
                     active
-                      ? "text-[#e6c974]"
-                      : "text-[#605943] group-hover:text-[#e6c974] transition-colors duration-150"
+                      ? "text-[#38bdf8]"
+                      : "text-[#1e3a5f] group-hover:text-[#38bdf8] transition-colors duration-150"
                   }
                 />
 
@@ -119,7 +119,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                   <ChevronRight
                     aria-hidden="true"
                     size={14}
-                    className="text-[#e6c974] opacity-60"
+                    className="text-[#38bdf8] opacity-60"
                   />
                 )}
               </Link>
@@ -136,7 +136,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
       {children}
       {/* Bottom version tag */}
       <div className="mt-auto px-5 py-4">
-        <p className="text-xs text-[#605943]">EarthOspacE v1.0</p>
+        <p className="text-xs text-[#1e3a5f]">EarthOspacE v1.0</p>
       </div>
     </div>
   );
@@ -146,11 +146,11 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
     <aside
       aria-label="Sidebar navigation"
       className="hidden lg:flex lg:flex-col lg:fixed lg:inset-y-0 lg:left-0 lg:w-60 lg:z-30"
-      style={{ background: "rgba(36,35,31,0.95)" }}
+      style={{ background: "rgba(8,16,32,0.95)" }}
     >
       <div
         className="absolute inset-y-0 right-0 w-px"
-        style={{ background: "linear-gradient(to bottom, transparent, #605943 20%, #605943 80%, transparent)" }}
+        style={{ background: "linear-gradient(to bottom, transparent, #1e3a5f 20%, #1e3a5f 80%, transparent)" }}
         aria-hidden="true"
       />
       <SidebarShell>
@@ -185,7 +185,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           "transform transition-transform duration-300 ease-in-out",
           isOpen ? "translate-x-0" : "-translate-x-full",
         ].join(" ")}
-        style={{ background: "rgba(36,35,31,0.98)" }}
+        style={{ background: "rgba(8,16,32,0.98)" }}
       >
         {/* Close button */}
         <div className="flex items-center justify-between px-4 pt-4">
@@ -193,14 +193,14 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           <button
             onClick={onClose}
             aria-label="Close navigation"
-            className="rounded-lg p-1.5 text-[#96938d] hover:bg-[#29271f] hover:text-[#e8e7e5] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e6c974]"
+            className="rounded-lg p-1.5 text-[#7dd3fc] hover:bg-[#111f36] hover:text-[#e0f2fe] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#38bdf8]"
           >
             <X size={18} aria-hidden="true" />
           </button>
         </div>
         <NavList />
         <div className="mt-auto px-5 py-4">
-          <p className="text-xs text-[#605943]">EarthOspacE v1.0</p>
+          <p className="text-xs text-[#1e3a5f]">EarthOspacE v1.0</p>
         </div>
       </aside>
     </>

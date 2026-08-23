@@ -53,10 +53,10 @@ function buildSystemPrompt(
     ctxLines.push(`⚠ Space weather alert level: ${ctx.alertLevel.toUpperCase()}`);
   }
   if (ctx.currentKp !== undefined) {
-    ctxLines.push(`Kp index: ${ctx.currentKp.toFixed(1)}`);
+    ctxLines.push(`Kp index: ${(Number(ctx.currentKp) || 0).toFixed(1)}`);
   }
   if (ctx.solarWindSpeed !== undefined) {
-    ctxLines.push(`Solar wind: ${ctx.solarWindSpeed.toFixed(0)} km/s`);
+    ctxLines.push(`Solar wind: ${(Number(ctx.solarWindSpeed) || 0).toFixed(0)} km/s`);
   }
   if (ctx.weatherSummary) {
     ctxLines.push(`Surface weather: ${ctx.weatherSummary}`);
@@ -167,7 +167,7 @@ export async function generateDailyBriefing(
     const prompt =
       `You are ASTRO, an AI robot aboard the ISS delivering a structured daily briefing to a ${userRole}.\n\n` +
       `Current data:\n` +
-      `  • Space weather: Kp=${ctx.currentKp?.toFixed(1) ?? "?"}, SW=${ctx.solarWindSpeed?.toFixed(0) ?? "?"} km/s, status=${weatherStatus}\n` +
+      `  • Space weather: Kp=${(Number(ctx.currentKp) || 0).toFixed(1)}, SW=${(Number(ctx.solarWindSpeed) || 0).toFixed(0)} km/s, status=${weatherStatus}\n` +
       `  • Top news: ${(ctx.newsHeadlines ?? []).slice(0, 3).join(" | ") || "No headlines"}\n` +
       `  • Active events: ${(ctx.activeEvents ?? []).slice(0, 3).join(" | ") || "None"}\n\n` +
       `Deliver a structured daily briefing covering exactly these 4 sections.\n` +
@@ -204,7 +204,7 @@ export async function generateDailyBriefing(
     return [
       {
         title:   "Space Weather Status",
-        content: `Current Kp index is ${ctx.currentKp?.toFixed(1) ?? "unknown"}, solar wind at ${ctx.solarWindSpeed?.toFixed(0) ?? "—"} km/s. Space weather is ${weatherStatus.toLowerCase()}.`,
+        content: `Current Kp index is ${(Number(ctx.currentKp) || 0).toFixed(1)}, solar wind at ${(Number(ctx.solarWindSpeed) || 0).toFixed(0)} km/s. Space weather is ${weatherStatus.toLowerCase()}.`,
       },
       {
         title:   "Key News Highlights",

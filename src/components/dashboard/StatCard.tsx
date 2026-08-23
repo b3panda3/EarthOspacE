@@ -41,7 +41,7 @@ export default function StatCard({
   label,
   value,
   icon: Icon,
-  accentColor = "#e6c974",
+  accentColor = "#38bdf8",
   delta,
 }: StatCardProps) {
   const animated = useAnimatedCount(value);
@@ -71,9 +71,9 @@ export default function StatCard({
           >
             {animated}
           </p>
-          <p className="text-xs text-[#96938d] truncate mt-0.5">{label}</p>
+          <p className="text-xs text-[#7dd3fc] truncate mt-0.5">{label}</p>
           {delta && (
-            <p className="text-[10px] text-[#605943] mt-0.5">{delta}</p>
+            <p className="text-[10px] text-[#1e3a5f] mt-0.5">{delta}</p>
           )}
         </div>
       </Card>

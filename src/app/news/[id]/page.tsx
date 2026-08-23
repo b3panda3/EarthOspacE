@@ -39,7 +39,7 @@ export default async function ArticleDetailPage({
     <div className="mx-auto max-w-2xl py-6">
       <Link
         href="/news"
-        className="inline-flex items-center gap-2 text-sm text-[#605943] hover:text-[#e6c974] transition-colors mb-6 focus-visible:outline-none focus-visible:underline"
+        className="inline-flex items-center gap-2 text-sm text-[#1e3a5f] hover:text-[#38bdf8] transition-colors mb-6 focus-visible:outline-none focus-visible:underline"
       >
         <ArrowLeft size={14} aria-hidden="true" />
         Back to News

@@ -1,22 +1,20 @@
 /**
  * /src/lib/api/sources/copernicus.ts
  *
- * Copernicus Open Access Hub — Earth observation metadata adapter.
+ * Copernicus / Sentinel Earth observation metadata adapter.
  *
- * The Copernicus Data Space Ecosystem (CDSE) provides a STAC-compatible
- * catalogue endpoint. We query for the latest Sentinel-2 and Sentinel-5P
- * products as metadata (no large file downloads).
+ * Uses the AWS Earth Search STAC API (public, no auth required) to fetch
+ * the latest Sentinel-2 L2A and Sentinel-1 GRD product metadata.
  *
- * Endpoint: https://catalogue.dataspace.copernicus.eu/stac/collections
+ * Endpoint: https://earth-search.aws.element84.com/v1/
  *
- * When the catalogue is unavailable (or no credentials are configured)
- * the adapter returns realistic demo metadata so the UI always has data.
+ * When the API is unavailable, the adapter returns realistic demo metadata.
  */
 
 import { withCache, TTL } from "@/lib/api/cache";
 import type { TelemetryData, TelemetrySource } from "@/lib/types";
 
-const CDSE_BASE = "https://catalogue.dataspace.copernicus.eu/stac";
+const STAC_BASE = "https://earth-search.aws.element84.com/v1";
 
 export interface CopernicusProduct {
   id: string;
@@ -30,10 +28,10 @@ export interface CopernicusProduct {
 }
 
 const DEMO_PRODUCTS: CopernicusProduct[] = [
-  { id: "S2A_MSIL2A_20240815",  collection: "SENTINEL-2",   title: "Sentinel-2A L2A 15-Aug-2024 Europe",       datetime: new Date(Date.now() - 1 * 3600000).toISOString(),   cloudCoverPercent: 12.4, bbox: [-10, 36, 30, 65], platform: "Sentinel-2A", instrument: "MSI"   },
-  { id: "S5P_NRTI_L2__NO2_2024", collection: "SENTINEL-5P",  title: "Sentinel-5P NRTI NO2 — Global",            datetime: new Date(Date.now() - 3 * 3600000).toISOString(),   cloudCoverPercent: 0,    bbox: [-180, -90, 180, 90], platform: "Sentinel-5P", instrument: "TROPOMI" },
-  { id: "S1A_IW_SLC_20240814",  collection: "SENTINEL-1",   title: "Sentinel-1A IW SLC 14-Aug-2024 Americas",  datetime: new Date(Date.now() - 6 * 3600000).toISOString(),   cloudCoverPercent: 0,    bbox: [-90, 25, -50, 55], platform: "Sentinel-1A", instrument: "SAR-C"  },
-  { id: "S3A_OL_2_LFR_20240815", collection: "SENTINEL-3",  title: "Sentinel-3A OLCI Full Resolution — Ocean", datetime: new Date(Date.now() - 8 * 3600000).toISOString(),   cloudCoverPercent: 8.1,  bbox: [-180, -90, 180, 90], platform: "Sentinel-3A", instrument: "OLCI"  },
+  { id: "S2A_MSIL2A_20240815",  collection: "SENTINEL-2",   title: "Sentinel-2A L2A Europe",       datetime: new Date(Date.now() - 1 * 3600000).toISOString(),   cloudCoverPercent: 12.4, bbox: [-10, 36, 30, 65], platform: "Sentinel-2A", instrument: "MSI"   },
+  { id: "S1A_IW_SLC_20240814",  collection: "SENTINEL-1",   title: "Sentinel-1A IW SLC Americas",  datetime: new Date(Date.now() - 3 * 3600000).toISOString(),   cloudCoverPercent: 0,    bbox: [-90, 25, -50, 55], platform: "Sentinel-1A", instrument: "SAR-C"  },
+  { id: "S2B_MSIL2A_20240815",  collection: "SENTINEL-2",   title: "Sentinel-2B L2A Africa",       datetime: new Date(Date.now() - 6 * 3600000).toISOString(),   cloudCoverPercent: 5.8,  bbox: [10, -35, 40, 5],  platform: "Sentinel-2B", instrument: "MSI"   },
+  { id: "S3A_OL_2_LFR_20240815", collection: "SENTINEL-3",  title: "Sentinel-3A OLCI Ocean",       datetime: new Date(Date.now() - 8 * 3600000).toISOString(),   cloudCoverPercent: 8.1,  bbox: [-180, -90, 180, 90], platform: "Sentinel-3A", instrument: "OLCI"  },
 ];
 
 export async function fetchCopernicusProducts(): Promise<{
@@ -42,7 +40,8 @@ export async function fetchCopernicusProducts(): Promise<{
 }> {
   return withCache("copernicus-products", async () => {
     try {
-      const url = `${CDSE_BASE}/collections/SENTINEL-2/items?limit=6&sortby=-datetime`;
+      // Fetch latest Sentinel-2 L2A products
+      const url = `${STAC_BASE}/collections/sentinel-2-l2a/items?limit=6`;
       const ctrl = new AbortController();
       const t = setTimeout(() => ctrl.abort(), 8_000);
       const res = await fetch(url, {
@@ -51,7 +50,7 @@ export async function fetchCopernicusProducts(): Promise<{
       });
       clearTimeout(t);
 
-      if (!res.ok) throw new Error(`CDSE HTTP ${res.status}`);
+      if (!res.ok) throw new Error(`STAC HTTP ${res.status}`);
 
       interface StacFeature {
         id: string;
@@ -61,7 +60,7 @@ export async function fetchCopernicusProducts(): Promise<{
           title?: string;
           "eo:cloud_cover"?: number;
           platform?: string;
-          instruments?: string[];
+          "instruments"?: string[];
           collection?: string;
         };
       }
@@ -72,12 +71,12 @@ export async function fetchCopernicusProducts(): Promise<{
       const products: CopernicusProduct[] = (data.features ?? []).slice(0, 6).map(
         (f): CopernicusProduct => ({
           id:                  f.id,
-          collection:          f.properties.collection ?? "SENTINEL-2",
+          collection:          "SENTINEL-2",
           title:               f.properties.title ?? f.id,
           datetime:            f.properties.datetime ?? new Date().toISOString(),
           cloudCoverPercent:   f.properties["eo:cloud_cover"] ?? 0,
           bbox:                (f.bbox as [number, number, number, number]) ?? [-180, -90, 180, 90],
-          platform:            f.properties.platform ?? "Sentinel",
+          platform:            f.properties.platform ?? "Sentinel-2",
           instrument:          f.properties.instruments?.[0] ?? "MSI",
         })
       );

@@ -138,7 +138,7 @@ export class WeatherDataSource implements DataSource<WeatherDataPoint> {
   ];
 
   async fetch(): Promise<WeatherDataPoint[]> {
-    const apiKey = process.env.OPENWEATHER_API_KEY;
+    const apiKey = process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY;
     if (!apiKey || apiKey.startsWith("your_")) return this.DEMO;
 
     return withCache(this.id, async () => {

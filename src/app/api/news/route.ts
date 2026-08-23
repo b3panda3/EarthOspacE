@@ -54,7 +54,7 @@ function parseRss(xml: string, category: NewsItem["category"], source: string): 
       items.push({ title, summary: desc.replace(/<[^>]+>/g, "").slice(0, 300), link, pubDate, category, source });
     }
   }
-  return items.slice(0, 5);
+  return items.slice(0, 20);
 }
 
 /* ── Fetch a single feed with timeout ───────────────────────────────────── */
@@ -100,14 +100,14 @@ interface NewsApiResponse {
 }
 
 async function fetchNewsApi(): Promise<RawFeedItem[]> {
-  const key = process.env.NEWS_API_KEY;
+  const key = process.env.NEXT_PUBLIC_NEWS_API_KEY;
   if (!key || key.startsWith("your_")) return [];
 
   try {
     const params = new URLSearchParams({
       q: "space OR NASA OR astronomy OR satellite",
       sortBy: "publishedAt",
-      pageSize: "10",
+      pageSize: "100",
       apiKey: key,
     });
     const controller = new AbortController();
@@ -123,7 +123,7 @@ async function fetchNewsApi(): Promise<RawFeedItem[]> {
 
     return data.articles
       .filter((a) => a.title && a.title !== "[Removed]")
-      .slice(0, 10)
+      .slice(0, 50)
       .map((a) => ({
         title: a.title,
         summary: (a.description ?? "").replace(/<[^>]+>/g, "").slice(0, 300),
@@ -272,7 +272,7 @@ export async function GET(req: NextRequest) {
   });
 
   /* Generate Granite commentary for top 6 articles (rate-limit friendly) */
-  const topItems = sorted.slice(0, 6);
+  const topItems = sorted.slice(0, 12);
   const commentaries = await Promise.allSettled(
     topItems.map((item) => generateFlash(item, userRole, missionType))
   );

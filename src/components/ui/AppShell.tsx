@@ -28,13 +28,13 @@ export default function AppShell({ children }: AppShellProps) {
   return (
     <QueryProvider>
     <ProfileProvider>
-    <div className="relative min-h-screen" style={{ background: "#100f0e" }}>
+    <div className="relative min-h-screen" style={{ background: "#000000" }}>
 
       {/* Skip-to-content link for keyboard / screen-reader users */}
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[9999] focus:rounded-lg focus:px-4 focus:py-2 focus:text-sm focus:font-semibold"
-        style={{ background: "#e6c974", color: "#100f0e" }}
+        style={{ background: "#38bdf8", color: "#000000" }}
       >
         Skip to main content
       </a>

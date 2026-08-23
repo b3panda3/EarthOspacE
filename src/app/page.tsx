@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
@@ -76,16 +77,16 @@ function HeroSection({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35 }}
       aria-label="Welcome section"
-      className="rounded-2xl border border-[#605943] bg-gradient-to-br from-[#29271f] via-[#24231f] to-[#1a1916] p-6 sm:p-8"
+      className="rounded-2xl border border-[#1e3a5f] bg-gradient-to-br from-[#111f36] via-[#050a14] to-[#1a1916] p-6 sm:p-8"
     >
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="min-w-0">
-          <p className="text-xs text-[#605943] mb-1">{utcDateString()}</p>
-          <h1 className="text-xl sm:text-2xl font-bold text-[#e8e7e5]">
+          <p className="text-xs text-[#1e3a5f] mb-1">{utcDateString()}</p>
+          <h1 className="text-xl sm:text-2xl font-bold text-[#e0f2fe]">
             Welcome back,{" "}
             <span
               style={{
-                background: "linear-gradient(90deg, #e6c974, #c3ac6a)",
+                background: "linear-gradient(90deg, #38bdf8, #0ea5e9)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
@@ -94,7 +95,7 @@ function HeroSection({
               {profile?.role ?? "Explorer"}
             </span>
           </h1>
-          <p className="text-sm text-[#96938d] mt-1 max-w-xl">
+          <p className="text-sm text-[#7dd3fc] mt-1 max-w-xl">
             {profile?.personalitySummary ??
               "Configure your profile to get a personalised mission briefing."}
           </p>
@@ -108,19 +109,19 @@ function HeroSection({
       </div>
 
       {/* Daily briefing */}
-      <div className="mt-5 rounded-xl border border-[#e6c974]/20 bg-[#e6c974]/5 px-4 py-3">
-        <p className="text-xs text-[#c3ac6a] font-semibold mb-1.5">
+      <div className="mt-5 rounded-xl border border-[#38bdf8]/20 bg-[#38bdf8]/5 px-4 py-3">
+        <p className="text-xs text-[#0ea5e9] font-semibold mb-1.5">
           Daily Briefing
         </p>
         {briefingLoading ? (
           <div className="flex items-center gap-2">
-            <Loader2 size={14} className="animate-spin text-[#605943]" aria-hidden="true" />
-            <p className="text-sm text-[#605943] italic">
+            <Loader2 size={14} className="animate-spin text-[#1e3a5f]" aria-hidden="true" />
+            <p className="text-sm text-[#1e3a5f] italic">
               Generating mission briefing…
             </p>
           </div>
         ) : (
-          <p className="text-sm text-[#e8e7e5] leading-relaxed italic">
+          <p className="text-sm text-[#e0f2fe] leading-relaxed italic">
             {briefing}
           </p>
         )}
@@ -152,7 +153,7 @@ function QuickAssessmentWidget() {
 
   // Score 1-10: gradient green(10) → yellow(5) → red(1)
   const scoreColor = (s: number) =>
-    s >= 8 ? "#4ade80" : s >= 6 ? "#a3e635" : s >= 4 ? "#e6c974" : s >= 2 ? "#fb923c" : "#f87171";
+    s >= 8 ? "#4ade80" : s >= 6 ? "#a3e635" : s >= 4 ? "#38bdf8" : s >= 2 ? "#fb923c" : "#f87171";
 
   const arcDeg = (s: number) => (s / 10) * 180; // 0-180° half circle
 
@@ -162,16 +163,16 @@ function QuickAssessmentWidget() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, delay: 0.1 }}
       aria-label="Space conditions quick assessment"
-      className="rounded-xl border border-[#605943] bg-[#24231f] px-4 py-3 flex flex-col sm:flex-row sm:items-center gap-4"
+      className="rounded-xl border border-[#1e3a5f] bg-[#050a14] px-4 py-3 flex flex-col sm:flex-row sm:items-center gap-4"
     >
       {/* Gauge */}
       <div className="flex-shrink-0 relative w-20 h-11 mx-auto sm:mx-0">
         {isLoading ? (
-          <div className="w-20 h-10 rounded-t-full bg-[#3a3830] animate-pulse" />
+          <div className="w-20 h-10 rounded-t-full bg-[#1e3a5f] animate-pulse" />
         ) : (
           <svg viewBox="0 0 80 44" className="w-full h-full" aria-hidden="true">
             {/* Track arc */}
-            <path d="M8 40 A32 32 0 0 1 72 40" fill="none" stroke="#3a3830" strokeWidth={7} strokeLinecap="round" />
+            <path d="M8 40 A32 32 0 0 1 72 40" fill="none" stroke="#1e3a5f" strokeWidth={7} strokeLinecap="round" />
             {/* Filled arc — clipped by score */}
             {qa && (
               <path
@@ -184,7 +185,7 @@ function QuickAssessmentWidget() {
               />
             )}
             {/* Score text */}
-            <text x="40" y="38" textAnchor="middle" fill={qa ? scoreColor(qa.score) : "#605943"} fontSize="16" fontWeight="bold" fontFamily="monospace">
+            <text x="40" y="38" textAnchor="middle" fill={qa ? scoreColor(qa.score) : "#1e3a5f"} fontSize="16" fontWeight="bold" fontFamily="monospace">
               {qa?.score ?? "—"}
             </text>
           </svg>
@@ -195,8 +196,8 @@ function QuickAssessmentWidget() {
       <div className="flex-1 min-w-0">
         {isLoading ? (
           <div className="space-y-1.5">
-            <div className="h-3 w-24 rounded bg-[#3a3830] animate-pulse" />
-            <div className="h-3 w-56 rounded bg-[#3a3830] animate-pulse" />
+            <div className="h-3 w-24 rounded bg-[#1e3a5f] animate-pulse" />
+            <div className="h-3 w-56 rounded bg-[#1e3a5f] animate-pulse" />
           </div>
         ) : qa ? (
           <>
@@ -207,20 +208,20 @@ function QuickAssessmentWidget() {
               >
                 {qa.label}
               </span>
-              <span className="text-xs text-[#605943]">·</span>
-              <span className="text-xs text-[#96938d]">Space Conditions Score {qa.score}/10</span>
+              <span className="text-xs text-[#1e3a5f]">·</span>
+              <span className="text-xs text-[#7dd3fc]">Space Conditions Score {qa.score}/10</span>
             </div>
-            <p className="text-xs text-[#e8e7e5] mt-0.5 leading-relaxed">{qa.summary}</p>
+            <p className="text-xs text-[#e0f2fe] mt-0.5 leading-relaxed">{qa.summary}</p>
           </>
         ) : (
-          <p className="text-xs text-[#605943]">Assessment unavailable</p>
+          <p className="text-xs text-[#1e3a5f]">Assessment unavailable</p>
         )}
       </div>
 
       {/* Link to full predictive page */}
       <Link
         href="/dashboard/predictive"
-        className="flex-shrink-0 flex items-center gap-1 text-xs text-[#96938d] hover:text-[#e6c974] transition-colors"
+        className="flex-shrink-0 flex items-center gap-1 text-xs text-[#7dd3fc] hover:text-[#38bdf8] transition-colors"
         aria-label="View full predictive forecast"
       >
         Full forecast <ChevronRight size={12} />
@@ -241,20 +242,20 @@ function AirIncidentsFeed({ events }: { events: EonetEvent[] }) {
         <CardTitle>⚠️ Recent Incidents</CardTitle>
       </CardHeader>
       {incidents.length === 0 ? (
-        <p className="text-xs text-[#605943] py-2">No active incidents.</p>
+        <p className="text-xs text-[#1e3a5f] py-2">No active incidents.</p>
       ) : (
-        <ul role="list" className="divide-y divide-[#3a3830]">
+        <ul role="list" className="divide-y divide-[#1e3a5f]">
           {incidents.slice(0, 5).map((ev) => (
             <li key={ev.id} className="py-2.5">
               <div className="flex items-start justify-between gap-2">
-                <p className="text-xs font-medium text-[#e8e7e5] leading-snug truncate">
+                <p className="text-xs font-medium text-[#e0f2fe] leading-snug truncate">
                   {ev.title}
                 </p>
                 <Badge variant="red" className="shrink-0 text-[10px]">
                   {ev.type}
                 </Badge>
               </div>
-              <p className="text-[10px] text-[#605943] mt-0.5">
+              <p className="text-[10px] text-[#1e3a5f] mt-0.5">
                 {new Date(ev.date).toLocaleDateString("en-GB", { timeZone: "UTC" })}
               </p>
             </li>
@@ -268,9 +269,32 @@ function AirIncidentsFeed({ events }: { events: EonetEvent[] }) {
 /* ── Main page ───────────────────────────────────────────────────────────── */
 
 export default function DashboardPage() {
-  const { profile } = useProfile();
+  const { profile, loading } = useProfile();
   const [activeTab, setActiveTab] = useState<FilterCategory>("all");
-  const [sidebarOpen, setSidebarOpen] = useState(false); // mobile sidebar toggle
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const router = useRouter();
+
+  // Redirect to onboarding if no profile exists
+  useEffect(() => {
+    if (!profile && !loading) {
+      router.replace("/profile/onboarding");
+    }
+  }, [profile, loading, router]);
+
+  // Show loading while checking profile
+  if (!profile) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="text-center">
+          <div className="relative w-10 h-10 mx-auto mb-3">
+            <span className="absolute inset-0 rounded-full border-2 border-[#38bdf8] border-t-transparent animate-spin" />
+          </div>
+          <p className="text-sm text-[#7dd3fc]">Loading mission profile…</p>
+        </div>
+      </div>
+    );
+  }
+ // mobile sidebar toggle
 
   /* ── Daily briefing from Granite (via server route) ──────────────────── */
   const {
@@ -375,7 +399,7 @@ export default function DashboardPage() {
           label="Active Space Events"
           value={stats?.activeSpaceEvents ?? 0}
           icon={Satellite}
-          accentColor="#8369ce"
+          accentColor="#a78bfa"
         />
         <StatCard
           label="Weather Alerts"
@@ -387,7 +411,7 @@ export default function DashboardPage() {
           label="News Articles Today"
           value={allNews.length}
           icon={Newspaper}
-          accentColor="#e6c974"
+          accentColor="#38bdf8"
         />
         <StatCard
           label="Upcoming Comets"
@@ -412,7 +436,7 @@ export default function DashboardPage() {
             />
             <div className="flex items-center gap-2 shrink-0">
               {dataUpdatedAt > 0 && (
-                <span className="text-[10px] text-[#605943] hidden sm:block">
+                <span className="text-[10px] text-[#1e3a5f] hidden sm:block">
                   Updated {new Date(dataUpdatedAt).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })}
                 </span>
               )}
@@ -420,7 +444,7 @@ export default function DashboardPage() {
                 onClick={() => refetchNews()}
                 disabled={newsFetching}
                 aria-label="Refresh news"
-                className="rounded-lg p-1.5 text-[#605943] hover:text-[#e8e7e5] hover:bg-[#29271f] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e6c974] disabled:opacity-40"
+                className="rounded-lg p-1.5 text-[#1e3a5f] hover:text-[#e0f2fe] hover:bg-[#111f36] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#38bdf8] disabled:opacity-40"
               >
                 <RefreshCw
                   size={14}
@@ -434,7 +458,7 @@ export default function DashboardPage() {
           {/* Loading state */}
           {newsLoading && (
             <div className="flex items-center justify-center py-16">
-              <Loader2 size={24} className="animate-spin text-[#605943]" aria-label="Loading news" />
+              <Loader2 size={24} className="animate-spin text-[#1e3a5f]" aria-label="Loading news" />
             </div>
           )}
 
@@ -450,7 +474,7 @@ export default function DashboardPage() {
 
           {/* Empty filtered state */}
           {!newsLoading && !newsError && filteredNews.length === 0 && (
-            <p className="text-sm text-[#605943] text-center py-12">
+            <p className="text-sm text-[#1e3a5f] text-center py-12">
               No {activeTab === "all" ? "" : activeTab + " "}articles found.
             </p>
           )}
@@ -473,7 +497,7 @@ export default function DashboardPage() {
           {/* Mobile: collapsible toggle */}
           <button
             onClick={() => setSidebarOpen((v) => !v)}
-            className="flex items-center justify-between w-full rounded-xl border border-[#3a3830] bg-[#24231f] px-4 py-3 text-sm font-medium text-[#96938d] lg:hidden"
+            className="flex items-center justify-between w-full rounded-xl border border-[#1e3a5f] bg-[#050a14] px-4 py-3 text-sm font-medium text-[#7dd3fc] lg:hidden"
             aria-expanded={sidebarOpen}
             aria-controls="dashboard-sidebar-content"
           >

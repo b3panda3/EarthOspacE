@@ -77,11 +77,11 @@ export default function Header({ onMenuToggle }: HeaderProps) {
             borderBottom: "1px solid rgba(131,105,206,0.35)",
           }}
         >
-          <FlaskConical size={12} aria-hidden="true" className="text-[#8369ce]" />
-          <span className="text-[#c3ac6a]">
+          <FlaskConical size={12} aria-hidden="true" className="text-[#a78bfa]" />
+          <span className="text-[#0ea5e9]">
             Demo Mode active — AI responses are pre-generated mock data.
           </span>
-          <span className="text-[#605943]">Set NEXT_PUBLIC_DEMO_MODE=false to use live IBM Granite.</span>
+          <span className="text-[#1e3a5f]">Set NEXT_PUBLIC_DEMO_MODE=false to use live IBM Granite.</span>
         </div>
       )}
 
@@ -89,8 +89,8 @@ export default function Header({ onMenuToggle }: HeaderProps) {
       role="banner"
       className="sticky top-0 z-20 flex h-14 items-center gap-3 px-4 lg:px-6"
       style={{
-        background: "rgba(16,15,14,0.85)",
-        borderBottom: "1px solid rgba(96,89,67,0.4)",
+        background: "rgba(8,16,32,0.85)",
+        borderBottom: "1px solid rgba(30,58,95,0.4)",
         backdropFilter: "blur(12px)",
         WebkitBackdropFilter: "blur(12px)",
       }}
@@ -100,7 +100,7 @@ export default function Header({ onMenuToggle }: HeaderProps) {
         aria-label="Open navigation menu"
         aria-expanded={false}
         onClick={onMenuToggle}
-        className="rounded-lg p-1.5 text-[#96938d] hover:bg-[#29271f] hover:text-[#e8e7e5] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e6c974] lg:hidden"
+        className="rounded-lg p-1.5 text-[#7dd3fc] hover:bg-[#111f36] hover:text-[#e0f2fe] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#38bdf8] lg:hidden"
       >
         <Menu size={20} aria-hidden="true" />
       </button>
@@ -109,12 +109,12 @@ export default function Header({ onMenuToggle }: HeaderProps) {
       <a
         href="/"
         aria-label="EarthOspacE home"
-        className="flex items-center gap-1 select-none lg:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e6c974] rounded"
+        className="flex items-center gap-1 select-none lg:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#38bdf8] rounded"
       >
         <span
           className="text-base font-bold tracking-tight"
           style={{
-            background: "linear-gradient(135deg, #e6c974 0%, #c3ac6a 60%, #8369ce 100%)",
+            background: "linear-gradient(135deg, #38bdf8 0%, #0ea5e9 60%, #a78bfa 100%)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             backgroundClip: "text",
@@ -122,7 +122,7 @@ export default function Header({ onMenuToggle }: HeaderProps) {
         >
           Earth
         </span>
-        <span className="text-base font-bold tracking-tight text-[#e8e7e5]">OspacE</span>
+        <span className="text-base font-bold tracking-tight text-[#e0f2fe]">OspacE</span>
       </a>
 
       {/* Spacer — pushes right-side controls to the right */}
@@ -135,13 +135,13 @@ export default function Header({ onMenuToggle }: HeaderProps) {
           aria-haspopup="true"
           aria-expanded={notifOpen}
           onClick={() => setNotifOpen((v) => !v)}
-          className="relative rounded-lg p-1.5 text-[#96938d] hover:bg-[#29271f] hover:text-[#e8e7e5] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e6c974]"
+          className="relative rounded-lg p-1.5 text-[#7dd3fc] hover:bg-[#111f36] hover:text-[#e0f2fe] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#38bdf8]"
         >
           <Bell size={18} aria-hidden="true" />
           {notifications.length > 0 && (
             <span
               aria-hidden="true"
-              className="absolute top-1 right-1 h-2 w-2 rounded-full bg-[#e6c974]"
+              className="absolute top-1 right-1 h-2 w-2 rounded-full bg-[#38bdf8]"
             />
           )}
         </button>
@@ -151,31 +151,31 @@ export default function Header({ onMenuToggle }: HeaderProps) {
           <div
             role="region"
             aria-label="Notifications"
-            className="absolute right-0 mt-2 w-80 rounded-xl border border-[#605943] bg-[#24231f] shadow-xl z-50 overflow-hidden"
+            className="absolute right-0 mt-2 w-80 rounded-xl border border-[#1e3a5f] bg-[#050a14] shadow-xl z-50 overflow-hidden"
           >
-            <div className="flex items-center justify-between px-4 py-3 border-b border-[#605943]">
-              <span className="text-sm font-semibold text-[#e8e7e5]">Notifications</span>
+            <div className="flex items-center justify-between px-4 py-3 border-b border-[#1e3a5f]">
+              <span className="text-sm font-semibold text-[#e0f2fe]">Notifications</span>
               {notifications.length > 0 && <Badge variant="gold">{notifications.length}</Badge>}
             </div>
-            <ul role="list" className="divide-y divide-[#29271f] max-h-80 overflow-y-auto">
+            <ul role="list" className="divide-y divide-[#111f36] max-h-80 overflow-y-auto">
               {notifications.length === 0 ? (
-                <li className="px-4 py-6 text-center text-sm text-[#605943]">Loading events…</li>
+                <li className="px-4 py-6 text-center text-sm text-[#1e3a5f]">Loading events…</li>
               ) : (
                 notifications.map((n) => (
                   <li key={n.id}>
                     <div className="flex items-start gap-3 px-4 py-3">
                       <Badge variant="gold" dot className="mt-1.5 shrink-0" />
                       <div>
-                        <p className="text-sm text-[#e8e7e5] leading-snug">{n.title}</p>
-                        <p className="text-xs text-[#605943] mt-0.5">{n.time}</p>
+                        <p className="text-sm text-[#e0f2fe] leading-snug">{n.title}</p>
+                        <p className="text-xs text-[#1e3a5f] mt-0.5">{n.time}</p>
                       </div>
                     </div>
                   </li>
                 ))
               )}
             </ul>
-            <div className="px-4 py-3 border-t border-[#605943]">
-              <button className="text-xs text-[#e6c974] hover:underline focus-visible:outline-none focus-visible:underline">
+            <div className="px-4 py-3 border-t border-[#1e3a5f]">
+              <button className="text-xs text-[#38bdf8] hover:underline focus-visible:outline-none focus-visible:underline">
                 View all notifications
               </button>
             </div>

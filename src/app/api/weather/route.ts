@@ -3,9 +3,18 @@ import { NextRequest, NextResponse } from "next/server";
 /* ── Preset cities ───────────────────────────────────────────────────────── */
 
 const CITIES = [
-  { name: "Houston", country: "US" },   // NASA JSC
-  { name: "Baikonur", country: "KZ" },  // Launch site
-  { name: "Kourou", country: "GF" },    // ESA launch
+  { name: "Houston", country: "US" },
+  { name: "Cape Canaveral", country: "US" },
+  { name: "Baikonur", country: "KZ" },
+  { name: "Kourou", country: "GF" },
+  { name: "Tanegashima", country: "JP" },
+  { name: "Boca Chica", country: "US" },
+  { name: "Mojave", country: "US" },
+  { name: "Christchurch", country: "NZ" },
+  { name: "Vandenberg", country: "US" },
+  { name: "Kodiak", country: "US" },
+  { name: "Woomera", country: "AU" },
+  { name: "Alcantara", country: "BR" },
 ];
 
 interface OWMResponse {
@@ -30,7 +39,7 @@ export interface CityWeather {
 /* ── GET /api/weather ────────────────────────────────────────────────────── */
 
 export async function GET(_req: NextRequest) {
-  const apiKey = process.env.OPENWEATHER_API_KEY;
+  const apiKey = process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY;
 
   if (!apiKey || apiKey.startsWith("your_")) {
     /* Return plausible demo data when key is not configured */

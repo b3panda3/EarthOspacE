@@ -62,10 +62,10 @@ async function fetchTelemetry(withAnomaly: boolean): Promise<TelemetryResponse> 
 
 const STATUS_COLOR: Record<TelemetryStatus, string> = {
   nominal:  "#4ade80",
-  elevated: "#e6c974",
+  elevated: "#38bdf8",
   warning:  "#fb923c",
   critical: "#f87171",
-  unknown:  "#96938d",
+  unknown:  "#7dd3fc",
 };
 
 const STATUS_LABEL: Record<TelemetryStatus, string> = {
@@ -119,15 +119,15 @@ export default function TelemetryPage() {
   const kpStatus   = (data?.telemetry.find((t) => t.id === "noaa-kp")?.status) ?? "unknown";
 
   return (
-    <div className="min-h-screen bg-[#100f0e] px-4 py-6 md:px-8">
+    <div className="min-h-screen bg-[#000000] px-4 py-6 md:px-8">
       {/* ── Page header ───────────────────────────────────────────────────── */}
       <div className="mb-6">
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-[#e8e7e5] tracking-tight">
+            <h1 className="text-2xl font-bold text-[#e0f2fe] tracking-tight">
               Space Telemetry
             </h1>
-            <p className="text-sm text-[#96938d] mt-1">
+            <p className="text-sm text-[#7dd3fc] mt-1">
               Real-time solar weather, orbital objects &amp; geomagnetic data
             </p>
           </div>
@@ -138,7 +138,7 @@ export default function TelemetryPage() {
             <label className="flex items-center gap-2 cursor-pointer select-none">
               <div
                 className="relative w-8 h-4 rounded-full transition-colors"
-                style={{ backgroundColor: anomalyEnabled ? "#8369ce" : "#3a3830" }}
+                style={{ backgroundColor: anomalyEnabled ? "#a78bfa" : "#1e3a5f" }}
                 onClick={() => setAnomalyEnabled((v) => !v)}
               >
                 <span
@@ -146,7 +146,7 @@ export default function TelemetryPage() {
                   style={{ left: anomalyEnabled ? "18px" : "2px" }}
                 />
               </div>
-              <span className="text-xs text-[#96938d]">
+              <span className="text-xs text-[#7dd3fc]">
                 Granite anomaly detection
               </span>
             </label>
@@ -155,7 +155,7 @@ export default function TelemetryPage() {
             <button
               onClick={() => refetch()}
               disabled={isFetching}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border border-[#605943] text-[#96938d] hover:text-[#e8e7e5] hover:border-[#e6c974] transition-colors disabled:opacity-50"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border border-[#1e3a5f] text-[#7dd3fc] hover:text-[#e0f2fe] hover:border-[#38bdf8] transition-colors disabled:opacity-50"
             >
               <svg
                 className={`w-3 h-3 ${isFetching ? "animate-spin" : ""}`}
@@ -170,7 +170,7 @@ export default function TelemetryPage() {
 
         {/* Last updated */}
         {dataUpdatedAt > 0 && (
-          <p className="text-xs text-[#605943] mt-2">
+          <p className="text-xs text-[#1e3a5f] mt-2">
             Last updated {new Date(dataUpdatedAt).toLocaleTimeString()} ·{" "}
             refreshes every 5 min
           </p>
@@ -185,7 +185,7 @@ export default function TelemetryPage() {
           </p>
           <button
             onClick={() => refetch()}
-            className="mt-2 text-xs text-[#e6c974] hover:underline"
+            className="mt-2 text-xs text-[#38bdf8] hover:underline"
           >
             Try again
           </button>
@@ -193,7 +193,7 @@ export default function TelemetryPage() {
       )}
 
       {/* ── System status bar ─────────────────────────────────────────────── */}
-      <div className="mb-5 rounded-xl border border-[#3a3830] bg-[#24231f] px-4 py-3 flex flex-wrap items-center gap-4">
+      <div className="mb-5 rounded-xl border border-[#1e3a5f] bg-[#050a14] px-4 py-3 flex flex-wrap items-center gap-4">
         {/* Overall */}
         <div className="flex items-center gap-2">
           <span
@@ -215,7 +215,7 @@ export default function TelemetryPage() {
               className="h-1.5 w-1.5 rounded-full"
               style={{ backgroundColor: STATUS_COLOR[s as TelemetryStatus] }}
             />
-            <span className="text-xs text-[#96938d]">{label}</span>
+            <span className="text-xs text-[#7dd3fc]">{label}</span>
             <span className="text-xs capitalize" style={{ color: STATUS_COLOR[s as TelemetryStatus] }}>
               {STATUS_LABEL[s as TelemetryStatus]}
             </span>
@@ -225,9 +225,9 @@ export default function TelemetryPage() {
         {/* NEO count pill */}
         {data && (
           <div className="flex items-center gap-1.5">
-            <span className="h-1.5 w-1.5 rounded-full bg-[#e6c974]" />
-            <span className="text-xs text-[#96938d]">NEOs</span>
-            <span className="text-xs text-[#e6c974]">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#38bdf8]" />
+            <span className="text-xs text-[#7dd3fc]">NEOs</span>
+            <span className="text-xs text-[#38bdf8]">
               {data.neos.length} tracked
               {data.neos.filter((n) => n.isPotentiallyHazardous).length > 0 &&
                 ` · ${data.neos.filter((n) => n.isPotentiallyHazardous).length} hazardous`}
@@ -239,9 +239,9 @@ export default function TelemetryPage() {
         <div className="ml-auto flex items-center gap-1.5">
           <span
             className="h-1.5 w-1.5 rounded-full"
-            style={{ backgroundColor: anomalyEnabled ? "#8369ce" : "#3a3830" }}
+            style={{ backgroundColor: anomalyEnabled ? "#a78bfa" : "#1e3a5f" }}
           />
-          <span className="text-xs text-[#96938d]">
+          <span className="text-xs text-[#7dd3fc]">
             {anomalyEnabled ? "Anomaly detection on" : "Anomaly detection off"}
           </span>
           {data?.anomalies && data.anomalies.length > 0 && (
@@ -294,7 +294,7 @@ export default function TelemetryPage() {
       </div>
 
       {/* ── Data attribution footer ───────────────────────────────────────── */}
-      <div className="mt-8 border-t border-[#3a3830] pt-4 flex flex-wrap gap-4 text-[10px] text-[#605943]">
+      <div className="mt-8 border-t border-[#1e3a5f] pt-4 flex flex-wrap gap-4 text-[10px] text-[#1e3a5f]">
         <span>Solar wind: NOAA SWPC / DSCOVR ACE</span>
         <span>Kp index: NOAA planetary_k_index_1m</span>
         <span>NEOs: NASA NeoWs API</span>

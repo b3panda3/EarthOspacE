@@ -7,7 +7,7 @@
  *
  * Colour zones:
  *   0–3   → green  (#4ade80) — quiet
- *   4–5   → amber  (#e6c974) — active / G-storm watch
+ *   4–5   → amber  (#38bdf8) — active / G-storm watch
  *   6–9   → red    (#f87171) — severe geomagnetic storm
  *
  * Also renders a mini sparkline of the last 20 Kp readings.
@@ -53,13 +53,13 @@ function arcPath(startDeg: number, endDeg: number, r = R): string {
 // Colour zones: 180°→120° green, 120°→60° amber, 60°→0° red
 const ZONES = [
   { from: 180, to: 120, color: "#4ade80", label: "Quiet" },
-  { from: 120, to:  60, color: "#e6c974", label: "Active" },
+  { from: 120, to:  60, color: "#38bdf8", label: "Active" },
   { from:  60, to:   0, color: "#f87171", label: "Storm"  },
 ];
 
 function kpColor(kp: number): string {
   if (kp >= 6) return "#f87171";
-  if (kp >= 4) return "#e6c974";
+  if (kp >= 4) return "#38bdf8";
   return "#4ade80";
 }
 
@@ -81,40 +81,41 @@ export default function GeomagneticWidget({
 }: GeomagneticWidgetProps) {
   if (isLoading) {
     return (
-      <div className="rounded-xl border border-[#3a3830] bg-[#24231f] p-4 animate-pulse">
-        <div className="h-4 w-36 rounded bg-[#3a3830] mb-3" />
-        <div className="h-32 rounded bg-[#3a3830]" />
+      <div className="rounded-xl border border-[#1e3a5f] bg-[#050a14] p-4 animate-pulse">
+        <div className="h-4 w-36 rounded bg-[#1e3a5f] mb-3" />
+        <div className="h-32 rounded bg-[#1e3a5f]" />
       </div>
     );
   }
 
-  const needleAngle = kpToAngle(kpCurrent);
+  const kpNum = Number(kpCurrent) || 0;
+  const needleAngle = kpToAngle(kpNum);
   const [nx, ny]   = polarToXY(needleAngle, R - 10);
-  const color       = kpColor(kpCurrent);
+  const color       = kpColor(kpNum);
 
   return (
-    <div className="rounded-xl border border-[#605943] bg-[#24231f] p-4">
+    <div className="rounded-xl border border-[#1e3a5f] bg-[#050a14] p-4">
       {/* Header */}
       <div className="flex items-start justify-between mb-2">
         <div>
-          <h3 className="text-sm font-semibold text-[#e8e7e5]">Geomagnetic Activity</h3>
-          <p className="text-xs text-[#96938d] mt-0.5">Planetary Kp Index</p>
+          <h3 className="text-sm font-semibold text-[#e0f2fe]">Geomagnetic Activity</h3>
+          <p className="text-xs text-[#7dd3fc] mt-0.5">Planetary Kp Index</p>
         </div>
         <span
           className="text-xs px-2 py-0.5 rounded-full font-medium"
           style={{ backgroundColor: color + "22", color }}
         >
-          {kpLabel(kpCurrent)}
+          {kpLabel(kpNum)}
         </span>
       </div>
 
       {/* SVG Gauge */}
-      <svg viewBox="0 0 200 108" className="w-full" aria-label={`Kp index ${kpCurrent.toFixed(1)}`}>
+      <svg viewBox="0 0 200 108" className="w-full" aria-label={`Kp index ${kpNum.toFixed(1)}`}>
         {/* Track background */}
         <path
           d={arcPath(180, 0)}
           fill="none"
-          stroke="#3a3830"
+          stroke="#1e3a5f"
           strokeWidth={14}
           strokeLinecap="round"
         />
@@ -155,16 +156,16 @@ export default function GeomagneticWidget({
         <circle cx={CX} cy={CY} r={5} fill={color} />
 
         {/* Centre reading */}
-        <text x={CX} y={CY - 20} textAnchor="middle" fill="#e8e7e5" fontSize={26} fontWeight="bold" fontFamily="monospace">
-          {kpCurrent.toFixed(1)}
+        <text x={CX} y={CY - 20} textAnchor="middle" fill="#e0f2fe" fontSize={26} fontWeight="bold" fontFamily="monospace">
+          {kpNum.toFixed(1)}
         </text>
-        <text x={CX} y={CY - 6} textAnchor="middle" fill="#96938d" fontSize={10}>
+        <text x={CX} y={CY - 6} textAnchor="middle" fill="#7dd3fc" fontSize={10}>
           Kp
         </text>
 
         {/* Zone labels */}
         <text x={18}  y={104} fill="#4ade80" fontSize={9} textAnchor="middle">Quiet</text>
-        <text x={100} y={24}  fill="#e6c974" fontSize={9} textAnchor="middle">Active</text>
+        <text x={100} y={24}  fill="#38bdf8" fontSize={9} textAnchor="middle">Active</text>
         <text x={182} y={104} fill="#f87171" fontSize={9} textAnchor="middle">Storm</text>
 
         {/* Scale ticks 0–9 */}
@@ -172,7 +173,7 @@ export default function GeomagneticWidget({
           const angle = kpToAngle(i);
           const [tx, ty] = polarToXY(angle, R + 12);
           return (
-            <text key={i} x={tx} y={ty} fill="#605943" fontSize={8} textAnchor="middle" dominantBaseline="middle">
+            <text key={i} x={tx} y={ty} fill="#1e3a5f" fontSize={8} textAnchor="middle" dominantBaseline="middle">
               {i}
             </text>
           );
@@ -181,13 +182,13 @@ export default function GeomagneticWidget({
 
       {/* Kp history sparkline */}
       {kpPoints.length > 0 && (
-        <div className="mt-1 border-t border-[#3a3830] pt-2">
+        <div className="mt-1 border-t border-[#1e3a5f] pt-2">
           <div className="flex items-center justify-between mb-1">
-            <p className="text-xs text-[#96938d]">24-hr history</p>
+            <p className="text-xs text-[#7dd3fc]">24-hr history</p>
             {trend && <TrendBadge trend={trend.trend} changePercent={trend.changePercent} />}
           </div>
           <SparklineChart
-            data={kpPoints.map((p) => ({ value: p.kp, timestamp: p.timestamp }))}
+            data={kpPoints.map((p) => ({ value: Number(p.kp) || 0, timestamp: p.timestamp }))}
             color={color}
             height={32}
             showTooltip

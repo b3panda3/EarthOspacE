@@ -25,7 +25,7 @@ interface MissionTimelineProps {
 const RISK_COLOR: Record<string, string> = {
   critical: "#f87171",
   high:     "#fb923c",
-  moderate: "#e6c974",
+  moderate: "#38bdf8",
   low:      "#4ade80",
 };
 
@@ -39,7 +39,7 @@ const RISK_BG: Record<string, string> = {
 const VERDICT_COLOR: Record<string, string> = {
   "GO":          "#4ade80",
   "NO-GO":       "#f87171",
-  "CONDITIONAL": "#e6c974",
+  "CONDITIONAL": "#38bdf8",
 };
 
 function formatTime(iso: string): string {
@@ -87,15 +87,15 @@ export default function MissionTimeline({ params, assessment, forecast }: Missio
     return { xStart: (i / 3) * chartW, width: chartW / 3, level };
   });
 
-  const verdictC = VERDICT_COLOR[assessment.verdict] ?? "#96938d";
+  const verdictC = VERDICT_COLOR[assessment.verdict] ?? "#7dd3fc";
 
   return (
-    <div className="rounded-xl border border-[#605943] bg-[#24231f] p-4">
+    <div className="rounded-xl border border-[#1e3a5f] bg-[#050a14] p-4">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
         <div>
-          <h3 className="text-sm font-semibold text-[#e8e7e5]">Mission Timeline</h3>
-          <p className="text-xs text-[#96938d] mt-0.5">
+          <h3 className="text-sm font-semibold text-[#e0f2fe]">Mission Timeline</h3>
+          <p className="text-xs text-[#7dd3fc] mt-0.5">
             {formatDate(params.plannedStart)} &nbsp;{formatTime(params.plannedStart)}
             {" — "}
             {formatTime(params.plannedEnd)} UTC ·{" "}
@@ -178,13 +178,13 @@ export default function MissionTimeline({ params, assessment, forecast }: Missio
                 <line
                   x1={x} y1={barY + barH + 4}
                   x2={x} y2={barY + barH + 10}
-                  stroke="#605943" strokeWidth={1}
+                  stroke="#1e3a5f" strokeWidth={1}
                 />
                 <text
                   x={x}
                   y={barY + barH + 22}
                   textAnchor="middle"
-                  fill="#96938d"
+                  fill="#7dd3fc"
                   fontSize={9}
                 >
                   {formatTime(new Date(ms).toISOString())}
@@ -197,14 +197,14 @@ export default function MissionTimeline({ params, assessment, forecast }: Missio
           <line
             x1={PAD.left} y1={barY + barH + 4}
             x2={PAD.left + chartW} y2={barY + barH + 4}
-            stroke="#3a3830" strokeWidth={1}
+            stroke="#1e3a5f" strokeWidth={1}
           />
 
           {/* Legend */}
           {["low","moderate","high","critical"].map((rl, i) => (
             <g key={`legend-${rl}`} transform={`translate(${PAD.left + i * 95}, ${H - 14})`}>
               <rect width={10} height={10} fill={RISK_COLOR[rl] + "55"} stroke={RISK_COLOR[rl]} strokeWidth={1} rx={2} />
-              <text x={14} y={9} fill="#96938d" fontSize={9}>{rl.charAt(0).toUpperCase() + rl.slice(1)}</text>
+              <text x={14} y={9} fill="#7dd3fc" fontSize={9}>{rl.charAt(0).toUpperCase() + rl.slice(1)}</text>
             </g>
           ))}
         </svg>
@@ -212,8 +212,8 @@ export default function MissionTimeline({ params, assessment, forecast }: Missio
 
       {/* Optimal timing note */}
       {assessment.optimalTiming && (
-        <p className="mt-2 text-xs text-[#96938d] border-t border-[#3a3830] pt-2">
-          <span className="text-[#e6c974]">⏱ Optimal:</span> {assessment.optimalTiming}
+        <p className="mt-2 text-xs text-[#7dd3fc] border-t border-[#1e3a5f] pt-2">
+          <span className="text-[#38bdf8]">⏱ Optimal:</span> {assessment.optimalTiming}
         </p>
       )}
     </div>

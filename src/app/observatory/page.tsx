@@ -38,7 +38,7 @@ function GridSkeleton() {
       {Array.from({ length: 6 }).map((_, i) => (
         <div
           key={i}
-          className="h-72 rounded-xl bg-[#29271f] border border-[#3a3830] animate-pulse"
+          className="h-72 rounded-xl bg-[#111f36] border border-[#1e3a5f] animate-pulse"
         />
       ))}
     </div>
@@ -49,10 +49,10 @@ function GridSkeleton() {
 function EmptyState({ message }: { message: string }) {
   return (
     <div className="flex flex-col items-center justify-center py-20 gap-4">
-      <div className="flex h-16 w-16 items-center justify-center rounded-full border border-[#3a3830] bg-[#24231f]">
-        <Telescope size={26} className="text-[#605943]" aria-hidden="true" />
+      <div className="flex h-16 w-16 items-center justify-center rounded-full border border-[#1e3a5f] bg-[#050a14]">
+        <Telescope size={26} className="text-[#1e3a5f]" aria-hidden="true" />
       </div>
-      <p className="text-sm text-[#605943] text-center max-w-xs">{message}</p>
+      <p className="text-sm text-[#1e3a5f] text-center max-w-xs">{message}</p>
     </div>
   );
 }
@@ -181,12 +181,12 @@ export default function ObservatoryPage() {
         className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
       >
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#8369ce]/15 border border-[#8369ce]/30">
-            <Telescope size={20} className="text-[#8369ce]" aria-hidden="true" />
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#a78bfa]/15 border border-[#a78bfa]/30">
+            <Telescope size={20} className="text-[#a78bfa]" aria-hidden="true" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-[#e8e7e5]">Space Observatories</h1>
-            <p className="text-xs text-[#605943] mt-0.5 flex items-center gap-2">
+            <h1 className="text-xl font-bold text-[#e0f2fe]">Space Observatories</h1>
+            <p className="text-xs text-[#1e3a5f] mt-0.5 flex items-center gap-2">
               <Newspaper size={11} aria-hidden="true" />
               {isLoading ? "Loading…" : `${allItems.length} items`}
               {lastUpdated && (
@@ -207,7 +207,7 @@ export default function ObservatoryPage() {
             onClick={() => refetch()}
             disabled={isFetching}
             aria-label="Refresh observatory news"
-            className="rounded-lg p-2 text-[#605943] hover:text-[#e8e7e5] hover:bg-[#29271f] transition-colors disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e6c974]"
+            className="rounded-lg p-2 text-[#1e3a5f] hover:text-[#e0f2fe] hover:bg-[#111f36] transition-colors disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#38bdf8]"
           >
             <RefreshCw
               size={15}
@@ -252,20 +252,20 @@ export default function ObservatoryPage() {
 
       {/* ── Active filter summary ────────────────────────────────────────── */}
       {!isLoading && (agencyFilter !== "All" || activeTags.size > 0 || dateRange !== "all") && (
-        <div className="flex items-center gap-2 text-xs text-[#96938d]">
+        <div className="flex items-center gap-2 text-xs text-[#7dd3fc]">
           <span>Showing {cardItems.length} result{cardItems.length !== 1 ? "s" : ""}</span>
           {agencyFilter !== "All" && (
-            <span className="rounded-full bg-[#29271f] border border-[#3a3830] px-2 py-0.5">
+            <span className="rounded-full bg-[#111f36] border border-[#1e3a5f] px-2 py-0.5">
               Agency: {agencyFilter}
             </span>
           )}
           {dateRange !== "all" && (
-            <span className="rounded-full bg-[#29271f] border border-[#3a3830] px-2 py-0.5">
+            <span className="rounded-full bg-[#111f36] border border-[#1e3a5f] px-2 py-0.5">
               {dateRange === "today" ? "Today" : dateRange === "week" ? "This Week" : "This Month"}
             </span>
           )}
           {activeTags.size > 0 && (
-            <span className="rounded-full bg-[#29271f] border border-[#3a3830] px-2 py-0.5">
+            <span className="rounded-full bg-[#111f36] border border-[#1e3a5f] px-2 py-0.5">
               {activeTags.size} topic{activeTags.size > 1 ? "s" : ""}
             </span>
           )}
@@ -300,8 +300,8 @@ export default function ObservatoryPage() {
 
       {/* Background refresh indicator */}
       {isFetching && !isLoading && (
-        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-xl border border-[#605943] bg-[#24231f]/90 px-4 py-2.5 text-xs text-[#96938d] shadow-xl backdrop-blur-sm">
-          <Loader2 size={13} className="animate-spin text-[#605943]" aria-hidden="true" />
+        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-xl border border-[#1e3a5f] bg-[#050a14]/90 px-4 py-2.5 text-xs text-[#7dd3fc] shadow-xl backdrop-blur-sm">
+          <Loader2 size={13} className="animate-spin text-[#1e3a5f]" aria-hidden="true" />
           Refreshing data…
         </div>
       )}

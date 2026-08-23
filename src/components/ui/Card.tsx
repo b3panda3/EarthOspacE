@@ -10,10 +10,10 @@ interface CardProps extends HTMLAttributes<HTMLDivElement> {
 
 const variantStyles: Record<CardVariant, string> = {
   default:
-    "bg-[#29271f] border border-[#605943] rounded-xl shadow-sm transition-all duration-200 hover:shadow-[0_4px_24px_rgba(230,201,116,0.08)] hover:border-[#c3ac6a]",
+    "bg-[#111f36] border border-[#1e3a5f] rounded-xl shadow-sm transition-all duration-200 hover:shadow-[0_4px_24px_rgba(230,201,116,0.08)] hover:border-[#0ea5e9]",
   elevated:
-    "bg-[#29271f] border border-[#605943] rounded-xl shadow-md transition-all duration-200 hover:shadow-[0_8px_32px_rgba(230,201,116,0.12)] hover:border-[#e6c974] hover:-translate-y-0.5",
-  flat: "bg-[#24231f] border border-[#3a3830] rounded-xl",
+    "bg-[#111f36] border border-[#1e3a5f] rounded-xl shadow-md transition-all duration-200 hover:shadow-[0_8px_32px_rgba(230,201,116,0.12)] hover:border-[#38bdf8] hover:-translate-y-0.5",
+  flat: "bg-[#050a14] border border-[#1e3a5f] rounded-xl",
 };
 
 /**
@@ -52,7 +52,7 @@ export function CardHeader({ className = "", ...props }: HTMLAttributes<HTMLDivE
 
 export function CardTitle({ className = "", ...props }: HTMLAttributes<HTMLHeadingElement>) {
   return (
-    <h3 className={`text-sm font-semibold text-[#e8e7e5] ${className}`} {...props} />
+    <h3 className={`text-sm font-semibold text-[#e0f2fe] ${className}`} {...props} />
   );
 }
 

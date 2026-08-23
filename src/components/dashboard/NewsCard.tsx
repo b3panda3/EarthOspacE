@@ -66,34 +66,34 @@ export default function NewsCard({ item, index }: NewsCardProps) {
           </Badge>
           <time
             dateTime={item.timestamp}
-            className="text-xs text-[#605943] shrink-0"
+            className="text-xs text-[#1e3a5f] shrink-0"
           >
             {relativeTime(item.timestamp)}
           </time>
         </div>
 
         {/* Title */}
-        <h2 className="text-sm font-semibold text-[#e8e7e5] leading-snug line-clamp-2">
+        <h2 className="text-sm font-semibold text-[#e0f2fe] leading-snug line-clamp-2">
           {item.title}
         </h2>
 
         {/* Summary — 2-line clamp */}
-        <p className="text-xs text-[#96938d] leading-relaxed line-clamp-2 flex-1">
+        <p className="text-xs text-[#7dd3fc] leading-relaxed line-clamp-2 flex-1">
           {item.summary}
         </p>
 
         {/* Divider */}
-        <div className="h-px bg-[#3a3830]" aria-hidden="true" />
+        <div className="h-px bg-[#1e3a5f]" aria-hidden="true" />
 
         {/* AI News Flash */}
         <div className="flex items-start gap-2">
           <Sparkles
             size={13}
             aria-hidden="true"
-            className="text-[#e6c974] mt-0.5 shrink-0"
+            className="text-[#38bdf8] mt-0.5 shrink-0"
           />
           <p
-            className="text-xs italic leading-relaxed text-[#e6c974] line-clamp-3"
+            className="text-xs italic leading-relaxed text-[#38bdf8] line-clamp-3"
             aria-label="AI News Flash commentary"
           >
             {item.flashCommentary}
@@ -102,11 +102,11 @@ export default function NewsCard({ item, index }: NewsCardProps) {
 
         {/* Footer: source */}
         <div className="flex items-center justify-between mt-auto pt-1">
-          <span className="text-xs text-[#605943]">{item.source}</span>
+          <span className="text-xs text-[#1e3a5f]">{item.source}</span>
           <ExternalLink
             size={12}
             aria-hidden="true"
-            className="text-[#605943]"
+            className="text-[#1e3a5f]"
           />
         </div>
       </Card>

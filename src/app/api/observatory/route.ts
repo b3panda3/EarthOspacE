@@ -84,7 +84,7 @@ async function fetchFeed(def: FeedDef): Promise<RawItem[]> {
 
 async function fetchApod(): Promise<RawItem | null> {
   try {
-    const apiKey = process.env.NASA_API_KEY;
+    const apiKey = process.env.NEXT_PUBLIC_NASA_API_KEY;
     const key = apiKey && !apiKey.startsWith("your_") ? apiKey : "DEMO_KEY";
     const res = await fetch(
       `https://api.nasa.gov/planetary/apod?api_key=${key}`,

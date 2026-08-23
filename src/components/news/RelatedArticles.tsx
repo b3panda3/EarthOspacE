@@ -41,23 +41,23 @@ export default function RelatedArticles({ articles, onOpenDetail }: RelatedArtic
   if (articles.length === 0) return null;
 
   return (
-    <section aria-label="Related articles" className="flex flex-col gap-3 pt-2 border-t border-[#3a3830]">
+    <section aria-label="Related articles" className="flex flex-col gap-3 pt-2 border-t border-[#1e3a5f]">
       <div className="flex items-center justify-between">
-        <h2 className="text-xs font-semibold text-[#96938d] uppercase tracking-wide">
+        <h2 className="text-xs font-semibold text-[#7dd3fc] uppercase tracking-wide">
           Related Articles
         </h2>
         <div className="flex items-center gap-1">
           <button
             onClick={() => scroll("left")}
             aria-label="Scroll left"
-            className="rounded p-1 text-[#605943] hover:text-[#e8e7e5] transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#e6c974]"
+            className="rounded p-1 text-[#1e3a5f] hover:text-[#e0f2fe] transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#38bdf8]"
           >
             <ChevronLeft size={14} aria-hidden="true" />
           </button>
           <button
             onClick={() => scroll("right")}
             aria-label="Scroll right"
-            className="rounded p-1 text-[#605943] hover:text-[#e8e7e5] transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#e6c974]"
+            className="rounded p-1 text-[#1e3a5f] hover:text-[#e0f2fe] transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#38bdf8]"
           >
             <ChevronRight size={14} aria-hidden="true" />
           </button>
@@ -73,21 +73,21 @@ export default function RelatedArticles({ articles, onOpenDetail }: RelatedArtic
           return (
             <article
               key={item.id}
-              className="w-56 shrink-0 snap-start rounded-xl border border-[#3a3830] bg-[#24231f] p-3 flex flex-col gap-2 hover:border-[#605943] transition-colors cursor-pointer"
+              className="w-56 shrink-0 snap-start rounded-xl border border-[#1e3a5f] bg-[#050a14] p-3 flex flex-col gap-2 hover:border-[#1e3a5f] transition-colors cursor-pointer"
               onClick={() => onOpenDetail?.(item)}
             >
               <div className="flex items-center justify-between gap-2">
                 <Badge variant={meta.variant} className="text-[10px]">{meta.label}</Badge>
-                <time className="text-[10px] text-[#605943]" dateTime={item.timestamp}>
+                <time className="text-[10px] text-[#1e3a5f]" dateTime={item.timestamp}>
                   {relativeTime(item.timestamp)}
                 </time>
               </div>
-              <p className="text-xs font-semibold text-[#e8e7e5] leading-snug line-clamp-2">
+              <p className="text-xs font-semibold text-[#e0f2fe] leading-snug line-clamp-2">
                 {item.title}
               </p>
               <div className="flex items-start gap-1.5 mt-auto">
-                <Sparkles size={10} className="text-[#e6c974] mt-0.5 shrink-0" aria-hidden="true" />
-                <p className="text-[10px] italic text-[#e6c974] line-clamp-2 leading-relaxed">
+                <Sparkles size={10} className="text-[#38bdf8] mt-0.5 shrink-0" aria-hidden="true" />
+                <p className="text-[10px] italic text-[#38bdf8] line-clamp-2 leading-relaxed">
                   {item.flashCommentary}
                 </p>
               </div>

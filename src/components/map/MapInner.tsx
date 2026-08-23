@@ -106,9 +106,9 @@ export default function MapInner(_props: MapInnerProps) {
       html: `<div style="
         width:36px;height:36px;border-radius:50%;
         background:rgba(131,105,206,0.25);
-        border:2px solid #8369ce;
+        border:2px solid #a78bfa;
         display:flex;align-items:center;justify-content:center;
-        font-size:12px;font-weight:700;color:#e8e7e5;
+        font-size:12px;font-weight:700;color:#e0f2fe;
       ">${count}</div>`,
       className: "",
       iconSize: [36, 36],
@@ -129,8 +129,8 @@ export default function MapInner(_props: MapInnerProps) {
         <div
           className="absolute top-0 left-0 right-0 z-[999] flex items-center gap-3 px-4 py-2.5"
           style={{
-            background: "rgba(16,15,14,0.85)",
-            borderBottom: "1px solid rgba(96,89,67,0.4)",
+            background: "rgba(8,16,32,0.85)",
+            borderBottom: "1px solid rgba(30,58,95,0.4)",
             backdropFilter: "blur(8px)",
           }}
         >
@@ -145,10 +145,10 @@ export default function MapInner(_props: MapInnerProps) {
 
         {/* Loading overlay */}
         {isLoading && (
-          <div className="absolute inset-0 z-[998] flex items-center justify-center bg-[#100f0e]/60">
-            <div className="flex items-center gap-3 rounded-xl border border-[#605943] bg-[#24231f] px-5 py-3">
-              <Loader2 size={18} className="animate-spin text-[#605943]" aria-hidden="true" />
-              <span className="text-sm text-[#96938d]">Loading map events…</span>
+          <div className="absolute inset-0 z-[998] flex items-center justify-center bg-[#000000]/60">
+            <div className="flex items-center gap-3 rounded-xl border border-[#1e3a5f] bg-[#050a14] px-5 py-3">
+              <Loader2 size={18} className="animate-spin text-[#1e3a5f]" aria-hidden="true" />
+              <span className="text-sm text-[#7dd3fc]">Loading map events…</span>
             </div>
           </div>
         )}
@@ -162,13 +162,14 @@ export default function MapInner(_props: MapInnerProps) {
         )}
 
         {/* The actual Leaflet map — fills area below toolbar */}
-        <div className="absolute inset-0 top-[46px]">
+        <div className="absolute inset-0 top-[46px]" style={{ minHeight: "200px" }}>
           <MapContainer
             center={[20, 0]}
             zoom={2}
             style={{ width: "100%", height: "100%" }}
             zoomControl={false}
             attributionControl={true}
+            containerPadding={[0, 0]}
           >
             <ReactTileLayer
               url={tile.url}

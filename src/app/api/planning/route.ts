@@ -64,9 +64,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const latestKp   = telemetry.kpPoints[telemetry.kpPoints.length - 1];
 
     const current: CurrentConditions = {
-      kpIndex:             latestKp?.kp              ?? 2.3,
-      solarWindSpeedKms:   latestWind?.speedKms       ?? 420,
-      solarWindDensity:    latestWind?.densityN        ?? 5.2,
+      kpIndex:             Number(latestKp?.kp) || 2.3,
+      solarWindSpeedKms:   Number(latestWind?.speedKms) || 420,
+      solarWindDensity:    Number(latestWind?.densityN) || 5.2,
       activeFlares:        telemetry.telemetry.filter((t) => t.type === "solar_flare").length,
       radiationBeltStatus: (latestKp?.kp ?? 0) >= 5 ? "storm" : (latestKp?.kp ?? 0) >= 3 ? "active" : "quiet",
       neoHazardousCount:   telemetry.neos.filter((n) => n.isPotentiallyHazardous).length,

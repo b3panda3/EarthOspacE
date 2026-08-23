@@ -51,7 +51,7 @@ interface NeoWsResponse {
 /* ── GET /api/events ─────────────────────────────────────────────────────── */
 
 export async function GET() {
-  const nasaKey = process.env.NASA_API_KEY;
+  const nasaKey = process.env.NEXT_PUBLIC_NASA_API_KEY;
   const hasKey = nasaKey && !nasaKey.startsWith("your_");
 
   /* ── EONET natural events ─────────────────────────────────────────────── */

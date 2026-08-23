@@ -94,25 +94,25 @@ export default function NewsCard({
           <div className="flex flex-col gap-1 min-w-0 flex-1">
             <div className="flex items-center gap-2 flex-wrap">
               <Badge variant={meta.variant}>{meta.label}</Badge>
-              <time dateTime={item.timestamp} className="text-xs text-[#605943]">
+              <time dateTime={item.timestamp} className="text-xs text-[#1e3a5f]">
                 {relativeTime(item.timestamp)}
               </time>
-              <span className="text-xs text-[#605943]">{item.source}</span>
+              <span className="text-xs text-[#1e3a5f]">{item.source}</span>
             </div>
             <button
               onClick={handleReadMore}
-              className="text-left text-sm font-semibold text-[#e8e7e5] hover:text-[#e6c974] transition-colors line-clamp-1 focus-visible:outline-none focus-visible:underline"
+              className="text-left text-sm font-semibold text-[#e0f2fe] hover:text-[#38bdf8] transition-colors line-clamp-1 focus-visible:outline-none focus-visible:underline"
             >
               {item.title}
             </button>
-            <p className="text-xs text-[#96938d] line-clamp-1">{item.summary}</p>
+            <p className="text-xs text-[#7dd3fc] line-clamp-1">{item.summary}</p>
           </div>
           <div className="flex items-center gap-1.5 shrink-0">
             {item.coordinates && (
               <button
                 onClick={handleMapLink}
                 aria-label="View on map"
-                className="rounded p-1.5 text-[#605943] hover:text-[#38bdf8] transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#e6c974]"
+                className="rounded p-1.5 text-[#1e3a5f] hover:text-[#38bdf8] transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#38bdf8]"
               >
                 <MapPin size={14} aria-hidden="true" />
               </button>
@@ -122,7 +122,7 @@ export default function NewsCard({
               aria-label={saved ? "Remove bookmark" : "Bookmark article"}
               aria-pressed={saved}
               disabled={syncing}
-              className={`rounded p-1.5 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#e6c974] disabled:opacity-50 ${saved ? "text-[#e6c974]" : "text-[#605943] hover:text-[#e6c974]"}`}
+              className={`rounded p-1.5 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#38bdf8] disabled:opacity-50 ${saved ? "text-[#38bdf8]" : "text-[#1e3a5f] hover:text-[#38bdf8]"}`}
             >
               {saved
                 ? <BookmarkCheck size={14} aria-hidden="true" />
@@ -131,7 +131,7 @@ export default function NewsCard({
             <Link
               href={`/news/${item.id}`}
               aria-label={`Read full article: ${item.title}`}
-              className="rounded p-1.5 text-[#605943] hover:text-[#e8e7e5] transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#e6c974]"
+              className="rounded p-1.5 text-[#1e3a5f] hover:text-[#e0f2fe] transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#38bdf8]"
             >
               <ArrowRight size={14} aria-hidden="true" />
             </Link>
@@ -159,7 +159,7 @@ export default function NewsCard({
         <div className="flex items-center justify-between gap-2">
           <Badge variant={meta.variant}>{meta.label}</Badge>
           <div className="flex items-center gap-1.5 ml-auto">
-            <time dateTime={item.timestamp} className="text-[10px] text-[#605943]">
+            <time dateTime={item.timestamp} className="text-[10px] text-[#1e3a5f]">
               {relativeTime(item.timestamp)}
             </time>
             {/* Map pin — only if coordinates present */}
@@ -167,7 +167,7 @@ export default function NewsCard({
               <button
                 onClick={handleMapLink}
                 aria-label="View location on map"
-                className="rounded p-1 text-[#605943] hover:text-[#38bdf8] transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#e6c974]"
+                className="rounded p-1 text-[#1e3a5f] hover:text-[#38bdf8] transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#38bdf8]"
               >
                 <MapPin size={13} aria-hidden="true" />
               </button>
@@ -178,7 +178,7 @@ export default function NewsCard({
               aria-label={saved ? "Remove bookmark" : "Save article"}
               aria-pressed={saved}
               disabled={syncing}
-              className={`rounded p-1 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#e6c974] disabled:opacity-50 ${saved ? "text-[#e6c974]" : "text-[#605943] hover:text-[#e6c974]"}`}
+              className={`rounded p-1 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#38bdf8] disabled:opacity-50 ${saved ? "text-[#38bdf8]" : "text-[#1e3a5f] hover:text-[#38bdf8]"}`}
             >
               {saved
                 ? <BookmarkCheck size={13} aria-hidden="true" />
@@ -190,34 +190,34 @@ export default function NewsCard({
         {/* Title */}
         <button
           onClick={handleReadMore}
-          className="text-left text-sm font-semibold text-[#e8e7e5] hover:text-[#e6c974] transition-colors leading-snug line-clamp-2 focus-visible:outline-none focus-visible:underline"
+          className="text-left text-sm font-semibold text-[#e0f2fe] hover:text-[#38bdf8] transition-colors leading-snug line-clamp-2 focus-visible:outline-none focus-visible:underline"
         >
           {item.title}
         </button>
 
         {/* Summary */}
-        <p className="text-xs text-[#96938d] leading-relaxed line-clamp-2 flex-1">
+        <p className="text-xs text-[#7dd3fc] leading-relaxed line-clamp-2 flex-1">
           {item.summary}
         </p>
 
         {/* Divider */}
-        <div className="h-px bg-[#3a3830]" aria-hidden="true" />
+        <div className="h-px bg-[#1e3a5f]" aria-hidden="true" />
 
         {/* AI Flash */}
         <div className="flex items-start gap-2">
-          <Sparkles size={12} aria-hidden="true" className="text-[#e6c974] mt-0.5 shrink-0" />
-          <p className="text-xs italic leading-relaxed text-[#e6c974] line-clamp-2">
+          <Sparkles size={12} aria-hidden="true" className="text-[#38bdf8] mt-0.5 shrink-0" />
+          <p className="text-xs italic leading-relaxed text-[#38bdf8] line-clamp-2">
             {item.flashCommentary}
           </p>
         </div>
 
         {/* Footer */}
         <div className="flex items-center justify-between mt-auto pt-1 gap-2">
-          <span className="text-[10px] text-[#605943] truncate">{item.source}</span>
+          <span className="text-[10px] text-[#1e3a5f] truncate">{item.source}</span>
           <div className="flex items-center gap-1.5 shrink-0">
             <button
               onClick={handleReadMore}
-              className="inline-flex items-center gap-1 text-[10px] font-medium text-[#96938d] hover:text-[#e6c974] transition-colors focus-visible:outline-none focus-visible:underline"
+              className="inline-flex items-center gap-1 text-[10px] font-medium text-[#7dd3fc] hover:text-[#38bdf8] transition-colors focus-visible:outline-none focus-visible:underline"
             >
               Read more
               <ArrowRight size={11} aria-hidden="true" />
@@ -229,7 +229,7 @@ export default function NewsCard({
                 rel="noopener noreferrer"
                 aria-label="External article"
                 onClick={(e) => e.stopPropagation()}
-                className="text-[#605943] hover:text-[#96938d] transition-colors"
+                className="text-[#1e3a5f] hover:text-[#7dd3fc] transition-colors"
               >
                 <ExternalLink size={11} aria-hidden="true" />
               </a>

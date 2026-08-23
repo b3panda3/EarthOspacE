@@ -41,16 +41,16 @@ export default function CategoryTabs({ active, onChange, counts }: CategoryTabsP
             onClick={() => onChange(id)}
             className={[
               "relative flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors duration-150",
-              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e6c974] focus-visible:ring-offset-2 focus-visible:ring-offset-[#100f0e]",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#38bdf8] focus-visible:ring-offset-2 focus-visible:ring-offset-[#000000]",
               isActive
-                ? "text-[#e6c974]"
-                : "text-[#605943] hover:text-[#96938d]",
+                ? "text-[#38bdf8]"
+                : "text-[#1e3a5f] hover:text-[#7dd3fc]",
             ].join(" ")}
           >
             {isActive && (
               <motion.span
                 layoutId="tab-pill"
-                className="absolute inset-0 rounded-lg bg-[#e6c974]/10 border border-[#e6c974]/30"
+                className="absolute inset-0 rounded-lg bg-[#38bdf8]/10 border border-[#38bdf8]/30"
                 transition={{ type: "spring", bounce: 0.2, duration: 0.4 }}
               />
             )}
@@ -59,8 +59,8 @@ export default function CategoryTabs({ active, onChange, counts }: CategoryTabsP
               <span
                 className={`relative z-10 text-[10px] tabular-nums rounded-full px-1.5 py-0.5 ${
                   isActive
-                    ? "bg-[#e6c974]/20 text-[#e6c974]"
-                    : "bg-[#29271f] text-[#605943]"
+                    ? "bg-[#38bdf8]/20 text-[#38bdf8]"
+                    : "bg-[#111f36] text-[#1e3a5f]"
                 }`}
               >
                 {count}

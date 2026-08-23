@@ -38,7 +38,7 @@ export default function FeaturedDiscovery({ item }: FeaturedDiscoveryProps) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
       aria-label="Featured discovery"
-      className="relative w-full overflow-hidden rounded-2xl border border-[#605943]"
+      className="relative w-full overflow-hidden rounded-2xl border border-[#1e3a5f]"
       style={{ minHeight: 280 }}
     >
       {/* Background: image or gradient */}
@@ -53,15 +53,15 @@ export default function FeaturedDiscovery({ item }: FeaturedDiscoveryProps) {
             priority
           />
           {/* Dark overlay gradient */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#100f0edd] via-[#100f0eaa] to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#100f0ecc] via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#000000dd] via-[#000000aa] to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#000000cc] via-transparent to-transparent" />
         </>
       ) : (
         <div
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(135deg, #29271f 0%, #24231f 40%, #1e1c18 100%)",
+              "linear-gradient(135deg, #111f36 0%, #050a14 40%, #1e1c18 100%)",
           }}
         />
       )}
@@ -70,24 +70,24 @@ export default function FeaturedDiscovery({ item }: FeaturedDiscoveryProps) {
       <div className="relative z-10 flex flex-col justify-end h-full p-6 sm:p-8 gap-4">
         {/* Top-row badges */}
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-[#e6c974]/15 border border-[#e6c974]/40 px-3 py-1 text-xs font-bold text-[#e6c974]">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-[#38bdf8]/15 border border-[#38bdf8]/40 px-3 py-1 text-xs font-bold text-[#38bdf8]">
             <TrendingUp size={11} aria-hidden="true" />
             Featured Discovery
           </span>
           <Badge variant={meta.variant}>{meta.label}</Badge>
-          <span className="ml-auto flex items-center gap-1 text-xs text-[#96938d]">
-            <Star size={11} className="text-[#e6c974]" aria-hidden="true" />
+          <span className="ml-auto flex items-center gap-1 text-xs text-[#7dd3fc]">
+            <Star size={11} className="text-[#38bdf8]" aria-hidden="true" />
             {item.relevanceScore}/10 relevance
           </span>
         </div>
 
         {/* Title */}
-        <h2 className="text-xl sm:text-2xl font-bold text-[#e8e7e5] leading-snug max-w-2xl">
+        <h2 className="text-xl sm:text-2xl font-bold text-[#e0f2fe] leading-snug max-w-2xl">
           {item.title}
         </h2>
 
         {/* Summary */}
-        <p className="text-sm text-[#96938d] leading-relaxed max-w-xl line-clamp-3">
+        <p className="text-sm text-[#7dd3fc] leading-relaxed max-w-xl line-clamp-3">
           {item.summary}
         </p>
 
@@ -101,12 +101,12 @@ export default function FeaturedDiscovery({ item }: FeaturedDiscoveryProps) {
           }}
         >
           <div className="flex items-center gap-1.5 mb-1.5">
-            <Sparkles size={12} aria-hidden="true" className="text-[#e6c974]" />
-            <span className="text-[10px] font-bold text-[#c3ac6a] tracking-wide uppercase">
+            <Sparkles size={12} aria-hidden="true" className="text-[#38bdf8]" />
+            <span className="text-[10px] font-bold text-[#0ea5e9] tracking-wide uppercase">
               IBM Granite · AI Context
             </span>
           </div>
-          <p className="text-sm text-[#e8e7e5] leading-relaxed">{item.aiContext}</p>
+          <p className="text-sm text-[#e0f2fe] leading-relaxed">{item.aiContext}</p>
         </div>
 
         {/* Footer */}
@@ -115,14 +115,14 @@ export default function FeaturedDiscovery({ item }: FeaturedDiscoveryProps) {
             {item.tags.map((tag) => (
               <span
                 key={tag}
-                className="rounded-full px-2.5 py-0.5 text-[10px] font-medium bg-[#100f0e]/60 text-[#96938d] border border-[#3a3830]"
+                className="rounded-full px-2.5 py-0.5 text-[10px] font-medium bg-[#000000]/60 text-[#7dd3fc] border border-[#1e3a5f]"
               >
                 {tag}
               </span>
             ))}
           </div>
           <div className="flex items-center gap-3">
-            <time dateTime={item.date} className="text-xs text-[#605943]">
+            <time dateTime={item.date} className="text-xs text-[#1e3a5f]">
               {dateLabel}
             </time>
             {item.link && (
@@ -130,7 +130,7 @@ export default function FeaturedDiscovery({ item }: FeaturedDiscoveryProps) {
                 href={item.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 rounded-lg border border-[#e6c974]/40 bg-[#e6c974]/10 px-3 py-1.5 text-xs font-medium text-[#e6c974] transition-colors hover:bg-[#e6c974]/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e6c974]"
+                className="inline-flex items-center gap-1.5 rounded-lg border border-[#38bdf8]/40 bg-[#38bdf8]/10 px-3 py-1.5 text-xs font-medium text-[#38bdf8] transition-colors hover:bg-[#38bdf8]/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#38bdf8]"
                 aria-label="Read full article"
               >
                 <ExternalLink size={12} aria-hidden="true" />

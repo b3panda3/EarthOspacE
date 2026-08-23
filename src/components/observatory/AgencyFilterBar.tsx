@@ -19,8 +19,8 @@ const AGENCIES: { id: AgencyFilter; label: string; variant: BadgeVariant; emoji:
 ];
 
 const AGENCY_COLORS: Record<string, string> = {
-  NASA: "#38bdf8", ESA: "#8369ce", JAXA: "#ef4444",
-  ISRO: "#f97316", CSA: "#34d399", SpaceFlightNow: "#96938d", Other: "#605943",
+  NASA: "#38bdf8", ESA: "#a78bfa", JAXA: "#ef4444",
+  ISRO: "#f97316", CSA: "#34d399", SpaceFlightNow: "#7dd3fc", Other: "#1e3a5f",
 };
 
 interface AgencyFilterBarProps {
@@ -40,7 +40,7 @@ export default function AgencyFilterBar({ active, onChange, counts }: AgencyFilt
       {AGENCIES.map(({ id, label, emoji }) => {
         const isActive = id === active;
         const count = id === "All" ? total : (counts[id] ?? 0);
-        const color = id === "All" ? "#e6c974" : AGENCY_COLORS[id] ?? "#605943";
+        const color = id === "All" ? "#38bdf8" : AGENCY_COLORS[id] ?? "#1e3a5f";
 
         return (
           <button
@@ -50,8 +50,8 @@ export default function AgencyFilterBar({ active, onChange, counts }: AgencyFilt
             onClick={() => onChange(id)}
             className={[
               "relative flex shrink-0 items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium transition-all duration-150",
-              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e6c974] focus-visible:ring-offset-2 focus-visible:ring-offset-[#100f0e]",
-              isActive ? "text-[#e8e7e5]" : "text-[#605943] hover:text-[#96938d]",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#38bdf8] focus-visible:ring-offset-2 focus-visible:ring-offset-[#000000]",
+              isActive ? "text-[#e0f2fe]" : "text-[#1e3a5f] hover:text-[#7dd3fc]",
             ].join(" ")}
             style={
               isActive
@@ -77,7 +77,7 @@ export default function AgencyFilterBar({ active, onChange, counts }: AgencyFilt
                 style={
                   isActive
                     ? { background: `${color}25`, color }
-                    : { background: "#29271f", color: "#605943" }
+                    : { background: "#111f36", color: "#1e3a5f" }
                 }
               >
                 {count}

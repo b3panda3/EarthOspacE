@@ -30,13 +30,13 @@ export default function QuestionnaireStepper({
         {/* Background connector track */}
         <div
           aria-hidden="true"
-          className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-0.5 bg-[#3a3830]"
+          className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-0.5 bg-[#1e3a5f]"
         />
 
         {/* Animated gold fill */}
         <motion.div
           aria-hidden="true"
-          className="absolute left-0 top-1/2 -translate-y-1/2 h-0.5 bg-[#e6c974] origin-left"
+          className="absolute left-0 top-1/2 -translate-y-1/2 h-0.5 bg-[#38bdf8] origin-left"
           initial={{ scaleX: 0 }}
           animate={{ scaleX: progressPct / 100 }}
           transition={{ duration: 0.4, ease: "easeInOut" }}
@@ -59,15 +59,15 @@ export default function QuestionnaireStepper({
                 aria-label={`Step ${step.number}: ${step.title}${isCompleted ? " — completed" : isActive ? " — current" : ""}`}
                 animate={{
                   backgroundColor: isCompleted
-                    ? "#e6c974"
+                    ? "#38bdf8"
                     : isActive
-                    ? "#29271f"
-                    : "#24231f",
+                    ? "#111f36"
+                    : "#050a14",
                   borderColor: isCompleted
-                    ? "#e6c974"
+                    ? "#38bdf8"
                     : isActive
-                    ? "#e6c974"
-                    : "#3a3830",
+                    ? "#38bdf8"
+                    : "#1e3a5f",
                   scale: isActive ? 1.1 : 1,
                 }}
                 transition={{ duration: 0.25 }}
@@ -77,12 +77,12 @@ export default function QuestionnaireStepper({
                   <CheckIcon
                     size={14}
                     aria-hidden="true"
-                    className="text-[#100f0e]"
+                    className="text-[#000000]"
                   />
                 ) : (
                   <span
                     className={
-                      isActive ? "text-[#e6c974]" : "text-[#605943]"
+                      isActive ? "text-[#38bdf8]" : "text-[#1e3a5f]"
                     }
                   >
                     {step.number}
@@ -95,8 +95,8 @@ export default function QuestionnaireStepper({
                 className={[
                   "hidden sm:block text-xs font-medium text-center max-w-[70px] leading-tight",
                   isCompleted || isActive
-                    ? "text-[#e8e7e5]"
-                    : "text-[#605943]",
+                    ? "text-[#e0f2fe]"
+                    : "text-[#1e3a5f]",
                 ].join(" ")}
               >
                 {step.title}
@@ -108,7 +108,7 @@ export default function QuestionnaireStepper({
 
       {/* ── Gold progress bar (below bubbles) ─────────────────────────── */}
       <div
-        className="mt-5 h-1 w-full rounded-full bg-[#3a3830] overflow-hidden"
+        className="mt-5 h-1 w-full rounded-full bg-[#1e3a5f] overflow-hidden"
         role="progressbar"
         aria-valuemin={0}
         aria-valuemax={100}
@@ -116,7 +116,7 @@ export default function QuestionnaireStepper({
         aria-label={`Questionnaire progress: step ${currentStep + 1} of ${totalSteps}`}
       >
         <motion.div
-          className="h-full rounded-full bg-gradient-to-r from-[#c3ac6a] to-[#e6c974]"
+          className="h-full rounded-full bg-gradient-to-r from-[#0ea5e9] to-[#38bdf8]"
           initial={{ width: 0 }}
           animate={{ width: `${progressPct}%` }}
           transition={{ duration: 0.4, ease: "easeInOut" }}
@@ -125,10 +125,10 @@ export default function QuestionnaireStepper({
 
       {/* ── Current step description ───────────────────────────────────── */}
       <div className="mt-4 text-center sm:text-left">
-        <p className="text-xs text-[#96938d]">
+        <p className="text-xs text-[#7dd3fc]">
           Step {currentStep + 1} of {totalSteps}
         </p>
-        <p className="text-sm font-semibold text-[#e8e7e5] mt-0.5">
+        <p className="text-sm font-semibold text-[#e0f2fe] mt-0.5">
           {steps[currentStep]?.description}
         </p>
       </div>

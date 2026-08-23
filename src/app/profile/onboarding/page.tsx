@@ -110,10 +110,10 @@ function PillSelect({
               onClick={() => onChange(opt)}
               className={[
                 "rounded-lg px-3 py-2 text-sm font-medium border transition-all duration-150",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e6c974] focus-visible:ring-offset-2 focus-visible:ring-offset-[#100f0e]",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#38bdf8] focus-visible:ring-offset-2 focus-visible:ring-offset-[#000000]",
                 selected
-                  ? "bg-[#e6c974]/15 border-[#e6c974] text-[#e6c974]"
-                  : "bg-[#24231f] border-[#3a3830] text-[#96938d] hover:border-[#605943] hover:text-[#e8e7e5]",
+                  ? "bg-[#38bdf8]/15 border-[#38bdf8] text-[#38bdf8]"
+                  : "bg-[#050a14] border-[#1e3a5f] text-[#7dd3fc] hover:border-[#1e3a5f] hover:text-[#e0f2fe]",
               ].join(" ")}
             >
               {opt}
@@ -141,13 +141,13 @@ function SuggestedTextInput({
 }) {
   return (
     <div className="flex flex-col gap-2">
-      <label className="text-sm font-medium text-[#e8e7e5]">{label}</label>
+      <label className="text-sm font-medium text-[#e0f2fe]">{label}</label>
       <input
         type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder ?? label}
-        className="h-10 rounded-lg px-3 text-sm bg-[#24231f] border border-[#3a3830] text-[#e8e7e5] placeholder-[#605943] focus:outline-none focus:ring-2 focus:ring-[#e6c974]/60 focus:border-[#e6c974]/60 transition-colors"
+        className="h-10 rounded-lg px-3 text-sm bg-[#050a14] border border-[#1e3a5f] text-[#e0f2fe] placeholder-[#1e3a5f] focus:outline-none focus:ring-2 focus:ring-[#38bdf8]/60 focus:border-[#38bdf8]/60 transition-colors"
       />
       <div className="flex flex-wrap gap-1.5" aria-label="Suggestions">
         {suggestions.map((s) => (
@@ -155,7 +155,7 @@ function SuggestedTextInput({
             key={s}
             type="button"
             onClick={() => onChange(s)}
-            className="rounded px-2 py-0.5 text-xs bg-[#29271f] border border-[#3a3830] text-[#96938d] hover:border-[#605943] hover:text-[#e8e7e5] transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#e6c974]"
+            className="rounded px-2 py-0.5 text-xs bg-[#111f36] border border-[#1e3a5f] text-[#7dd3fc] hover:border-[#1e3a5f] hover:text-[#e0f2fe] transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#38bdf8]"
           >
             {s}
           </button>
@@ -179,7 +179,7 @@ function StarRating({
 
   return (
     <div className="flex items-center justify-between gap-3 py-2">
-      <span className="text-sm text-[#e8e7e5] min-w-0 flex-1 truncate">
+      <span className="text-sm text-[#e0f2fe] min-w-0 flex-1 truncate">
         {category}
       </span>
       <div
@@ -200,13 +200,13 @@ function StarRating({
               onMouseLeave={() => setHovered(0)}
               onFocus={() => setHovered(star)}
               onBlur={() => setHovered(0)}
-              className="p-0.5 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#e6c974] rounded"
+              className="p-0.5 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#38bdf8] rounded"
             >
               <Star
                 size={18}
                 aria-hidden="true"
                 className={`transition-colors duration-100 ${
-                  filled ? "fill-[#e6c974] text-[#e6c974]" : "text-[#3a3830]"
+                  filled ? "fill-[#38bdf8] text-[#38bdf8]" : "text-[#1e3a5f]"
                 }`}
               />
             </button>
@@ -229,11 +229,11 @@ function YesNoToggle({
 }) {
   return (
     <div className="flex items-center justify-between gap-4">
-      <span className="text-sm font-medium text-[#e8e7e5]">{label}</span>
+      <span className="text-sm font-medium text-[#e0f2fe]">{label}</span>
       <div
         role="group"
         aria-label={label}
-        className="flex rounded-lg border border-[#3a3830] overflow-hidden"
+        className="flex rounded-lg border border-[#1e3a5f] overflow-hidden"
       >
         {[
           { label: "Yes", val: true },
@@ -246,10 +246,10 @@ function YesNoToggle({
             onClick={() => onChange(val)}
             className={[
               "px-4 py-1.5 text-sm font-medium transition-colors duration-150",
-              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#e6c974]",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#38bdf8]",
               value === val
-                ? "bg-[#e6c974]/15 text-[#e6c974]"
-                : "text-[#605943] hover:text-[#e8e7e5]",
+                ? "bg-[#38bdf8]/15 text-[#38bdf8]"
+                : "text-[#1e3a5f] hover:text-[#e0f2fe]",
             ].join(" ")}
           >
             {l}
@@ -334,14 +334,14 @@ export default function OnboardingPage() {
     <div className="mx-auto max-w-2xl px-2 py-8 sm:py-12">
       {/* Hero heading */}
       <div className="mb-8 text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-[#e6c974]/30 bg-[#e6c974]/10 px-3 py-1 text-xs font-medium text-[#e6c974] mb-3">
+        <div className="inline-flex items-center gap-2 rounded-full border border-[#38bdf8]/30 bg-[#38bdf8]/10 px-3 py-1 text-xs font-medium text-[#38bdf8] mb-3">
           <Sparkles size={12} aria-hidden="true" />
           Personalized for you
         </div>
-        <h1 className="text-2xl sm:text-3xl font-bold text-[#e8e7e5]">
+        <h1 className="text-2xl sm:text-3xl font-bold text-[#e0f2fe]">
           Mission Briefing
         </h1>
-        <p className="mt-2 text-sm text-[#96938d]">
+        <p className="mt-2 text-sm text-[#7dd3fc]">
           Answer a few questions so IBM Granite can build your tailored space profile.
         </p>
       </div>
@@ -369,7 +369,7 @@ export default function OnboardingPage() {
               {step === 0 && (
                 <div className="flex flex-col gap-6">
                   <div>
-                    <p className="mb-3 text-sm font-medium text-[#e8e7e5]">
+                    <p className="mb-3 text-sm font-medium text-[#e0f2fe]">
                       What is your primary role?
                     </p>
                     <PillSelect
@@ -387,7 +387,7 @@ export default function OnboardingPage() {
                     placeholder="e.g. NASA, ESA, Independent..."
                   />
                   <div>
-                    <p className="mb-3 text-sm font-medium text-[#e8e7e5]">
+                    <p className="mb-3 text-sm font-medium text-[#e0f2fe]">
                       Select companion appearance (affects AI companion physique)
                     </p>
                     <PillSelect
@@ -404,7 +404,7 @@ export default function OnboardingPage() {
               {step === 1 && (
                 <div className="flex flex-col gap-6">
                   <div>
-                    <p className="mb-3 text-sm font-medium text-[#e8e7e5]">
+                    <p className="mb-3 text-sm font-medium text-[#e0f2fe]">
                       What type of mission are you primarily interested in?
                     </p>
                     <PillSelect
@@ -417,7 +417,7 @@ export default function OnboardingPage() {
                   <div>
                     <label
                       htmlFor="location-select"
-                      className="mb-2 block text-sm font-medium text-[#e8e7e5]"
+                      className="mb-2 block text-sm font-medium text-[#e0f2fe]"
                     >
                       What is your current location?
                     </label>
@@ -425,7 +425,7 @@ export default function OnboardingPage() {
                       id="location-select"
                       value={answers.location}
                       onChange={(e) => update("location", e.target.value)}
-                      className="h-10 w-full rounded-lg px-3 text-sm bg-[#24231f] border border-[#3a3830] text-[#e8e7e5] focus:outline-none focus:ring-2 focus:ring-[#e6c974]/60 focus:border-[#e6c974]/60 transition-colors appearance-none cursor-pointer"
+                      className="h-10 w-full rounded-lg px-3 text-sm bg-[#050a14] border border-[#1e3a5f] text-[#e0f2fe] focus:outline-none focus:ring-2 focus:ring-[#38bdf8]/60 focus:border-[#38bdf8]/60 transition-colors appearance-none cursor-pointer"
                     >
                       <option value="" disabled>
                         Select location…
@@ -443,13 +443,13 @@ export default function OnboardingPage() {
               {/* ── Step 3: Interest Ratings ──────────────────────────── */}
               {step === 2 && (
                 <div>
-                  <p className="mb-1 text-sm font-medium text-[#e8e7e5]">
+                  <p className="mb-1 text-sm font-medium text-[#e0f2fe]">
                     Rate your interest in each category
                   </p>
-                  <p className="mb-4 text-xs text-[#605943]">
+                  <p className="mb-4 text-xs text-[#1e3a5f]">
                     1 star = low interest &nbsp;·&nbsp; 5 stars = top priority
                   </p>
-                  <div className="divide-y divide-[#3a3830]">
+                  <div className="divide-y divide-[#1e3a5f]">
                     {INTEREST_CATEGORIES.map((cat) => (
                       <StarRating
                         key={cat}
@@ -466,7 +466,7 @@ export default function OnboardingPage() {
               {step === 3 && (
                 <div className="flex flex-col gap-5">
                   <div>
-                    <p className="mb-3 text-sm font-medium text-[#e8e7e5]">
+                    <p className="mb-3 text-sm font-medium text-[#e0f2fe]">
                       How often would you like to receive updates?
                     </p>
                     <PillSelect
@@ -477,7 +477,7 @@ export default function OnboardingPage() {
                     />
                   </div>
                   <div>
-                    <p className="mb-3 text-sm font-medium text-[#e8e7e5]">
+                    <p className="mb-3 text-sm font-medium text-[#e0f2fe]">
                       Which display format do you prefer?
                     </p>
                     <PillSelect

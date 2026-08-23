@@ -53,16 +53,16 @@ function isMobileViewport(): boolean {
 
 function WebGLFallback() {
   return (
-    <div className="w-full h-full flex items-center justify-center bg-[#0a0908]">
+    <div className="w-full h-full flex items-center justify-center bg-[#000000]">
       <div className="text-center max-w-xs px-6">
         {/* Robot emoji as a static stand-in */}
         <div className="text-5xl mb-4 select-none" aria-hidden="true">🤖</div>
-        <h2 className="text-sm font-semibold text-[#e8e7e5] mb-2">3D Rendering Unavailable</h2>
-        <p className="text-xs text-[#96938d] leading-relaxed">
+        <h2 className="text-sm font-semibold text-[#e0f2fe] mb-2">3D Rendering Unavailable</h2>
+        <p className="text-xs text-[#7dd3fc] leading-relaxed">
           Your browser does not support WebGL2, which is required for the ASTRO 3D scene.
           Try Chrome, Firefox, or Edge for the full experience.
         </p>
-        <p className="text-[10px] text-[#605943] mt-3">
+        <p className="text-[10px] text-[#1e3a5f] mt-3">
           Safari users: ensure GPU Process is enabled in Advanced Settings.
         </p>
       </div>
@@ -112,10 +112,10 @@ export default function RobotScene({
         castShadow={false}
       />
       {/* Warm rim light from below-left */}
-      <pointLight position={[-1.5, -0.5, 1]} color="#e6c974" intensity={0.6} distance={5} />
+      <pointLight position={[-1.5, -0.5, 1]} color="#38bdf8" intensity={0.6} distance={5} />
       {/* Cool fill from right — skip on mobile to reduce draw calls */}
       {!mobile && (
-        <pointLight position={[2, 0.5, -1]} color="#8369ce" intensity={0.4} distance={5} />
+        <pointLight position={[2, 0.5, -1]} color="#a78bfa" intensity={0.4} distance={5} />
       )}
 
       {/* ── Star field ──────────────────────────────────────────────────── */}

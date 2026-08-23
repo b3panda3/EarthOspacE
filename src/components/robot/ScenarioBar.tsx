@@ -24,7 +24,7 @@ const SCENARIOS: Scenario[] = [
     label:       "Daily Briefing",
     icon:        "📋",
     desc:        "Structured mission briefing",
-    accentColor: "#e6c974",
+    accentColor: "#38bdf8",
   },
   {
     id:          "space_weather",
@@ -40,7 +40,7 @@ const SCENARIOS: Scenario[] = [
     icon:        "💡",
     desc:        "Creative problem-solving",
     starter:     "Let's brainstorm some novel approaches to space exploration challenges.",
-    accentColor: "#8369ce",
+    accentColor: "#a78bfa",
   },
   {
     id:          "emergency",
@@ -83,9 +83,9 @@ export default function ScenarioBar({ active, onChange, disabled }: ScenarioBarP
             onClick={() => onChange(sc.id, sc.starter)}
             className="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all whitespace-nowrap"
             style={{
-              backgroundColor: isActive ? sc.accentColor + "20" : "#24231f",
-              border:          `1px solid ${isActive ? sc.accentColor : "#3a3830"}`,
-              color:           isActive ? sc.accentColor : "#96938d",
+              backgroundColor: isActive ? sc.accentColor + "20" : "#050a14",
+              border:          `1px solid ${isActive ? sc.accentColor : "#1e3a5f"}`,
+              color:           isActive ? sc.accentColor : "#7dd3fc",
               opacity:         disabled ? 0.5 : 1,
               cursor:          disabled ? "not-allowed" : "pointer",
             }}

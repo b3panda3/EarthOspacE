@@ -15,22 +15,22 @@ const AGENCY_META: Record<
   { variant: BadgeVariant; color: string; abbr: string }
 > = {
   NASA:           { variant: "blue",   color: "#38bdf8", abbr: "NASA"  },
-  ESA:            { variant: "purple", color: "#8369ce", abbr: "ESA"   },
+  ESA:            { variant: "purple", color: "#a78bfa", abbr: "ESA"   },
   JAXA:           { variant: "red",    color: "#ef4444", abbr: "JAXA"  },
   ISRO:           { variant: "gold",   color: "#f97316", abbr: "ISRO"  },
   CSA:            { variant: "green",  color: "#34d399", abbr: "CSA"   },
-  SpaceFlightNow: { variant: "muted",  color: "#96938d", abbr: "SFN"   },
-  Other:          { variant: "muted",  color: "#605943", abbr: "OTHER" },
+  SpaceFlightNow: { variant: "muted",  color: "#7dd3fc", abbr: "SFN"   },
+  Other:          { variant: "muted",  color: "#1e3a5f", abbr: "OTHER" },
 };
 
 /* ── Relevance score bar ─────────────────────────────────────────────────── */
 function RelevanceBar({ score }: { score: number }) {
   const pct = (score / 10) * 100;
-  const color = score >= 8 ? "#e6c974" : score >= 5 ? "#8369ce" : "#605943";
+  const color = score >= 8 ? "#38bdf8" : score >= 5 ? "#a78bfa" : "#1e3a5f";
   return (
     <div className="flex items-center gap-2" aria-label={`Relevance score: ${score} out of 10`}>
-      <span className="text-[10px] text-[#605943] shrink-0">Relevance</span>
-      <div className="flex-1 h-1 rounded-full bg-[#3a3830] overflow-hidden">
+      <span className="text-[10px] text-[#1e3a5f] shrink-0">Relevance</span>
+      <div className="flex-1 h-1 rounded-full bg-[#1e3a5f] overflow-hidden">
         <div
           className="h-full rounded-full transition-all duration-500"
           style={{ width: `${pct}%`, background: color }}
@@ -80,7 +80,7 @@ export default function ObservatoryCard({ item, index }: ObservatoryCardProps) {
               sizes="(max-width: 768px) 100vw, 400px"
               unoptimized
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#29271f] via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#111f36] via-transparent to-transparent" />
             {/* Agency badge over image */}
             <div className="absolute bottom-2 left-3">
               <Badge variant={meta.variant}>{meta.abbr}</Badge>
@@ -103,11 +103,11 @@ export default function ObservatoryCard({ item, index }: ObservatoryCardProps) {
             {item.imageUrl ? (
               <div /> /* badge already shown on image */
             ) : (
-              <span className="text-xs text-[#605943]">{item.agency}</span>
+              <span className="text-xs text-[#1e3a5f]">{item.agency}</span>
             )}
             <time
               dateTime={item.date}
-              className="ml-auto flex items-center gap-1 text-[10px] text-[#605943]"
+              className="ml-auto flex items-center gap-1 text-[10px] text-[#1e3a5f]"
             >
               <Calendar size={10} aria-hidden="true" />
               {dateLabel}
@@ -115,12 +115,12 @@ export default function ObservatoryCard({ item, index }: ObservatoryCardProps) {
           </div>
 
           {/* Title */}
-          <h2 className="text-sm font-semibold text-[#e8e7e5] leading-snug line-clamp-2">
+          <h2 className="text-sm font-semibold text-[#e0f2fe] leading-snug line-clamp-2">
             {item.title}
           </h2>
 
           {/* Original summary */}
-          <p className="text-xs text-[#96938d] leading-relaxed line-clamp-3 flex-1">
+          <p className="text-xs text-[#7dd3fc] leading-relaxed line-clamp-3 flex-1">
             {item.summary}
           </p>
 
@@ -133,12 +133,12 @@ export default function ObservatoryCard({ item, index }: ObservatoryCardProps) {
             }}
           >
             <div className="flex items-center gap-1.5 mb-1.5">
-              <Sparkles size={11} aria-hidden="true" className="text-[#e6c974]" />
-              <span className="text-[10px] font-semibold text-[#c3ac6a]">
+              <Sparkles size={11} aria-hidden="true" className="text-[#38bdf8]" />
+              <span className="text-[10px] font-semibold text-[#0ea5e9]">
                 AI Context
               </span>
             </div>
-            <p className="text-xs text-[#e8e7e5] leading-relaxed line-clamp-3">
+            <p className="text-xs text-[#e0f2fe] leading-relaxed line-clamp-3">
               {item.aiContext}
             </p>
           </div>
@@ -149,7 +149,7 @@ export default function ObservatoryCard({ item, index }: ObservatoryCardProps) {
               {item.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="rounded-full px-2 py-0.5 text-[10px] font-medium bg-[#24231f] text-[#96938d] border border-[#3a3830]"
+                  className="rounded-full px-2 py-0.5 text-[10px] font-medium bg-[#050a14] text-[#7dd3fc] border border-[#1e3a5f]"
                 >
                   {tag}
                 </span>
@@ -166,7 +166,7 @@ export default function ObservatoryCard({ item, index }: ObservatoryCardProps) {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`Read full article: ${item.title}`}
-                className="shrink-0 rounded-lg p-1.5 text-[#605943] hover:text-[#e6c974] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e6c974]"
+                className="shrink-0 rounded-lg p-1.5 text-[#1e3a5f] hover:text-[#38bdf8] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#38bdf8]"
               >
                 <ExternalLink size={14} aria-hidden="true" />
               </a>

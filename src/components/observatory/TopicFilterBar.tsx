@@ -18,13 +18,13 @@ export default function TopicFilterBar({
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center justify-between">
-        <span className="text-xs font-semibold text-[#96938d]">
+        <span className="text-xs font-semibold text-[#7dd3fc]">
           Topic Filters
         </span>
         {activeTags.size > 0 && (
           <button
             onClick={onClear}
-            className="text-[10px] text-[#605943] hover:text-[#e6c974] transition-colors focus-visible:outline-none focus-visible:underline"
+            className="text-[10px] text-[#1e3a5f] hover:text-[#38bdf8] transition-colors focus-visible:outline-none focus-visible:underline"
           >
             Clear ({activeTags.size})
           </button>
@@ -45,10 +45,10 @@ export default function TopicFilterBar({
               onClick={() => onToggle(tag)}
               className={[
                 "rounded-full px-2.5 py-1 text-xs font-medium border transition-all duration-150",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e6c974] focus-visible:ring-offset-2 focus-visible:ring-offset-[#100f0e]",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#38bdf8] focus-visible:ring-offset-2 focus-visible:ring-offset-[#000000]",
                 active
-                  ? "bg-[#8369ce]/15 border-[#8369ce]/50 text-[#8369ce]"
-                  : "bg-[#24231f] border-[#3a3830] text-[#605943] hover:border-[#605943] hover:text-[#96938d]",
+                  ? "bg-[#a78bfa]/15 border-[#a78bfa]/50 text-[#a78bfa]"
+                  : "bg-[#050a14] border-[#1e3a5f] text-[#1e3a5f] hover:border-[#1e3a5f] hover:text-[#7dd3fc]",
               ].join(" ")}
             >
               {tag}

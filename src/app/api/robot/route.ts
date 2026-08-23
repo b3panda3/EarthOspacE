@@ -43,8 +43,8 @@ async function buildPlatformContext(): Promise<PlatformContext> {
   try {
     const telemetry = await withCache("telemetry:full", () => fetchAllTelemetry(), TTL.TELEMETRY);
 
-    const kp    = telemetry.kpPoints[telemetry.kpPoints.length - 1]?.kp    ?? 0;
-    const sw    = telemetry.solarWind[telemetry.solarWind.length - 1]?.speedKms ?? 420;
+    const kp    = Number(telemetry.kpPoints[telemetry.kpPoints.length - 1]?.kp) || 0;
+    const sw    = Number(telemetry.solarWind[telemetry.solarWind.length - 1]?.speedKms) || 420;
     const level = kp >= 7 ? "red" : kp >= 5 ? "orange" : kp >= 3 ? "yellow" : "green";
 
     return {
@@ -58,7 +58,7 @@ async function buildPlatformContext(): Promise<PlatformContext> {
         .map((n) => `NEO ${n.name} approach ${n.closeApproachDate}`),
     };
   } catch {
-    return { alertLevel: "green" };
+    return { alertLevel: "green" as const, currentKp: 0, solarWindSpeed: 0 };
   }
 }
 
@@ -98,7 +98,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
     return NextResponse.json({
       reply: DEMO_ASTRO_REPLIES[replyKey] ?? DEMO_ASTRO_REPLIES.default,
-      context: { alertLevel: "green", currentKp: 2.3, solarWindSpeed: 412 },
+      context: { alertLevel: "green" as const, currentKp: 2.3, solarWindSpeed: 412 },
       demo: true,
     });
   }

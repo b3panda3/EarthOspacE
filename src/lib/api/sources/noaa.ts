@@ -64,8 +64,8 @@ export async function fetchSolarWind(): Promise<{
 
       const points: SolarWindPoint[] = rows.slice(-20).map((r) => ({
         timestamp: String(r[0]).replace(" ", "T") + "Z",
-        densityN:  parseFloat(parseFloat(String(r[1])).toFixed(2)),
-        speedKms:  parseFloat(parseFloat(String(r[2])).toFixed(1)),
+        densityN:  Number(parseFloat(String(r[1])).toFixed(2)) || 0,
+        speedKms:  Number(parseFloat(String(r[2])).toFixed(1)) || 0,
         tempK:     parseFloat(parseFloat(String(r[3])).toFixed(0)),
       }));
 
@@ -143,9 +143,9 @@ export async function fetchKpIndex(): Promise<{
       const points: KpPoint[] = raw
         .filter((r) => r.kp != null)
         .slice(-20)
-        .map((r) => ({ timestamp: r.time_tag, kp: r.kp }));
+        .map((r) => ({ timestamp: r.time_tag, kp: Number(r.kp) || 0 }));
 
-      const current = points[points.length - 1]?.kp ?? 0;
+      const current = Number(points[points.length - 1]?.kp) || 0;
 
       return {
         points,
@@ -164,7 +164,7 @@ export async function fetchKpIndex(): Promise<{
     } catch (err) {
       console.warn("[noaa/kp] fetch failed, using demo:", (err as Error).message);
       const now = Date.now();
-      const demoKp = 2.3 + Math.random() * 1.5;
+      const demoKp = Number((2.3 + Math.random() * 1.5).toFixed(1));
       const demoPoints: KpPoint[] = Array.from({ length: 20 }, (_, i) => ({
         timestamp: new Date(now - (19 - i) * 3 * 3_600_000).toISOString(),
         kp: Math.max(0, Math.min(9, 2.5 + Math.sin(i * 0.4) * 1.2 + Math.random() * 0.8)),

@@ -14,11 +14,11 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variantClasses: Record<ButtonVariant, string> = {
   primary:
-    "bg-[#e6c974] text-[#100f0e] font-semibold hover:bg-[#c3ac6a] focus-visible:ring-[#e6c974]",
+    "bg-[#38bdf8] text-[#000000] font-semibold hover:bg-[#0ea5e9] focus-visible:ring-[#38bdf8]",
   secondary:
-    "bg-[#8369ce] text-white font-semibold hover:bg-[#6f58b0] focus-visible:ring-[#8369ce]",
+    "bg-[#a78bfa] text-white font-semibold hover:bg-[#6f58b0] focus-visible:ring-[#a78bfa]",
   ghost:
-    "bg-transparent text-[#e8e7e5] border border-[#605943] hover:border-[#e6c974] hover:text-[#e6c974] focus-visible:ring-[#e6c974]",
+    "bg-transparent text-[#e0f2fe] border border-[#1e3a5f] hover:border-[#38bdf8] hover:text-[#38bdf8] focus-visible:ring-[#38bdf8]",
   danger:
     "bg-red-700 text-white font-semibold hover:bg-red-600 focus-visible:ring-red-500",
 };
@@ -54,7 +54,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         aria-busy={loading}
         className={[
           "inline-flex items-center justify-center gap-2 transition-all duration-150",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[#100f0e]",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[#000000]",
           "disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none",
           variantClasses[variant],
           sizeClasses[size],

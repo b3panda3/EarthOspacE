@@ -115,7 +115,7 @@ export default function NewsDetail({ article, onClose }: NewsDetailProps) {
         aria-label={full.title}
         onClick={(e) => { if (e.target === overlayRef.current) onClose(); }}
         className="fixed inset-0 z-[2000] flex items-center justify-center p-4 sm:p-8"
-        style={{ background: "rgba(16,15,14,0.85)", backdropFilter: "blur(6px)" }}
+        style={{ background: "rgba(8,16,32,0.85)", backdropFilter: "blur(6px)" }}
       >
         {/* Panel */}
         <motion.div
@@ -123,7 +123,7 @@ export default function NewsDetail({ article, onClose }: NewsDetailProps) {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.96, y: 16 }}
           transition={{ duration: 0.25, ease: "easeOut" }}
-          className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl border border-[#605943] shadow-2xl"
+          className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl border border-[#1e3a5f] shadow-2xl"
           style={{ background: "#1a1916" }}
         >
           {/* ── Close button ──────────────────────────────────────────── */}
@@ -131,7 +131,7 @@ export default function NewsDetail({ article, onClose }: NewsDetailProps) {
             ref={closeRef}
             onClick={onClose}
             aria-label="Close article"
-            className="absolute top-4 right-4 z-10 rounded-lg p-1.5 text-[#605943] hover:bg-[#29271f] hover:text-[#e8e7e5] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e6c974]"
+            className="absolute top-4 right-4 z-10 rounded-lg p-1.5 text-[#1e3a5f] hover:bg-[#111f36] hover:text-[#e0f2fe] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#38bdf8]"
           >
             <X size={18} aria-hidden="true" />
           </button>
@@ -142,16 +142,16 @@ export default function NewsDetail({ article, onClose }: NewsDetailProps) {
               <div className="flex items-center gap-2 flex-wrap">
                 <Badge variant={meta.variant}>{meta.label}</Badge>
                 {full.location && (
-                  <span className="flex items-center gap-1 text-xs text-[#605943]">
+                  <span className="flex items-center gap-1 text-xs text-[#1e3a5f]">
                     <MapPin size={11} aria-hidden="true" />
                     {full.location}
                   </span>
                 )}
               </div>
-              <h1 className="text-lg sm:text-xl font-bold text-[#e8e7e5] leading-snug">
+              <h1 className="text-lg sm:text-xl font-bold text-[#e0f2fe] leading-snug">
                 {full.title}
               </h1>
-              <div className="flex items-center gap-3 flex-wrap text-xs text-[#605943]">
+              <div className="flex items-center gap-3 flex-wrap text-xs text-[#1e3a5f]">
                 <span className="flex items-center gap-1">
                   <Calendar size={11} aria-hidden="true" />
                   <time dateTime={full.timestamp}>{dateLabel}</time>
@@ -164,7 +164,7 @@ export default function NewsDetail({ article, onClose }: NewsDetailProps) {
             </div>
 
             {/* ── Summary ───────────────────────────────────────────── */}
-            <p className="text-sm text-[#96938d] leading-relaxed">{full.summary}</p>
+            <p className="text-sm text-[#7dd3fc] leading-relaxed">{full.summary}</p>
 
             {/* ── AI Extended Summary ────────────────────────────────── */}
             <div
@@ -172,12 +172,12 @@ export default function NewsDetail({ article, onClose }: NewsDetailProps) {
               style={{ background: "rgba(230,201,116,0.06)", border: "1px solid rgba(230,201,116,0.18)" }}
             >
               <div className="flex items-center gap-2 mb-2">
-                <Sparkles size={13} aria-hidden="true" className="text-[#e6c974]" />
-                <span className="text-xs font-bold text-[#c3ac6a] tracking-wide uppercase">
+                <Sparkles size={13} aria-hidden="true" className="text-[#38bdf8]" />
+                <span className="text-xs font-bold text-[#0ea5e9] tracking-wide uppercase">
                   IBM Granite · AI News Flash
                 </span>
               </div>
-              <p className="text-sm italic text-[#e6c974] leading-relaxed">
+              <p className="text-sm italic text-[#38bdf8] leading-relaxed">
                 {full.flashCommentary}
               </p>
             </div>
@@ -185,8 +185,8 @@ export default function NewsDetail({ article, onClose }: NewsDetailProps) {
             {/* ── Extended analysis ──────────────────────────────────── */}
             {isLoading ? (
               <div className="flex items-center gap-2 py-2">
-                <Loader2 size={14} className="animate-spin text-[#605943]" aria-hidden="true" />
-                <span className="text-xs text-[#605943]">Generating deeper analysis…</span>
+                <Loader2 size={14} className="animate-spin text-[#1e3a5f]" aria-hidden="true" />
+                <span className="text-xs text-[#1e3a5f]">Generating deeper analysis…</span>
               </div>
             ) : isError ? (
               <div className="flex items-center gap-2 text-xs text-red-400">
@@ -195,10 +195,10 @@ export default function NewsDetail({ article, onClose }: NewsDetailProps) {
               </div>
             ) : full.extendedSummary && full.extendedSummary !== full.summary ? (
               <div className="flex flex-col gap-2">
-                <p className="text-xs font-semibold text-[#96938d] uppercase tracking-wide">
+                <p className="text-xs font-semibold text-[#7dd3fc] uppercase tracking-wide">
                   Deeper Analysis
                 </p>
-                <p className="text-sm text-[#e8e7e5] leading-relaxed">{full.extendedSummary}</p>
+                <p className="text-sm text-[#e0f2fe] leading-relaxed">{full.extendedSummary}</p>
               </div>
             ) : null}
 
@@ -208,7 +208,7 @@ export default function NewsDetail({ article, onClose }: NewsDetailProps) {
                 {full.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="rounded-full px-2.5 py-0.5 text-[10px] font-medium bg-[#24231f] text-[#96938d] border border-[#3a3830]"
+                    className="rounded-full px-2.5 py-0.5 text-[10px] font-medium bg-[#050a14] text-[#7dd3fc] border border-[#1e3a5f]"
                   >
                     {tag}
                   </span>
@@ -235,7 +235,7 @@ export default function NewsDetail({ article, onClose }: NewsDetailProps) {
                   href={full.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-lg border border-[#605943] bg-[#24231f] px-3 py-2 text-xs font-medium text-[#96938d] hover:border-[#e6c974] hover:text-[#e6c974] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e6c974]"
+                  className="inline-flex items-center gap-2 rounded-lg border border-[#1e3a5f] bg-[#050a14] px-3 py-2 text-xs font-medium text-[#7dd3fc] hover:border-[#38bdf8] hover:text-[#38bdf8] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#38bdf8]"
                 >
                   <ExternalLink size={13} aria-hidden="true" />
                   Read Original
@@ -245,10 +245,10 @@ export default function NewsDetail({ article, onClose }: NewsDetailProps) {
                 onClick={() => toggle(full.id)}
                 disabled={syncing}
                 aria-pressed={saved}
-                className={`inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e6c974] disabled:opacity-50 ${
+                className={`inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#38bdf8] disabled:opacity-50 ${
                   saved
-                    ? "border-[#e6c974]/40 bg-[#e6c974]/10 text-[#e6c974]"
-                    : "border-[#605943] bg-[#24231f] text-[#96938d] hover:border-[#e6c974] hover:text-[#e6c974]"
+                    ? "border-[#38bdf8]/40 bg-[#38bdf8]/10 text-[#38bdf8]"
+                    : "border-[#1e3a5f] bg-[#050a14] text-[#7dd3fc] hover:border-[#38bdf8] hover:text-[#38bdf8]"
                 }`}
               >
                 {saved

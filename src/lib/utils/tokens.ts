@@ -13,38 +13,38 @@
 
 export const colors = {
   // Backgrounds
-  deep:    "#100f0e",
-  dark:    "#24231f",
-  surface: "#29271f",
+  deep:    "#000000",
+  dark:    "#050a14",
+  surface: "#111f36",
 
   // Borders
-  border:       "#605943",
-  borderSubtle: "#3a3830",
+  border:       "#1e3a5f",
+  borderSubtle: "#1e3a5f",
   borderFaint:  "#2a2820",
 
   // Gold accents
-  gold:      "#e6c974",
-  goldMuted: "#c3ac6a",
+  gold:      "#38bdf8",
+  goldMuted: "#0ea5e9",
   goldFaint: "rgba(230,201,116,0.12)",
 
   // Text
-  textPrimary: "#e8e7e5",
-  textMuted:   "#96938d",
-  textFaint:   "#605943",
+  textPrimary: "#e0f2fe",
+  textMuted:   "#7dd3fc",
+  textFaint:   "#1e3a5f",
 
   // Purple accent
-  purple:      "#8369ce",
+  purple:      "#a78bfa",
   purpleFaint: "rgba(131,105,206,0.12)",
 
   // Status colours (risk / alert)
   green:   "#4ade80",
-  yellow:  "#e6c974",
+  yellow:  "#38bdf8",
   orange:  "#fb923c",
   red:     "#f87171",
   blue:    "#60a5fa",
 
   // Semi-transparent overlays
-  overlay: "rgba(16,15,14,0.85)",
+  overlay: "rgba(8,16,32,0.85)",
 } as const;
 
 // ─── Spacing scale (in px) ────────────────────────────────────────────────────

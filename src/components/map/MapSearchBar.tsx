@@ -88,7 +88,7 @@ export default function MapSearchBar({ onFlyTo }: MapSearchBarProps) {
         <Search
           size={14}
           aria-hidden="true"
-          className="absolute left-3 text-[#605943] pointer-events-none"
+          className="absolute left-3 text-[#1e3a5f] pointer-events-none"
         />
         <input
           id="map-search"
@@ -100,19 +100,19 @@ export default function MapSearchBar({ onFlyTo }: MapSearchBarProps) {
           aria-expanded={open}
           aria-controls="map-search-results"
           aria-autocomplete="list"
-          className="h-9 w-full rounded-lg pl-8 pr-8 text-sm bg-[#24231f] border border-[#605943] text-[#e8e7e5] placeholder-[#605943] focus:outline-none focus:ring-2 focus:ring-[#e6c974]/60 focus:border-[#e6c974]/60 transition-colors"
+          className="h-9 w-full rounded-lg pl-8 pr-8 text-sm bg-[#050a14] border border-[#1e3a5f] text-[#e0f2fe] placeholder-[#1e3a5f] focus:outline-none focus:ring-2 focus:ring-[#38bdf8]/60 focus:border-[#38bdf8]/60 transition-colors"
         />
         {loading ? (
           <Loader2
             size={14}
             aria-hidden="true"
-            className="absolute right-3 text-[#605943] animate-spin"
+            className="absolute right-3 text-[#1e3a5f] animate-spin"
           />
         ) : query.length > 0 ? (
           <button
             onClick={handleClear}
             aria-label="Clear search"
-            className="absolute right-2.5 text-[#605943] hover:text-[#e8e7e5] transition-colors focus-visible:outline-none"
+            className="absolute right-2.5 text-[#1e3a5f] hover:text-[#e0f2fe] transition-colors focus-visible:outline-none"
           >
             <X size={13} aria-hidden="true" />
           </button>
@@ -125,13 +125,13 @@ export default function MapSearchBar({ onFlyTo }: MapSearchBarProps) {
           id="map-search-results"
           role="listbox"
           aria-label="Search results"
-          className="absolute top-full mt-1 w-full rounded-xl border border-[#605943] overflow-hidden shadow-xl z-50"
-          style={{ background: "rgba(36,35,31,0.98)" }}
+          className="absolute top-full mt-1 w-full rounded-xl border border-[#1e3a5f] overflow-hidden shadow-xl z-50"
+          style={{ background: "rgba(8,16,32,0.98)" }}
         >
           {results.map((result) => (
             <li key={result.place_id} role="option" aria-selected="false">
               <button
-                className="w-full text-left px-3 py-2.5 text-xs text-[#e8e7e5] hover:bg-[#29271f] transition-colors truncate focus-visible:outline-none focus-visible:bg-[#29271f]"
+                className="w-full text-left px-3 py-2.5 text-xs text-[#e0f2fe] hover:bg-[#111f36] transition-colors truncate focus-visible:outline-none focus-visible:bg-[#111f36]"
                 onClick={() => handleSelect(result)}
               >
                 {result.display_name}

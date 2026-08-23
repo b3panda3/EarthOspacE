@@ -19,7 +19,7 @@ export default function DateRangeFilter({ value, onChange }: DateRangeFilterProp
     <div
       role="group"
       aria-label="Filter by date range"
-      className="inline-flex items-center rounded-lg border border-[#3a3830] overflow-hidden bg-[#24231f]"
+      className="inline-flex items-center rounded-lg border border-[#1e3a5f] overflow-hidden bg-[#050a14]"
     >
       {OPTIONS.map(({ id, label }) => {
         const isActive = id === value;
@@ -30,10 +30,10 @@ export default function DateRangeFilter({ value, onChange }: DateRangeFilterProp
             onClick={() => onChange(id)}
             className={[
               "px-3 py-1.5 text-xs font-medium transition-colors duration-150",
-              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#e6c974]",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#38bdf8]",
               isActive
-                ? "bg-[#e6c974]/15 text-[#e6c974]"
-                : "text-[#605943] hover:text-[#96938d]",
+                ? "bg-[#38bdf8]/15 text-[#38bdf8]"
+                : "text-[#1e3a5f] hover:text-[#7dd3fc]",
             ].join(" ")}
           >
             {label}

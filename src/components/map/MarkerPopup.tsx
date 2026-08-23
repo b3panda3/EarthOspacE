@@ -16,7 +16,7 @@ const CATEGORY_BADGE: Record<MapEventCategory, { variant: BadgeVariant; label: s
 };
 
 const SEVERITY_COLORS: Record<MapEvent["severity"], string> = {
-  low:      "#605943",
+  low:      "#1e3a5f",
   medium:   "#f97316",
   high:     "#ef4444",
   critical: "#dc2626",
@@ -41,8 +41,8 @@ export default function MarkerPopup({ event }: MarkerPopupProps) {
        */}
       <div
         style={{
-          background: "#24231f",
-          border: "1px solid #605943",
+          background: "#050a14",
+          border: "1px solid #1e3a5f",
           borderRadius: 10,
           padding: "12px 14px",
           fontFamily: "inherit",
@@ -62,7 +62,7 @@ export default function MarkerPopup({ event }: MarkerPopupProps) {
             }}
             title={`Severity: ${event.severity}`}
           />
-          <span style={{ fontSize: 10, color: "#605943", marginLeft: "auto" }}>
+          <span style={{ fontSize: 10, color: "#1e3a5f", marginLeft: "auto" }}>
             {event.severity.toUpperCase()}
           </span>
         </div>
@@ -73,7 +73,7 @@ export default function MarkerPopup({ event }: MarkerPopupProps) {
             margin: "0 0 6px 0",
             fontSize: 13,
             fontWeight: 600,
-            color: "#e8e7e5",
+            color: "#e0f2fe",
             lineHeight: 1.4,
           }}
         >
@@ -85,7 +85,7 @@ export default function MarkerPopup({ event }: MarkerPopupProps) {
           style={{
             margin: "0 0 10px 0",
             fontSize: 11,
-            color: "#96938d",
+            color: "#7dd3fc",
             lineHeight: 1.5,
           }}
         >
@@ -93,7 +93,7 @@ export default function MarkerPopup({ event }: MarkerPopupProps) {
         </p>
 
         {/* Coordinates */}
-        <p style={{ margin: "0 0 10px 0", fontSize: 10, color: "#605943" }}>
+        <p style={{ margin: "0 0 10px 0", fontSize: 10, color: "#1e3a5f" }}>
           {event.lat.toFixed(3)}°, {event.lng.toFixed(3)}°
         </p>
 
@@ -108,10 +108,10 @@ export default function MarkerPopup({ event }: MarkerPopupProps) {
               alignItems: "center",
               gap: 4,
               padding: "5px 10px",
-              background: "#e6c97418",
-              border: "1px solid #e6c97450",
+              background: "#38bdf818",
+              border: "1px solid #38bdf850",
               borderRadius: 6,
-              color: "#e6c974",
+              color: "#38bdf8",
               fontSize: 11,
               fontWeight: 500,
               textDecoration: "none",
@@ -128,10 +128,10 @@ export default function MarkerPopup({ event }: MarkerPopupProps) {
               alignItems: "center",
               gap: 4,
               padding: "5px 10px",
-              background: "#29271f",
-              border: "1px solid #3a3830",
+              background: "#111f36",
+              border: "1px solid #1e3a5f",
               borderRadius: 6,
-              color: "#605943",
+              color: "#1e3a5f",
               fontSize: 11,
             }}
           >

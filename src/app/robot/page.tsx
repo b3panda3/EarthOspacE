@@ -38,9 +38,9 @@ const RobotScene = dynamic(() => import("@/components/robot/RobotScene"), {
     <div className="w-full h-full flex items-center justify-center">
       <div className="text-center">
         <div className="relative w-12 h-12 mx-auto mb-3">
-          <span className="absolute inset-0 rounded-full border-2 border-[#e6c974] border-t-transparent animate-spin" />
+          <span className="absolute inset-0 rounded-full border-2 border-[#38bdf8] border-t-transparent animate-spin" />
         </div>
-        <p className="text-xs text-[#605943]">Initialising 3D environment…</p>
+        <p className="text-xs text-[#1e3a5f]">Initialising 3D environment…</p>
       </div>
     </div>
   ),
@@ -67,6 +67,14 @@ export default function RobotPage() {
   const [dataTransfer, setDataTransfer]           = useState(false);
   const speakingTimer                             = useRef<ReturnType<typeof setTimeout> | null>(null);
   const historyRef                                = useRef<ChatMessage[]>([]);
+
+  const hasLoaded = useRef(false);
+  useEffect(() => {
+    if (!hasLoaded.current && messages.length === 0) {
+      hasLoaded.current = true;
+      setTimeout(() => handleBriefing(), 500);
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Keep historyRef in sync (avoids closure-staleness in callbacks)
   useEffect(() => { historyRef.current = messages; }, [messages]);
@@ -226,25 +234,25 @@ export default function RobotPage() {
   }, []);
 
   return (
-    <div className="flex flex-col h-[calc(100vh-4rem)] max-h-[900px] bg-[#100f0e] overflow-hidden">
+    <div className="flex flex-col h-[calc(100vh-4rem)] max-h-[900px] bg-[#000000] overflow-hidden">
 
       {/* ── Header / title strip ──────────────────────────────────────────── */}
-      <div className="flex-shrink-0 border-b border-[#3a3830] px-4 py-2.5 flex items-center justify-between bg-[#100f0e]">
+      <div className="flex-shrink-0 border-b border-[#1e3a5f] px-4 py-2.5 flex items-center justify-between bg-[#000000]">
         <div className="flex items-center gap-3">
-          <div className="w-7 h-7 rounded-full bg-[#8369ce]/20 border border-[#8369ce]/40 flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8369ce" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
+          <div className="w-7 h-7 rounded-full bg-[#a78bfa]/20 border border-[#a78bfa]/40 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
           </div>
           <div>
-            <h1 className="text-sm font-bold text-[#e8e7e5] tracking-wide">ASTRO Companion</h1>
-            <p className="text-[10px] text-[#605943]">AI Robot · IBM Granite · ISS Simulation</p>
+            <h1 className="text-sm font-bold text-[#e0f2fe] tracking-wide">ASTRO Companion</h1>
+            <p className="text-[10px] text-[#1e3a5f]">AI Robot · IBM Granite · ISS Simulation</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
           <span
             className={`text-[10px] px-2 py-0.5 rounded-full font-medium border ${
               robotState === "idle"     ? "border-[#4ade80] text-[#4ade80] bg-[#4ade8012]" :
-              robotState === "thinking" ? "border-[#e6c974] text-[#e6c974] bg-[#e6c97412]" :
-              robotState === "speaking" ? "border-[#8369ce] text-[#8369ce] bg-[#8369ce12]" :
+              robotState === "thinking" ? "border-[#38bdf8] text-[#38bdf8] bg-[#38bdf812]" :
+              robotState === "speaking" ? "border-[#a78bfa] text-[#a78bfa] bg-[#a78bfa12]" :
                                           "border-[#fb923c] text-[#fb923c] bg-[#fb923c12]"
             }`}
           >
@@ -257,7 +265,7 @@ export default function RobotPage() {
       </div>
 
       {/* ── Scenario bar ──────────────────────────────────────────────────── */}
-      <div className="flex-shrink-0 border-b border-[#3a3830] px-4 py-2.5 bg-[#100f0e]">
+      <div className="flex-shrink-0 border-b border-[#1e3a5f] px-4 py-2.5 bg-[#000000]">
         <ScenarioBar
           active={scenario}
           onChange={handleScenarioChange}
@@ -269,7 +277,7 @@ export default function RobotPage() {
       <div className="flex-1 flex flex-col lg:flex-row overflow-hidden min-h-0">
 
         {/* ── 3D Scene ─────────────────────────────────────────────────────── */}
-        <div className="relative lg:flex-[3] h-52 sm:h-64 lg:h-auto bg-[#0a0908] border-b lg:border-b-0 lg:border-r border-[#3a3830]">
+        <div className="relative lg:flex-[3] h-52 sm:h-64 lg:h-auto bg-[#000000] border-b lg:border-b-0 lg:border-r border-[#1e3a5f]">
           <RobotScene
             robotState={robotState}
             dataTransfer={dataTransfer}
@@ -280,8 +288,8 @@ export default function RobotPage() {
           {/* Overlay: robot status */}
           <div className="absolute bottom-3 left-3 right-3 flex items-end justify-between pointer-events-none">
             {/* State label */}
-            <div className="bg-[#100f0ecc] backdrop-blur-sm rounded-lg px-2.5 py-1.5 border border-[#3a3830]">
-              <p className="text-[10px] text-[#96938d]">
+            <div className="bg-[#000000cc] backdrop-blur-sm rounded-lg px-2.5 py-1.5 border border-[#1e3a5f]">
+              <p className="text-[10px] text-[#7dd3fc]">
                 {robotState === "idle"     ? "ASTRO is ready" :
                  robotState === "thinking" ? "Processing…"   :
                  robotState === "speaking" ? "Transmitting…"  :
@@ -292,14 +300,14 @@ export default function RobotPage() {
             {/* Wave button */}
             <button
               onClick={() => triggerState("wave", 3000)}
-              className="pointer-events-auto bg-[#100f0ecc] backdrop-blur-sm rounded-lg px-2.5 py-1.5 border border-[#3a3830] text-[10px] text-[#96938d] hover:text-[#e6c974] hover:border-[#e6c974] transition-colors"
+              className="pointer-events-auto bg-[#000000cc] backdrop-blur-sm rounded-lg px-2.5 py-1.5 border border-[#1e3a5f] text-[10px] text-[#7dd3fc] hover:text-[#38bdf8] hover:border-[#38bdf8] transition-colors"
             >
               Wave
             </button>
           </div>
 
           {/* Drag hint */}
-          <p className="absolute top-2 right-3 text-[9px] text-[#3a3830] pointer-events-none select-none">
+          <p className="absolute top-2 right-3 text-[9px] text-[#1e3a5f] pointer-events-none select-none">
             drag to rotate
           </p>
         </div>

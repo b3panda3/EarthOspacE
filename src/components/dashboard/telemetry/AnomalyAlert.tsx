@@ -18,7 +18,7 @@ interface AnomalyAlertProps {
 }
 
 const CONFIDENCE_COLOR = (c: number) =>
-  c >= 0.8 ? "#f87171" : c >= 0.5 ? "#fb923c" : "#e6c974";
+  c >= 0.8 ? "#f87171" : c >= 0.5 ? "#fb923c" : "#38bdf8";
 
 export default function AnomalyAlert({ anomaly }: AnomalyAlertProps) {
   const [expanded, setExpanded] = useState(false);
@@ -34,7 +34,7 @@ export default function AnomalyAlert({ anomaly }: AnomalyAlertProps) {
 
   return (
     <div
-      className="rounded-xl border-2 bg-[#24231f] overflow-hidden"
+      className="rounded-xl border-2 bg-[#050a14] overflow-hidden"
       style={{ borderColor: cc + "66" }}
       role="alert"
       aria-live="polite"
@@ -73,7 +73,7 @@ export default function AnomalyAlert({ anomaly }: AnomalyAlertProps) {
           {/* Expand toggle */}
           <button
             onClick={() => setExpanded((e) => !e)}
-            className="text-xs text-[#96938d] hover:text-[#e8e7e5] transition-colors"
+            className="text-xs text-[#7dd3fc] hover:text-[#e0f2fe] transition-colors"
             aria-expanded={expanded}
           >
             {expanded ? "▲ Less" : "▼ Details"}
@@ -83,35 +83,35 @@ export default function AnomalyAlert({ anomaly }: AnomalyAlertProps) {
 
       {/* Collapsed: one-liner explanation */}
       <div className="px-4 py-3">
-        <p className="text-xs text-[#e8e7e5] leading-relaxed">
+        <p className="text-xs text-[#e0f2fe] leading-relaxed">
           {anomaly.explanation}
         </p>
       </div>
 
       {/* Expanded: impact + recommended action */}
       {expanded && (
-        <div className="border-t border-[#3a3830] px-4 py-3 space-y-3">
+        <div className="border-t border-[#1e3a5f] px-4 py-3 space-y-3">
           {anomaly.impact && (
             <div>
-              <p className="text-[10px] font-semibold uppercase tracking-widest text-[#96938d] mb-1">
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-[#7dd3fc] mb-1">
                 Potential Impact
               </p>
-              <p className="text-xs text-[#e8e7e5] leading-relaxed">{anomaly.impact}</p>
+              <p className="text-xs text-[#e0f2fe] leading-relaxed">{anomaly.impact}</p>
             </div>
           )}
 
           {anomaly.recommendedAction && (
             <div>
-              <p className="text-[10px] font-semibold uppercase tracking-widest text-[#96938d] mb-1">
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-[#7dd3fc] mb-1">
                 Recommended Action
               </p>
-              <p className="text-xs text-[#e8e7e5] leading-relaxed">
+              <p className="text-xs text-[#e0f2fe] leading-relaxed">
                 {anomaly.recommendedAction}
               </p>
             </div>
           )}
 
-          <p className="text-[10px] text-[#605943]">
+          <p className="text-[10px] text-[#1e3a5f]">
             Detected {new Date(anomaly.detectedAt).toLocaleString()} ·{" "}
             Powered by IBM Granite
           </p>

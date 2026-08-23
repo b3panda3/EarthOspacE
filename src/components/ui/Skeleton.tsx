@@ -33,7 +33,7 @@ export default function Skeleton({ className = "", width, height, rounded }: Ske
 /** Card skeleton with title + body lines */
 export function CardSkeleton({ lines = 3 }: { lines?: number }) {
   return (
-    <div className="rounded-xl border border-[#3a3830] bg-[#24231f] p-4 space-y-3" aria-busy="true" aria-label="Loading">
+    <div className="rounded-xl border border-[#1e3a5f] bg-[#050a14] p-4 space-y-3" aria-busy="true" aria-label="Loading">
       <Skeleton height="1rem" width="60%" />
       <Skeleton height="0.625rem" width="40%" />
       <div className="space-y-2 pt-1">
@@ -48,7 +48,7 @@ export function CardSkeleton({ lines = 3 }: { lines?: number }) {
 /** News card skeleton */
 export function NewsCardSkeleton() {
   return (
-    <div className="rounded-xl border border-[#3a3830] bg-[#24231f] p-4 space-y-3" aria-busy="true">
+    <div className="rounded-xl border border-[#1e3a5f] bg-[#050a14] p-4 space-y-3" aria-busy="true">
       <div className="flex gap-2">
         <Skeleton height="1.5rem" width="3rem" rounded />
         <Skeleton height="1.5rem" width="4rem" rounded />
@@ -65,7 +65,7 @@ export function NewsCardSkeleton() {
 /** Stat card skeleton */
 export function StatCardSkeleton() {
   return (
-    <div className="rounded-xl border border-[#3a3830] bg-[#24231f] p-4 space-y-2" aria-busy="true">
+    <div className="rounded-xl border border-[#1e3a5f] bg-[#050a14] p-4 space-y-2" aria-busy="true">
       <Skeleton height="0.625rem" width="50%" />
       <Skeleton height="2rem" width="40%" />
       <Skeleton height="0.5rem" width="30%" />
@@ -94,7 +94,7 @@ export function TableSkeleton({ rows = 5 }: { rows?: number }) {
 /** Full-page loading overlay */
 export function PageSkeleton({ title }: { title?: string }) {
   return (
-    <div className="min-h-screen bg-[#100f0e] p-6 md:p-8 space-y-5" aria-busy="true" aria-label={`Loading ${title ?? "page"}`}>
+    <div className="min-h-screen bg-[#000000] p-6 md:p-8 space-y-5" aria-busy="true" aria-label={`Loading ${title ?? "page"}`}>
       {title && (
         <div className="space-y-2">
           <Skeleton height="2rem" width="12rem" />
@@ -121,7 +121,7 @@ export function Spinner({ size = 20, className = "" }: { size?: number; classNam
       fill="none"
       stroke="currentColor"
       strokeWidth={2}
-      className={`animate-spin text-[#605943] ${className}`}
+      className={`animate-spin text-[#1e3a5f] ${className}`}
       aria-label="Loading"
     >
       <path d="M12 2a10 10 0 1 0 10 10" strokeLinecap="round" />
@@ -132,11 +132,11 @@ export function Spinner({ size = 20, className = "" }: { size?: number; classNam
 /** WebGL not supported fallback */
 export function WebGLFallback({ message }: { message?: string }) {
   return (
-    <div className="w-full h-full flex items-center justify-center bg-[#0a0908] rounded-xl border border-[#3a3830]">
+    <div className="w-full h-full flex items-center justify-center bg-[#000000] rounded-xl border border-[#1e3a5f]">
       <div className="text-center p-6 max-w-xs">
         <div className="text-3xl mb-3">🤖</div>
-        <p className="text-sm font-semibold text-[#e8e7e5] mb-1">3D Scene Unavailable</p>
-        <p className="text-xs text-[#96938d] leading-relaxed">
+        <p className="text-sm font-semibold text-[#e0f2fe] mb-1">3D Scene Unavailable</p>
+        <p className="text-xs text-[#7dd3fc] leading-relaxed">
           {message ??
             "WebGL2 is required for the 3D robot companion. Try Chrome, Firefox, or Edge for the full experience."}
         </p>

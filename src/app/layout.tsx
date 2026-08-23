@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#100f0e",
+  themeColor: "#000000",
   colorScheme: "dark",
 };
 
@@ -48,10 +48,10 @@ export default function RootLayout({
        * Skip-to-content link — first focusable element for keyboard users.
        * Positioned off-screen until focused.
        */}
-      <body className="h-full bg-[#100f0e] text-[#e8e7e5]">
+      <body className="h-full bg-[#000000] text-[#e0f2fe]">
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[9999] focus:rounded-lg focus:bg-[#e6c974] focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-[#100f0e] focus:shadow-lg focus:outline-none"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[9999] focus:rounded-lg focus:bg-[#38bdf8] focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-[#000000] focus:shadow-lg focus:outline-none"
         >
           Skip to main content
         </a>

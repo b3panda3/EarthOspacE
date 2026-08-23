@@ -15,12 +15,12 @@ interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
 }
 
 const variantClasses: Record<BadgeVariant, string> = {
-  gold:   "bg-[#e6c974]/15 text-[#e6c974] border border-[#e6c974]/30",
-  purple: "bg-[#8369ce]/15 text-[#8369ce] border border-[#8369ce]/30",
+  gold:   "bg-[#38bdf8]/15 text-[#38bdf8] border border-[#38bdf8]/30",
+  purple: "bg-[#a78bfa]/15 text-[#a78bfa] border border-[#a78bfa]/30",
   green:  "bg-emerald-500/15 text-emerald-400 border border-emerald-500/30",
   red:    "bg-red-500/15 text-red-400 border border-red-500/30",
   blue:   "bg-sky-500/15 text-sky-400 border border-sky-500/30",
-  muted:  "bg-[#29271f] text-[#96938d] border border-[#605943]",
+  muted:  "bg-[#111f36] text-[#7dd3fc] border border-[#1e3a5f]",
 };
 
 /**

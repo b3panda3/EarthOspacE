@@ -21,11 +21,11 @@ import { IamAuthenticator } from "@ibm-cloud/watsonx-ai/authentication";
 
 // ─── Model constants ────────────────────────────────────────────────────────
 
-/** Primary chat model — Granite 13B Chat v2 */
-export const GRANITE_CHAT_MODEL = "ibm/granite-13b-chat-v2";
+/** Primary chat/instruct model — Llama 3.3 70B Instruct (available on EU Frankfurt) */
+export const GRANITE_CHAT_MODEL = "meta-llama/llama-3-3-70b-instruct";
 
-/** Instruct model (text-completion style) */
-export const GRANITE_INSTRUCT_MODEL = "ibm/granite-13b-instruct-v2";
+/** Legacy alias — both point to the same current model */
+export const GRANITE_INSTRUCT_MODEL = "meta-llama/llama-3-3-70b-instruct";
 
 // ─── Configuration ──────────────────────────────────────────────────────────
 
@@ -73,6 +73,33 @@ export class WatsonxError extends Error {
   }
 }
 
+// ─── Rate-limit queue (max 2 requests per 1 second) ──────────────────────
+
+const _queue: Array<() => void> = [];
+let _queueRunning = false;
+const MIN_REQUEST_INTERVAL_MS = 550; // slightly under 500 to stay safely under 2 req/s
+
+async function enqueueRequest<T>(fn: () => Promise<T>): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    _queue.push(async () => {
+      try {
+        resolve(await fn());
+      } catch (err) {
+        reject(err);
+      }
+    });
+    if (!_queueRunning) processQueue();
+  });
+}
+
+function processQueue() {
+  if (_queue.length === 0) { _queueRunning = false; return; }
+  _queueRunning = true;
+  const task = _queue.shift()!;
+  task();
+  setTimeout(processQueue, MIN_REQUEST_INTERVAL_MS);
+}
+
 // ─── Singleton client ────────────────────────────────────────────────────────
 
 let _client: InstanceType<typeof WatsonXAI> | null = null;
@@ -84,9 +111,9 @@ function resolveConfig(override?: WatsonxConfig): {
   projectId: string;
 } {
   return {
-    apiKey:    override?.apiKey    ?? process.env.WATSONX_API_KEY    ?? "",
-    url:       override?.url       ?? process.env.WATSONX_URL        ?? "https://eu-de.ml.cloud.ibm.com",
-    projectId: override?.projectId ?? process.env.WATSONX_PROJECT_ID ?? "",
+    apiKey:    override?.apiKey    ?? process.env.NEXT_PUBLIC_WATSONX_API_KEY    ?? "",
+    url:       override?.url       ?? process.env.NEXT_PUBLIC_WATSONX_URL        ?? "https://us-south.ml.cloud.ibm.com",
+    projectId: override?.projectId ?? process.env.NEXT_PUBLIC_WATSONX_PROJECT_ID ?? "",
   };
 }
 
@@ -135,29 +162,31 @@ export async function generateText(
   const { client, projectId } = getClient();
   const modelId = opts.modelId ?? GRANITE_CHAT_MODEL;
 
-  try {
-    const response = await client.generateText({
-      modelId,
-      projectId,
-      input: prompt,
-      parameters: {
-        max_new_tokens:    opts.maxNewTokens     ?? DEFAULT_OPTS.maxNewTokens,
-        temperature:       opts.temperature      ?? DEFAULT_OPTS.temperature,
-        top_p:             opts.topP             ?? DEFAULT_OPTS.topP,
-        top_k:             opts.topK             ?? DEFAULT_OPTS.topK,
-        repetition_penalty: opts.repetitionPenalty ?? DEFAULT_OPTS.repetitionPenalty,
-        ...(opts.stopSequences?.length ? { stop_sequences: opts.stopSequences } : {}),
-        decoding_method: "sample",
-      },
-    });
+  return enqueueRequest(async () => {
+    try {
+      const response = await client.generateText({
+        modelId,
+        projectId,
+        input: prompt,
+        parameters: {
+          max_new_tokens:    opts.maxNewTokens     ?? DEFAULT_OPTS.maxNewTokens,
+          temperature:       opts.temperature      ?? DEFAULT_OPTS.temperature,
+          top_p:             opts.topP             ?? DEFAULT_OPTS.topP,
+          top_k:             opts.topK             ?? DEFAULT_OPTS.topK,
+          repetition_penalty: opts.repetitionPenalty ?? DEFAULT_OPTS.repetitionPenalty,
+          ...(opts.stopSequences?.length ? { stop_sequences: opts.stopSequences } : {}),
+          decoding_method: "sample",
+        },
+      });
 
-    const text = response.result?.results?.[0]?.generated_text ?? "";
-    return text.trim();
-  } catch (err) {
-    const msg = err instanceof Error ? err.message : String(err);
-    console.error(`[watsonx] generateText failed (model=${modelId}):`, msg);
-    throw new WatsonxError(`generateText failed: ${msg}`, err);
-  }
+      const text = response.result?.results?.[0]?.generated_text ?? "";
+      return text.trim();
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      console.error(`[watsonx] generateText failed (model=${modelId}):`, msg);
+      throw new WatsonxError(`generateText failed: ${msg}`, err);
+    }
+  });
 }
 
 // ─── generateStructured: JSON output with schema validation + retry ──────────
@@ -269,26 +298,28 @@ export async function chatCompletion(
   const { client, projectId } = getClient();
   const modelId = opts.modelId ?? GRANITE_CHAT_MODEL;
 
-  try {
-    const response = await client.textChat({
-      modelId,
-      projectId,
-      messages: messages.map((m) => ({ role: m.role, content: m.content })),
-      maxTokens:   opts.maxTokens   ?? 512,
-      temperature: opts.temperature ?? DEFAULT_OPTS.temperature,
-      topP:        opts.topP        ?? DEFAULT_OPTS.topP,
-    });
+  return enqueueRequest(async () => {
+    try {
+      const response = await client.textChat({
+        modelId,
+        projectId,
+        messages: messages.map((m) => ({ role: m.role, content: m.content })),
+        maxTokens:   opts.maxTokens   ?? 512,
+        temperature: opts.temperature ?? DEFAULT_OPTS.temperature,
+        topP:        opts.topP        ?? DEFAULT_OPTS.topP,
+      });
 
-    const choice = response.result?.choices?.[0];
-    const content =
-      (choice?.message as { content?: string } | undefined)?.content ?? "";
+      const choice = response.result?.choices?.[0];
+      const content =
+        (choice?.message as { content?: string } | undefined)?.content ?? "";
 
-    return { role: "assistant", content: content.trim() };
-  } catch (err) {
-    const msg = err instanceof Error ? err.message : String(err);
-    console.error(`[watsonx] chatCompletion failed (model=${modelId}):`, msg);
-    throw new WatsonxError(`chatCompletion failed: ${msg}`, err);
-  }
+      return { role: "assistant", content: content.trim() };
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      console.error(`[watsonx] chatCompletion failed (model=${modelId}):`, msg);
+      throw new WatsonxError(`chatCompletion failed: ${msg}`, err);
+    }
+  });
 }
 
 /**
