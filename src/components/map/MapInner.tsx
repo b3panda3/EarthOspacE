@@ -169,7 +169,6 @@ export default function MapInner(_props: MapInnerProps) {
             style={{ width: "100%", height: "100%" }}
             zoomControl={false}
             attributionControl={true}
-            containerPadding={[0, 0]}
           >
             <ReactTileLayer
               url={tile.url}

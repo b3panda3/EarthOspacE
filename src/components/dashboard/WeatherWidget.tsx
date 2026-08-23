@@ -28,7 +28,7 @@ function CityRow({ city }: { city: CityWeather }) {
         </span>
         <div className="min-w-0">
           <p className="text-sm font-medium text-[#e0f2fe] truncate">{city.city}</p>
-          <p className="text-xs text-[#1e3a5f] capitalize truncate">{city.description}</p>
+          <p className="text-xs text-[#7dd3fc] capitalize truncate">{city.description}</p>
         </div>
       </div>
       <div className="shrink-0 text-right">
@@ -99,11 +99,11 @@ export default function WeatherWidget() {
 
       {isLoading && (
         <div className="flex items-center justify-center py-6">
-          <Loader2 size={18} className="text-[#1e3a5f] animate-spin" aria-label="Loading weather" />
+          <Loader2 size={18} className="text-[#38bdf8] animate-spin" aria-label="Loading weather" />
         </div>
       )}
 
-      {isError && <p className="text-xs text-[#1e3a5f] py-3">Weather unavailable.</p>}
+      {isError && <p className="text-xs text-red-400 py-3">Weather unavailable. Check API key.</p>}
 
       {data?.cities && (
         <div>
