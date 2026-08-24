@@ -43,7 +43,7 @@ export async function fetchCopernicusProducts(): Promise<{
       // Fetch latest Sentinel-2 L2A products
       const url = `${STAC_BASE}/collections/sentinel-2-l2a/items?limit=6`;
       const ctrl = new AbortController();
-      const t = setTimeout(() => ctrl.abort(), 8_000);
+      const t = setTimeout(() => ctrl.abort(), 15_000);
       const res = await fetch(url, {
         signal: ctrl.signal,
         headers: { Accept: "application/geo+json" },

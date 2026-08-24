@@ -271,7 +271,7 @@ export async function GET(req: NextRequest) {
     return new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime();
   });
 
-  /* Generate Granite commentary for top 3 articles (rate-limit friendly) */
+  /* Generate Granite commentary for top 3 articles */
   const topItems = sorted.slice(0, 12);
   const flashItems = topItems.slice(0, 3);
   const commentaries = await Promise.allSettled(

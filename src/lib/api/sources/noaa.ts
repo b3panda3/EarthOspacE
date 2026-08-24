@@ -48,13 +48,24 @@ export async function fetchSolarWind(): Promise<{
 }> {
   return withCache("noaa-solar-wind", async () => {
     try {
-      const ctrl = new AbortController();
-      const t = setTimeout(() => ctrl.abort(), 6_000);
-      // plasma: [time_tag, density, speed, temperature]
-      const res = await fetch(`${BASE}/products/solar-wind/plasma-2-hour.json`, { signal: ctrl.signal });
-      clearTimeout(t);
-
-      if (!res.ok) throw new Error(`NOAA plasma HTTP ${res.status}`);
+      const PLASMA_URLS = [
+        `${BASE}/products/solar-wind/plasma-2-hour.json`,
+        `${BASE}/products/real-time/solar-wind/plasma-2-hour.json`,
+      ];
+      let res: Response | null = null;
+      for (const url of PLASMA_URLS) {
+        try {
+          const ctrl = new AbortController();
+          const t = setTimeout(() => ctrl.abort(), 10_000);
+          res = await fetch(url, { signal: ctrl.signal });
+          clearTimeout(t);
+          if (res.ok) break;
+          // Non-OK status: try next URL
+        } catch {
+          continue;
+        }
+      }
+      if (!res || !res.ok) throw new Error(`NOAA plasma HTTP ${res?.status ?? 'all URLs failed'}`);
 
       const raw = (await res.json()) as (string | number)[][];
       // First row is header
@@ -131,7 +142,7 @@ export async function fetchKpIndex(): Promise<{
   return withCache("noaa-kp", async () => {
     try {
       const ctrl = new AbortController();
-      const t = setTimeout(() => ctrl.abort(), 6_000);
+      const t = setTimeout(() => ctrl.abort(), 10_000);
       const res = await fetch(`${BASE}/json/planetary_k_index_1m.json`, { signal: ctrl.signal });
       clearTimeout(t);
 

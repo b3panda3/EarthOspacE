@@ -13,7 +13,7 @@
  *     → MissionAssessmentResult
  */
 
-import { generateText, generateStructured, GRANITE_INSTRUCT_MODEL, GRANITE_CHAT_MODEL } from "@/lib/ai/watsonx";
+import { generateText, generateStructured, extractFirstJson, GRANITE_INSTRUCT_MODEL, GRANITE_CHAT_MODEL } from "@/lib/ai/watsonx";
 import { withCache, TTL } from "@/lib/api/cache";
 import type {
   SpaceWeatherForecast,
@@ -126,10 +126,7 @@ export async function generatePredictions(
         topP:         0.85,
       });
 
-      const cleaned = raw
-        .replace(/^```(?:json)?\s*/im, "")
-        .replace(/\s*```\s*$/im, "")
-        .trim();
+      const cleaned = extractFirstJson(raw);
 
       const parsed = JSON.parse(cleaned) as {
         metrics?: unknown[];
@@ -252,7 +249,7 @@ export async function generateQuickAssessment(
         temperature:  0.3,
       });
 
-      const cleaned = raw.replace(/^```(?:json)?\s*/im, "").replace(/\s*```\s*$/im, "").trim();
+      const cleaned = extractFirstJson(raw);
       const parsed = JSON.parse(cleaned) as {
         score?: number;
         label?: string;
@@ -343,10 +340,7 @@ export async function generateMissionAssessment(
       topP:         0.9,
     });
 
-    const cleaned = raw
-      .replace(/^```(?:json)?\s*/im, "")
-      .replace(/\s*```\s*$/im, "")
-      .trim();
+    const cleaned = extractFirstJson(raw);
 
     const parsed = JSON.parse(cleaned) as Partial<MissionAssessmentResult>;
 

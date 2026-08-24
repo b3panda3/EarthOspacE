@@ -9,11 +9,13 @@
  *   generateStructured(prompt, schema, opts) — JSON output with retry + schema validation
  *   chatCompletion(messages, opts) — multi-turn chat (kept for backward compat)
  *   textGeneration(prompt, modelId) — legacy alias kept for backward compat
+ *   extractFirstJson(raw)        — robust JSON extraction from malformed LLM output
  *
  * Architecture:
- *   - Singleton WatsonXAI client per process (lazy-initialised on first call)
- *   - initializeClient() re-creates the client with the supplied config
- *   - All errors are caught, logged and re-thrown as WatsonxError
+ *   - Dual-instance pool (round-robin) for 2× throughput (4 req/sec total)
+ *   - Each instance has its own rate-limit queue (2 req/sec per instance)
+ *   - Automatic retry on transient network errors (ECONNRESET, socket hang up)
+ *   - All errors caught, logged and re-thrown as WatsonxError
  */
 
 import { WatsonXAI } from "@ibm-cloud/watsonx-ai";
@@ -73,47 +75,107 @@ export class WatsonxError extends Error {
   }
 }
 
-// ─── Rate-limit queue (max 2 requests per 1 second) ──────────────────────
-// Uses a promise chain so each request FULLY completes before the next starts.
-// This guarantees no more than 1 in-flight request at a time per interval.
+// ─── Per-instance rate-limit queue ────────────────────────────────────────
+// Each Watsonx instance allows max 2 requests per 1 second.
+// A promise chain enforces sequential execution + minimum 600ms gap.
 
-let _chain: Promise<unknown> = Promise.resolve();
-let _lastReqTime = 0;
 const MIN_REQUEST_INTERVAL_MS = 600;
 
-async function enqueueRequest<T>(fn: () => Promise<T>): Promise<T> {
-  let outerResolve!: (v: T) => void;
-  let outerReject!: (e: unknown) => void;
+class RateLimitQueue {
+  private chain: Promise<unknown> = Promise.resolve();
+  private lastReqTime = 0;
 
-  const result = new Promise<T>((res, rej) => {
-    outerResolve = res;
-    outerReject = rej;
-  });
+  enqueue<T>(fn: () => Promise<T>): Promise<T> {
+    let outerResolve!: (v: T) => void;
+    let outerReject!: (e: unknown) => void;
 
-  // Chain onto the previous task — ensures sequential execution
-  _chain = _chain.then(async () => {
-    // Enforce minimum interval between request starts
-    const now = Date.now();
-    const wait = Math.max(0, MIN_REQUEST_INTERVAL_MS - (now - _lastReqTime));
-    if (wait > 0) await new Promise((r) => setTimeout(r, wait));
+    const result = new Promise<T>((res, rej) => {
+      outerResolve = res;
+      outerReject = rej;
+    });
 
-    try {
-      const value = await fn();
-      _lastReqTime = Date.now();
-      outerResolve(value);
-    } catch (err) {
-      _lastReqTime = Date.now();
-      outerReject(err);
-    }
-  });
+    this.chain = this.chain.then(async () => {
+      const now = Date.now();
+      const wait = Math.max(0, MIN_REQUEST_INTERVAL_MS - (now - this.lastReqTime));
+      if (wait > 0) await new Promise((r) => setTimeout(r, wait));
 
-  return result;
+      try {
+        const value = await fn();
+        this.lastReqTime = Date.now();
+        outerResolve(value);
+      } catch (err) {
+        this.lastReqTime = Date.now();
+        outerReject(err);
+      }
+    });
+
+    return result;
+  }
 }
 
-// ─── Singleton client ────────────────────────────────────────────────────────
+// ─── Dual-instance pool ────────────────────────────────────────────────────
+// Two Watsonx instances = 2 × 2 req/sec = 4 req/sec aggregate throughput.
+// Requests are distributed round-robin across instances.
 
-let _client: InstanceType<typeof WatsonXAI> | null = null;
-let _projectId = "";
+interface InstanceSlot {
+  client: InstanceType<typeof WatsonXAI>;
+  projectId: string;
+  queue: RateLimitQueue;
+}
+
+const INSTANCES: InstanceSlot[] = [];
+let _roundRobinIdx = 0;
+
+function buildInstance(apiKey: string, url: string, projectId: string): InstanceSlot {
+  return {
+    client: WatsonXAI.newInstance({
+      version: "2024-05-31",
+      serviceUrl: url,
+      authenticator: new IamAuthenticator({ apikey: apiKey }),
+    }),
+    projectId,
+    queue: new RateLimitQueue(),
+  };
+}
+
+/** Pick the next instance via round-robin */
+function nextInstance(): InstanceSlot {
+  if (INSTANCES.length === 0) initPool();
+  const slot = INSTANCES[_roundRobinIdx % INSTANCES.length];
+  _roundRobinIdx++;
+  return slot;
+}
+
+/**
+ * Explicit client initialisation.
+ * If called with no args, initialises the pool from env vars (including the
+ * second key if WATSONX_API_KEY2 / WATSONX_PROJECT_ID2 are set).
+ */
+export function initializeClient(config?: WatsonxConfig): void {
+ const { apiKey, url, projectId } = resolveConfig(config);
+
+  if (!apiKey || !projectId) {
+    throw new WatsonxError(
+      "initializeClient: WATSONX_API_KEY and WATSONX_PROJECT_ID are required. " +
+        "Set them in .env.local or pass them to initializeClient()."
+    );
+  }
+
+  // Build primary instance
+  INSTANCES.length = 0;
+  INSTANCES.push(buildInstance(apiKey, url, projectId));
+
+  // Build secondary instance if second credentials are available
+  const apiKey2    = process.env.WATSONX_API_KEY2    || process.env.NEXT_PUBLIC_WATSONX_API_KEY2 || "";
+  const projectId2 = process.env.WATSONX_PROJECT_ID2 || process.env.NEXT_PUBLIC_WATSONX_PROJECT_ID2 || "";
+  if (apiKey2 && projectId2) {
+    const url2 = process.env.WATSONX_URL2 || process.env.NEXT_PUBLIC_WATSONX_URL2 || url;
+    INSTANCES.push(buildInstance(apiKey2, url2, projectId2));
+    console.log("[watsonx] dual-instance pool initialised (2 slots, 4 req/sec aggregate)");
+  } else {
+    console.log("[watsonx] single-instance pool initialised (1 slot, 2 req/sec)");
+  }
+}
 
 function resolveConfig(override?: WatsonxConfig): {
   apiKey: string;
@@ -127,34 +189,9 @@ function resolveConfig(override?: WatsonxConfig): {
   };
 }
 
-/**
- * Explicit client initialisation.
- * Call this if you need non-default credentials (e.g. per-request keys).
- * Otherwise the singleton is created lazily on first generateText() call.
- */
-export function initializeClient(config?: WatsonxConfig): void {
-  const { apiKey, url, projectId } = resolveConfig(config);
-
-  if (!apiKey || !projectId) {
-    throw new WatsonxError(
-      "initializeClient: WATSONX_API_KEY and WATSONX_PROJECT_ID are required. " +
-        "Set them in .env.local or pass them to initializeClient()."
-    );
-  }
-
-  _client = WatsonXAI.newInstance({
-    version: "2024-05-31",
-    serviceUrl: url,
-    authenticator: new IamAuthenticator({ apikey: apiKey }),
-  });
-  _projectId = projectId;
-}
-
-function getClient(): { client: InstanceType<typeof WatsonXAI>; projectId: string } {
-  if (!_client || !_projectId) {
-    initializeClient(); // lazy init with env vars
-  }
-  return { client: _client!, projectId: _projectId };
+function initPool(): void {
+  if (INSTANCES.length > 0) return;
+  initializeClient();
 }
 
 // ─── Core: generateText ──────────────────────────────────────────────────────
@@ -162,40 +199,54 @@ function getClient(): { client: InstanceType<typeof WatsonXAI>; projectId: strin
 /**
  * Send a plain-text prompt to IBM Granite and return the generated text.
  *
- * Uses `generateText` (completion-style) on the Granite 13B Chat v2 model
+ * Uses `generateText` (completion-style) on the Llama 3.3 70B model
  * unless overridden via `opts.modelId`.
+ * Distributed across the instance pool via round-robin.
  */
 export async function generateText(
   prompt: string,
   opts: GenerateOptions = {}
 ): Promise<string> {
-  const { client, projectId } = getClient();
+  const slot = nextInstance();
   const modelId = opts.modelId ?? GRANITE_CHAT_MODEL;
 
-  return enqueueRequest(async () => {
-    try {
-      const response = await client.generateText({
-        modelId,
-        projectId,
-        input: prompt,
-        parameters: {
-          max_new_tokens:    opts.maxNewTokens     ?? DEFAULT_OPTS.maxNewTokens,
-          temperature:       opts.temperature      ?? DEFAULT_OPTS.temperature,
-          top_p:             opts.topP             ?? DEFAULT_OPTS.topP,
-          top_k:             opts.topK             ?? DEFAULT_OPTS.topK,
-          repetition_penalty: opts.repetitionPenalty ?? DEFAULT_OPTS.repetitionPenalty,
-          ...(opts.stopSequences?.length ? { stop_sequences: opts.stopSequences } : {}),
-          decoding_method: "sample",
-        },
-      });
+  return slot.queue.enqueue(async () => {
+    // Retry up to 2 times for transient network errors (ECONNRESET, socket hang up)
+    let lastErr: unknown;
+    for (let attempt = 1; attempt <= 2; attempt++) {
+      try {
+        const response = await slot.client.generateText({
+          modelId,
+          projectId: slot.projectId,
+          input: prompt,
+          parameters: {
+            max_new_tokens:    opts.maxNewTokens     ?? DEFAULT_OPTS.maxNewTokens,
+            temperature:       opts.temperature      ?? DEFAULT_OPTS.temperature,
+            top_p:             opts.topP             ?? DEFAULT_OPTS.topP,
+            top_k:             opts.topK             ?? DEFAULT_OPTS.topK,
+            repetition_penalty: opts.repetitionPenalty ?? DEFAULT_OPTS.repetitionPenalty,
+            ...(opts.stopSequences?.length ? { stop_sequences: opts.stopSequences } : {}),
+            decoding_method: "sample",
+          },
+        });
 
-      const text = response.result?.results?.[0]?.generated_text ?? "";
-      return text.trim();
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : String(err);
-      console.error(`[watsonx] generateText failed (model=${modelId}):`, msg);
-      throw new WatsonxError(`generateText failed: ${msg}`, err);
+        const text = response.result?.results?.[0]?.generated_text ?? "";
+        return text.trim();
+      } catch (err) {
+        lastErr = err;
+        const msg = err instanceof Error ? err.message : String(err);
+        const isTransient = /ECONNRESET|socket hang up|ECONNREFUSED|ETIMEDOUT|fetch failed/i.test(msg);
+        if (isTransient && attempt < 2) {
+          console.warn(`[watsonx] transient error on attempt ${attempt}, retrying in 1s:`, msg);
+          await new Promise((r) => setTimeout(r, 1000));
+          continue;
+        }
+        console.error(`[watsonx] generateText failed (model=${modelId}):`, msg);
+        throw new WatsonxError(`generateText failed: ${msg}`, err);
+      }
     }
+    // Should not reach here, but just in case
+    throw new WatsonxError(`generateText failed after retries`, lastErr);
   });
 }
 
@@ -242,11 +293,8 @@ export async function generateStructured<T = Record<string, unknown>>(
         stopSequences: genOpts.stopSequences ?? [],
       });
 
-      // Strip accidental markdown fences
-      const cleaned = raw
-        .replace(/^```(?:json)?\s*/im, "")
-        .replace(/\s*```\s*$/im, "")
-        .trim();
+      // Strip markdown fences and extract first valid JSON object
+      const cleaned = extractFirstJson(raw);
 
       const parsed = JSON.parse(cleaned) as T;
 
@@ -299,37 +347,92 @@ export interface ChatOptions {
 
 /**
  * Multi-turn chat completion using `textChat`.
- * Backwards-compatible with existing callers throughout the codebase.
+ * Distributed across the instance pool via round-robin.
  */
 export async function chatCompletion(
   messages: ChatMessage[],
   opts: ChatOptions = {}
 ): Promise<ChatMessage> {
-  const { client, projectId } = getClient();
+  const slot = nextInstance();
   const modelId = opts.modelId ?? GRANITE_CHAT_MODEL;
 
-  return enqueueRequest(async () => {
-    try {
-      const response = await client.textChat({
-        modelId,
-        projectId,
-        messages: messages.map((m) => ({ role: m.role, content: m.content })),
-        maxTokens:   opts.maxTokens   ?? 512,
-        temperature: opts.temperature ?? DEFAULT_OPTS.temperature,
-        topP:        opts.topP        ?? DEFAULT_OPTS.topP,
-      });
+  return slot.queue.enqueue(async () => {
+    // Retry up to 2 times for transient network errors
+    let lastErr: unknown;
+    for (let attempt = 1; attempt <= 2; attempt++) {
+      try {
+        const response = await slot.client.textChat({
+          modelId,
+          projectId: slot.projectId,
+          messages: messages.map((m) => ({ role: m.role, content: m.content })),
+          maxTokens:   opts.maxTokens   ?? 512,
+          temperature: opts.temperature ?? DEFAULT_OPTS.temperature,
+          topP:        opts.topP        ?? DEFAULT_OPTS.topP,
+        });
 
-      const choice = response.result?.choices?.[0];
-      const content =
-        (choice?.message as { content?: string } | undefined)?.content ?? "";
+        const choice = response.result?.choices?.[0];
+        const content =
+          (choice?.message as { content?: string } | undefined)?.content ?? "";
 
-      return { role: "assistant", content: content.trim() };
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : String(err);
-      console.error(`[watsonx] chatCompletion failed (model=${modelId}):`, msg);
-      throw new WatsonxError(`chatCompletion failed: ${msg}`, err);
+        return { role: "assistant", content: content.trim() };
+      } catch (err) {
+        lastErr = err;
+        const msg = err instanceof Error ? err.message : String(err);
+        const isTransient = /ECONNRESET|socket hang up|ECONNREFUSED|ETIMEDOUT|fetch failed/i.test(msg);
+        if (isTransient && attempt < 2) {
+          console.warn(`[watsonx] chatCompletion transient error, retrying in 1s:`, msg);
+          await new Promise((r) => setTimeout(r, 1000));
+          continue;
+        }
+        console.error(`[watsonx] chatCompletion failed (model=${modelId}):`, msg);
+        throw new WatsonxError(`chatCompletion failed: ${msg}`, err);
+      }
     }
+    throw new WatsonxError(`chatCompletion failed after retries`, lastErr);
   });
+}
+
+// ─── JSON extraction utility ───────────────────────────────────────────────
+
+/**
+ * Extract the first valid JSON object from potentially malformed LLM output.
+ * Handles: trailing text, markdown fences, leading prose, multiple JSON blobs.
+ */
+export function extractFirstJson(raw: string): string {
+  // Strip markdown fences
+  let cleaned = raw.replace(/^```(?:json)?\s*/im, "").replace(/\s*```\s*$/im, "").trim();
+
+  // Fast path: try the whole string
+  try { JSON.parse(cleaned); return cleaned; } catch {}
+
+  // Find the first '{' and match braces to extract the JSON object
+  const start = cleaned.indexOf('{');
+  if (start === -1) throw new Error('No JSON object found in LLM output');
+
+  let depth = 0;
+  let inString = false;
+  let escape = false;
+  let end = -1;
+
+  for (let i = start; i < cleaned.length; i++) {
+    const ch = cleaned[i];
+    if (escape) { escape = false; continue; }
+    if (ch === '\\') { escape = true; continue; }
+    if (ch === '"') { inString = !inString; continue; }
+    if (inString) continue;
+    if (ch === '{') depth++;
+    if (ch === '}') {
+      depth--;
+      if (depth === 0) { end = i; break; }
+    }
+  }
+
+  if (end === -1) throw new Error('Unterminated JSON object in LLM output');
+
+  const extracted = cleaned.slice(start, end + 1);
+  // Validate it's actually valid JSON
+  JSON.parse(extracted); // will throw if not valid
+  return extracted;
 }
 
 /**

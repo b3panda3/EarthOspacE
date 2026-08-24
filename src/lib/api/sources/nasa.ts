@@ -48,7 +48,7 @@ export async function fetchNeoData(): Promise<{
       const url = `https://api.nasa.gov/neo/rest/v1/feed?start_date=${today}&end_date=${endDate}&api_key=${NASA_KEY()}`;
 
       const ctrl = new AbortController();
-      const t = setTimeout(() => ctrl.abort(), 6_000);
+      const t = setTimeout(() => ctrl.abort(), 12_000);
       const res = await fetch(url, { signal: ctrl.signal });
       clearTimeout(t);
 
@@ -126,7 +126,7 @@ export async function fetchDonkiFlares(): Promise<TelemetryData[]> {
       const url = `https://api.nasa.gov/DONKI/FLR?startDate=${startDate}&endDate=${endDate}&api_key=${NASA_KEY()}`;
 
       const ctrl = new AbortController();
-      const t = setTimeout(() => ctrl.abort(), 6_000);
+      const t = setTimeout(() => ctrl.abort(), 12_000);
       const res = await fetch(url, { signal: ctrl.signal });
       clearTimeout(t);
 
