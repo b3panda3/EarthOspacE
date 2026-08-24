@@ -76,7 +76,7 @@ export default function WeatherWidget() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>\ud83c\udf0d Space City Weather</CardTitle>
+        <CardTitle>🌍 Space City Weather</CardTitle>
         {!data?.demo && (
           <span className="text-[10px] text-[#4ade80] border border-[#4ade80]/30 rounded px-1.5 py-0.5">
             Live
