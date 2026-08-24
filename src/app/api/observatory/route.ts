@@ -218,16 +218,17 @@ export async function GET(req: NextRequest) {
     ];
   }
 
-  /* Enrich top 6 items with Granite (rate-limit friendly) */
-  const topItems = rawItems.slice(0, 6);
+  /* Enrich top 2 items with Granite (rate-limit friendly) */
+  const topItems = rawItems.slice(0, 8);
+  const enrichItems = topItems.slice(0, 2);
   const enrichments = await Promise.allSettled(
-    topItems.map((it) => enrichWithGranite(it, userRole, userInterests))
+    enrichItems.map((it) => enrichWithGranite(it, userRole, userInterests))
   );
 
   const now = new Date().toISOString();
   const newsItems: ObservatoryNews[] = topItems.map((it, i): ObservatoryNews => {
     const enrich: AiEnrichment =
-      enrichments[i].status === "fulfilled"
+      i < 2 && enrichments[i]?.status === "fulfilled"
         ? enrichments[i].value
         : { aiContext: `${it.title} — significant development from ${it.agency}.`, relevanceScore: 5, tags: [it.agency] };
 

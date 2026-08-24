@@ -33,7 +33,7 @@ function CityRow({ city }: { city: CityWeather }) {
       </div>
       <div className="shrink-0 text-right">
         <p className="text-sm font-bold text-[#38bdf8]">{city.tempC}°C</p>
-        <div className="flex items-center gap-1 text-[10px] text-[#0e4a6e] justify-end">
+        <div className="flex items-center gap-1 text-[10px] text-[#7dd3fc]/70 justify-end">
           <Droplets size={9} aria-hidden="true" />
           {city.humidity}%
           <Wind size={9} aria-hidden="true" className="ml-1" />
@@ -86,7 +86,7 @@ export default function WeatherWidget() {
 
       <div className="px-4 pb-2">
         <div className="relative">
-          <Search size={12} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[#1e3a5f]" aria-hidden="true" />
+          <Search size={12} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[#7dd3fc]/60" aria-hidden="true" />
           <input
             type="text"
             value={search}

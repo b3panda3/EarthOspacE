@@ -281,20 +281,7 @@ export default function DashboardPage() {
     }
   }, [profile, loading, router]);
 
-  // Show loading while checking profile
-  if (!profile) {
-    return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="text-center">
-          <div className="relative w-10 h-10 mx-auto mb-3">
-            <span className="absolute inset-0 rounded-full border-2 border-[#38bdf8] border-t-transparent animate-spin" />
-          </div>
-          <p className="text-sm text-[#7dd3fc]">Loading mission profile…</p>
-        </div>
-      </div>
-    );
-  }
- // mobile sidebar toggle
+  /* ── ALL hooks MUST be called before any conditional return (Rules of Hooks) ── */
 
   /* ── Daily briefing from Granite (via server route) ──────────────────── */
   const {
@@ -310,8 +297,9 @@ export default function DashboardPage() {
       const body = (await res.json()) as { briefing: string };
       return body.briefing;
     },
-    staleTime: 30 * 60 * 1000, // 30 min — don't regenerate on every visit
+    staleTime: 30 * 60 * 1000,
     retry: false,
+    enabled: !!profile,
   });
 
   /* ── News feed ────────────────────────────────────────────────────────── */
@@ -339,8 +327,9 @@ export default function DashboardPage() {
       if (!res.ok) throw new Error("News fetch failed");
       return res.json() as Promise<NewsResponse>;
     },
-    refetchInterval: 30_000, // 30 s auto-refresh
+    refetchInterval: 30_000,
     staleTime: 25_000,
+    enabled: !!profile,
   });
 
   /* ── Events / stats ───────────────────────────────────────────────────── */
@@ -351,7 +340,7 @@ export default function DashboardPage() {
       if (!res.ok) throw new Error("Events fetch failed");
       return res.json() as Promise<EventsResponse>;
     },
-    refetchInterval: 3 * 60 * 1000, // 3 min
+    refetchInterval: 3 * 60 * 1000,
     staleTime: 2 * 60 * 1000,
   });
 
@@ -375,6 +364,20 @@ export default function DashboardPage() {
   }, [allNews]);
 
   const stats = eventsData?.stats;
+
+  // Show loading while checking profile
+  if (!profile) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="text-center">
+          <div className="relative w-10 h-10 mx-auto mb-3">
+            <span className="absolute inset-0 rounded-full border-2 border-[#38bdf8] border-t-transparent animate-spin" />
+          </div>
+          <p className="text-sm text-[#7dd3fc]">Loading mission profile…</p>
+        </div>
+      </div>
+    );
+  }
 
   /* ── Render ────────────────────────────────────────────────────────────── */
   return (

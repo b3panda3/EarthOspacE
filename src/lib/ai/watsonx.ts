@@ -74,30 +74,40 @@ export class WatsonxError extends Error {
 }
 
 // ─── Rate-limit queue (max 2 requests per 1 second) ──────────────────────
+// Uses a promise chain so each request FULLY completes before the next starts.
+// This guarantees no more than 1 in-flight request at a time per interval.
 
-const _queue: Array<() => void> = [];
-let _queueRunning = false;
-const MIN_REQUEST_INTERVAL_MS = 550; // slightly under 500 to stay safely under 2 req/s
+let _chain: Promise<unknown> = Promise.resolve();
+let _lastReqTime = 0;
+const MIN_REQUEST_INTERVAL_MS = 600;
 
 async function enqueueRequest<T>(fn: () => Promise<T>): Promise<T> {
-  return new Promise<T>((resolve, reject) => {
-    _queue.push(async () => {
-      try {
-        resolve(await fn());
-      } catch (err) {
-        reject(err);
-      }
-    });
-    if (!_queueRunning) processQueue();
-  });
-}
+  let outerResolve!: (v: T) => void;
+  let outerReject!: (e: unknown) => void;
 
-function processQueue() {
-  if (_queue.length === 0) { _queueRunning = false; return; }
-  _queueRunning = true;
-  const task = _queue.shift()!;
-  task();
-  setTimeout(processQueue, MIN_REQUEST_INTERVAL_MS);
+  const result = new Promise<T>((res, rej) => {
+    outerResolve = res;
+    outerReject = rej;
+  });
+
+  // Chain onto the previous task — ensures sequential execution
+  _chain = _chain.then(async () => {
+    // Enforce minimum interval between request starts
+    const now = Date.now();
+    const wait = Math.max(0, MIN_REQUEST_INTERVAL_MS - (now - _lastReqTime));
+    if (wait > 0) await new Promise((r) => setTimeout(r, wait));
+
+    try {
+      const value = await fn();
+      _lastReqTime = Date.now();
+      outerResolve(value);
+    } catch (err) {
+      _lastReqTime = Date.now();
+      outerReject(err);
+    }
+  });
+
+  return result;
 }
 
 // ─── Singleton client ────────────────────────────────────────────────────────

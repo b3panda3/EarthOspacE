@@ -271,10 +271,11 @@ export async function GET(req: NextRequest) {
     return new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime();
   });
 
-  /* Generate Granite commentary for top 6 articles (rate-limit friendly) */
+  /* Generate Granite commentary for top 3 articles (rate-limit friendly) */
   const topItems = sorted.slice(0, 12);
+  const flashItems = topItems.slice(0, 3);
   const commentaries = await Promise.allSettled(
-    topItems.map((item) => generateFlash(item, userRole, missionType))
+    flashItems.map((item) => generateFlash(item, userRole, missionType))
   );
 
   const newsItems: NewsItem[] = topItems.map((item, i) => ({
@@ -282,7 +283,7 @@ export async function GET(req: NextRequest) {
     title: item.title,
     summary: item.summary,
     flashCommentary:
-      commentaries[i].status === "fulfilled"
+      i < 3 && commentaries[i]?.status === "fulfilled"
         ? commentaries[i].value
         : `Mission update: ${item.title}`,
     category: item.category,
