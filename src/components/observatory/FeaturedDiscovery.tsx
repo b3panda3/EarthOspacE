@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Sparkles, ExternalLink, Star, TrendingUp } from "lucide-react";
 import Image from "next/image";
@@ -22,8 +23,26 @@ interface FeaturedDiscoveryProps {
   item: ObservatoryNews;
 }
 
+function decodeHtml(text: string): string {
+  if (typeof document !== "undefined") {
+    const el = document.createElement("span");
+    el.innerHTML = text;
+    return el.textContent ?? text;
+  }
+  return text
+    .replace(/&#8217;|&#39;/g, "'")
+    .replace(/&#8216;|&#8218;/g, "'")
+    .replace(/&quot;/g, '"')
+    .replace(/&amp;/g, "&")
+    .replace(/&#8220;|&#8221;/g, '"')
+    .replace(/&#8211;/g, "-")
+    .replace(/&#8230;/g, "...")
+    .replace(/&#\d+;/g, "");
+}
+
 export default function FeaturedDiscovery({ item }: FeaturedDiscoveryProps) {
   const meta = AGENCY_BADGE[item.agency] ?? AGENCY_BADGE.Other;
+  const [imgError, setImgError] = useState(false);
   const dateLabel = new Date(item.date).toLocaleDateString("en-GB", {
     weekday: "long",
     day: "numeric",
@@ -42,7 +61,7 @@ export default function FeaturedDiscovery({ item }: FeaturedDiscoveryProps) {
       style={{ minHeight: 280 }}
     >
       {/* Background: image or gradient */}
-      {item.imageUrl ? (
+      {item.imageUrl && !imgError ? (
         <>
           <Image
             src={item.imageUrl}
@@ -51,6 +70,7 @@ export default function FeaturedDiscovery({ item }: FeaturedDiscoveryProps) {
             className="object-cover"
             unoptimized
             priority
+            onError={() => setImgError(true)}
           />
           {/* Dark overlay gradient */}
           <div className="absolute inset-0 bg-gradient-to-r from-[#000000dd] via-[#000000aa] to-transparent" />
@@ -83,12 +103,12 @@ export default function FeaturedDiscovery({ item }: FeaturedDiscoveryProps) {
 
         {/* Title */}
         <h2 className="text-xl sm:text-2xl font-bold text-[#e0f2fe] leading-snug max-w-2xl">
-          {item.title}
+          {decodeHtml(item.title)}
         </h2>
 
         {/* Summary */}
         <p className="text-sm text-[#7dd3fc] leading-relaxed max-w-xl line-clamp-3">
-          {item.summary}
+          {decodeHtml(item.summary)}
         </p>
 
         {/* AI Context — full width highlight */}
@@ -106,7 +126,7 @@ export default function FeaturedDiscovery({ item }: FeaturedDiscoveryProps) {
               IBM Granite · AI Context
             </span>
           </div>
-          <p className="text-sm text-[#e0f2fe] leading-relaxed">{item.aiContext}</p>
+          <p className="text-sm text-[#e0f2fe] leading-relaxed">{decodeHtml(item.aiContext)}</p>
         </div>
 
         {/* Footer */}

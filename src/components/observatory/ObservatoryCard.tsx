@@ -1,7 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
-import { ExternalLink, Sparkles, Calendar, Star } from "lucide-react";
+import { ExternalLink, Sparkles, Calendar, Star, ImageIcon } from "lucide-react";
 import Image from "next/image";
 import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
@@ -50,8 +51,29 @@ interface ObservatoryCardProps {
 }
 
 /* ── Component ───────────────────────────────────────────────────────────── */
+function decodeHtml(text: string): string {
+  if (typeof document !== "undefined") {
+    const el = document.createElement("span");
+    el.innerHTML = text;
+    return el.textContent ?? text;
+  }
+  // Server-side: decode common entities
+  return text
+    .replace(/&#8217;|&#39;/g, "'")
+    .replace(/&#8216;|&#8218;/g, "'")
+    .replace(/&quot;/g, '"')
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&#8220;|&#8221;/g, '"')
+    .replace(/&#8211;/g, "-")
+    .replace(/&#8230;/g, "...")
+    .replace(/&#\d+;/g, "");
+}
+
 export default function ObservatoryCard({ item, index }: ObservatoryCardProps) {
   const meta = AGENCY_META[item.agency] ?? AGENCY_META.Other;
+  const [imgError, setImgError] = useState(false);
 
   const dateLabel = new Date(item.date).toLocaleDateString("en-GB", {
     day: "numeric",
@@ -70,8 +92,8 @@ export default function ObservatoryCard({ item, index }: ObservatoryCardProps) {
     >
       <Card variant="elevated" noPadding className="flex flex-col overflow-hidden h-full">
         {/* ── Image thumbnail ─────────────────────────────────────────── */}
-        {item.imageUrl ? (
-          <div className="relative w-full h-36 shrink-0 overflow-hidden bg-[#1a1916]">
+        {item.imageUrl && !imgError ? (
+          <div className="relative w-full h-32 shrink-0 overflow-hidden bg-[#1a1916]">
             <Image
               src={item.imageUrl}
               alt={item.title}
@@ -79,6 +101,7 @@ export default function ObservatoryCard({ item, index }: ObservatoryCardProps) {
               className="object-cover opacity-80"
               sizes="(max-width: 768px) 100vw, 400px"
               unoptimized
+              onError={() => setImgError(true)}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#111f36] via-transparent to-transparent" />
             {/* Agency badge over image */}
@@ -97,7 +120,7 @@ export default function ObservatoryCard({ item, index }: ObservatoryCardProps) {
         )}
 
         {/* ── Card body ───────────────────────────────────────────────── */}
-        <div className="flex flex-col gap-3 p-4 flex-1">
+        <div className="flex flex-col gap-2 p-3.5 flex-1 min-h-0">
           {/* Header: agency (if image shown) + date */}
           <div className="flex items-center justify-between gap-2">
             {item.imageUrl ? (
@@ -116,36 +139,36 @@ export default function ObservatoryCard({ item, index }: ObservatoryCardProps) {
 
           {/* Title */}
           <h2 className="text-sm font-semibold text-[#e0f2fe] leading-snug line-clamp-2">
-            {item.title}
+            {decodeHtml(item.title)}
           </h2>
 
           {/* Original summary */}
-          <p className="text-xs text-[#7dd3fc] leading-relaxed line-clamp-3 flex-1">
-            {item.summary}
+          <p className="text-xs text-[#7dd3fc] leading-relaxed line-clamp-2">
+            {decodeHtml(item.summary)}
           </p>
 
           {/* AI Context highlight */}
           <div
-            className="rounded-lg px-3 py-2.5"
+            className="rounded-lg px-2.5 py-2 shrink-0"
             style={{
               background: "rgba(230,201,116,0.06)",
               border: "1px solid rgba(230,201,116,0.18)",
             }}
           >
-            <div className="flex items-center gap-1.5 mb-1.5">
-              <Sparkles size={11} aria-hidden="true" className="text-[#38bdf8]" />
+            <div className="flex items-center gap-1.5 mb-1">
+              <Sparkles size={10} aria-hidden="true" className="text-[#38bdf8]" />
               <span className="text-[10px] font-semibold text-[#0ea5e9]">
                 AI Context
               </span>
             </div>
-            <p className="text-xs text-[#e0f2fe] leading-relaxed line-clamp-3">
-              {item.aiContext}
+            <p className="text-[11px] text-[#e0f2fe] leading-relaxed line-clamp-2">
+              {decodeHtml(item.aiContext)}
             </p>
           </div>
 
           {/* Tags */}
           {item.tags.length > 0 && (
-            <div className="flex flex-wrap gap-1.5">
+            <div className="flex flex-wrap gap-1">
               {item.tags.map((tag) => (
                 <span
                   key={tag}

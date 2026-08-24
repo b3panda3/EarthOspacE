@@ -28,6 +28,10 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "www.esa.int"                         },
       { protocol: "https", hostname: "cdn.esa.int"                         },
       { protocol: "https", hostname: "spaceflightnow.com"                  },
+      { protocol: "https", hostname: "www.isro.gov.in"                     },
+      { protocol: "https", hostname: "www.jaxa.jp"                         },
+      { protocol: "https", hostname: "www.asc-csa.gc.ca"                   },
+      { protocol: "https", hostname: "**" },  // Catch-all for any RSS feed images
     ],
   },
 };

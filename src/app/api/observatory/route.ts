@@ -1,7 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
-import { chatCompletion } from "@/lib/ai/watsonx";
+import { chatCompletion, extractFirstJson } from "@/lib/ai/watsonx";
 import { isDemoMode } from "@/lib/utils/demo";
 import type { ObservatoryNews, ObservatoryAgency } from "@/lib/types";
+
+/* ── HTML entity decoder (server-side) ────────────────────────────────── */
+function decodeHtmlEntities(text: string): string {
+  return text
+    .replace(/&#8217;|&#39;/g, "'")
+    .replace(/&#8216;|&#8218;/g, "'")
+    .replace(/&quot;/g, '"')
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&#8220;|&#8221;/g, '"')
+    .replace(/&#8211;/g, "-")
+    .replace(/&#8230;/g, "...")
+    .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(Number(code)));
+}
 
 /* ── Feed registry ───────────────────────────────────────────────────────── */
 
@@ -54,10 +69,10 @@ function parseRss(xml: string, agency: ObservatoryAgency): RawItem[] {
   let m: RegExpExecArray | null;
   while ((m = re.exec(xml)) !== null) {
     const b = m[1];
-    const title = extractTag(b, "title");
+    const title = decodeHtmlEntities(extractTag(b, "title"));
     if (!title) continue;
     const raw = extractTag(b, "description") || extractTag(b, "summary") || extractTag(b, "content:encoded");
-    const summary = raw.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim().slice(0, 500);
+    const summary = decodeHtmlEntities(raw.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim().slice(0, 500));
     const link = extractTag(b, "link");
     const pubDate = extractTag(b, "pubDate") || extractTag(b, "dc:date") || new Date().toISOString();
     const imageUrl = extractImageUrl(b);
@@ -141,10 +156,7 @@ Respond ONLY with valid JSON in this exact format:
       { role: "user", content: prompt },
     ]);
 
-    const raw = reply.content
-      .replace(/^```(?:json)?\s*/i, "")
-      .replace(/\s*```$/i, "")
-      .trim();
+    const raw = extractFirstJson(reply.content);
 
     const parsed = JSON.parse(raw) as Partial<AiEnrichment>;
     return {
